@@ -37,7 +37,6 @@ yarn-error.log
 /.vscode
 /.zed
 .gemini
-.github/workflows
 .junie
 AGENTS.md
 AI Programming Instructions.md
