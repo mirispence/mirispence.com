@@ -14,6 +14,16 @@
 .env
 .env.backup
 .env.production
+.env.testing
+.DS_Store
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+Thumbs.db
+desktop.ini
+docker-compose.override.yml
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
