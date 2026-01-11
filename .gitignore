@@ -39,3 +39,7 @@ yarn-error.log
 .gemini
 .github/workflows
 .junie
+AGENTS.md
+AI Programming Instructions.md
+GEMINI.md
+test_output.txt
