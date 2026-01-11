@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: 'Fraunces', serif;
+    --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-accent-2: var(--accent-2);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-panel: #f1eeff;
+
+    --shadow-premium: 0 12px 30px rgba(20, 22, 43, 0.1);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-border);
+    }
+}
+
+@layer utilities {
+    body,
+    html {
+        --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+        --font-heading: 'Fraunces', serif;
+    }
+
+    .bg-site-gradient {
+        background:
+            radial-gradient(
+                circle at 0% 0%,
+                rgba(168, 85, 247, 0.05) 0%,
+                transparent 50%
+            ),
+            radial-gradient(
+                circle at 100% 100%,
+                rgba(219, 39, 119, 0.05) 0%,
+                transparent 50%
+            ),
+            #f7f5ff;
+    }
+
+    .glass-header {
+        @apply sticky top-0 z-50 border-b border-border bg-white/70 backdrop-blur-md;
+    }
+}
+
+:root {
+    --background: #f7f5ff;
+    --foreground: #14162b;
+    --card: #ffffff;
+    --card-foreground: #14162b;
+    --popover: #ffffff;
+    --popover-foreground: #14162b;
+    --primary: #5b21b6;
+    --primary-foreground: #ffffff;
+    --secondary: #3730a3;
+    --secondary-foreground: #ffffff;
+    --muted: #f1eeff;
+    --muted-foreground: #5b5f7a;
+    --accent: #db2777;
+    --accent-foreground: #ffffff;
+    --accent-2: #a855f7;
+    --destructive: hsl(0 84.2% 60.2%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: rgba(20, 22, 43, 0.1);
+    --input: #f1eeff;
+    --ring: #5b21b6;
+    --radius: 0.75rem;
+}
+
+.dark {
+    --background: #0f101d;
+    --foreground: #f7f5ff;
+    --card: #14162b;
+    --card-foreground: #f7f5ff;
+    --popover: #14162b;
+    --popover-foreground: #f7f5ff;
+    --primary: #8b5cf6;
+    --primary-foreground: #ffffff;
+    --secondary: #4f46e5;
+    --secondary-foreground: #ffffff;
+    --muted: #1e1b4b;
+    --muted-foreground: #a5b4fc;
+    --accent: #ec4899;
+    --accent-foreground: #ffffff;
+    --accent-2: #c084fc;
+    --destructive: hsl(0 84% 60%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: rgba(247, 245, 255, 0.1);
+    --input: #1e1b4b;
+    --ring: #8b5cf6;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
