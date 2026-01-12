@@ -133,6 +133,6 @@ jobs:
 
             ln -sfn "$RELEASES_DIR/$PREV" "$APP_ROOT/current"
 
-            sudo -n systemctl reload php8.3-fpm 2>/dev/null || true
+            sudo -n systemctl reload php8.4-fpm 2>/dev/null || true
 
             echo "Rolled back to: $PREV"
