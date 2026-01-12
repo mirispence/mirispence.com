@@ -5,7 +5,7 @@ import {
     edit,
     index,
 } from '@/actions/App/Http/Controllers/Admin/ChapterController';
-import AdminLayout from '@/layouts/AdminLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { watch } from 'vue';
 

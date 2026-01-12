@@ -3,7 +3,7 @@ import {
     destroy,
     show,
 } from '@/actions/App/Http/Controllers/Admin/MessageController';
-import AdminLayout from '@/layouts/AdminLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
 defineProps<{

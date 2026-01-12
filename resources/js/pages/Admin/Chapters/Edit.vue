@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { update } from '@/actions/App/Http/Controllers/Admin/ChapterController';
-import AdminLayout from '@/layouts/AdminLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 const props = defineProps<{
