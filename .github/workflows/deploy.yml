@@ -81,7 +81,6 @@ jobs:
             npm run build
 
             echo "Laravel maintenance tasks"
-            php artisan key:generate --force || true
             php artisan storage:link || true
 
             php artisan migrate --force
