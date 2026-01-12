@@ -34,6 +34,10 @@ jobs:
           script: |
             set -euo pipefail
 
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm use default >/dev/null
+
             APP_ROOT="${{ secrets.APP_ROOT }}"
             REPO="${{ github.repository }}"
             BRANCH="${{ secrets.DEPLOY_BRANCH || 'main' }}"
