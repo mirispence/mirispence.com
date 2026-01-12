@@ -3,6 +3,7 @@ import {
     destroy,
     show,
 } from '@/actions/App/Http/Controllers/Admin/MessageController';
+import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
@@ -135,5 +136,7 @@ const formatDate = (date: string) => {
                 </div>
             </div>
         </div>
+
+        <Pagination :links="messages.links" />
     </AdminLayout>
 </template>

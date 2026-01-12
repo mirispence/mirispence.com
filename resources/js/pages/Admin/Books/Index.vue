@@ -5,6 +5,7 @@ import {
     edit,
 } from '@/actions/App/Http/Controllers/Admin/BookController';
 import { index as chapterIndex } from '@/actions/App/Http/Controllers/Admin/ChapterController';
+import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
@@ -162,5 +163,7 @@ const deleteBook = (id: number) => {
                 </div>
             </div>
         </div>
+
+        <Pagination :links="books.links" />
     </AdminLayout>
 </template>

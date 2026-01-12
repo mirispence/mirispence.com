@@ -4,6 +4,7 @@ import {
     destroy,
     edit,
 } from '@/actions/App/Http/Controllers/Admin/GalleryController';
+import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
@@ -158,5 +159,7 @@ const deleteGallery = (id: number) => {
                 </div>
             </div>
         </div>
+
+        <Pagination :links="galleries.links" />
     </AdminLayout>
 </template>

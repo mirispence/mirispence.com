@@ -5,6 +5,7 @@ import {
     edit,
     index,
 } from '@/actions/App/Http/Controllers/Admin/ChapterController';
+import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { watch } from 'vue';
@@ -175,5 +176,7 @@ const deleteChapter = (id: number) => {
                 </div>
             </div>
         </div>
+
+        <Pagination :links="chapters.links" />
     </AdminLayout>
 </template>

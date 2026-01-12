@@ -4,6 +4,7 @@ import {
     destroy,
     edit,
 } from '@/actions/App/Http/Controllers/Admin/FeaturedItemController';
+import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
@@ -140,5 +141,7 @@ const getItemType = (type: string) => {
                 </div>
             </div>
         </div>
+
+        <Pagination :links="featuredItems.links" />
     </AdminLayout>
 </template>

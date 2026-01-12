@@ -4,6 +4,7 @@ import {
     destroy,
     edit,
 } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
+import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
@@ -147,5 +148,7 @@ const deleteArtwork = (id: number) => {
                 </div>
             </div>
         </div>
+
+        <Pagination :links="artworks.links" />
     </AdminLayout>
 </template>
