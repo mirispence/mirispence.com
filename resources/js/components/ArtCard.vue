@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import SignedImage from '@/Components/SignedImage.vue';
-import { useNSFWPreference } from '@/Composables/useNSFWPreference';
+import SignedImage from '@/components/SignedImage.vue';
+import { useNSFWPreference } from '@/composables/useNSFWPreference';
 import { Link } from '@inertiajs/vue3';
 
 defineProps<{

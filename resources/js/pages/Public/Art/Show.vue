@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import SignedImage from '@/Components/SignedImage.vue';
+import SignedImage from '@/components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useNSFWPreference } from '@/Composables/useNSFWPreference';
+import { useNSFWPreference } from '@/composables/useNSFWPreference';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -293,11 +293,11 @@ onUnmounted(() => {
                     </svg>
                 </button>
 
-                <div 
+                <div
                     class="relative h-full w-full flex-1 overflow-auto flex items-center justify-center p-4 sm:p-8"
                     @click.self="closeLightbox"
                 >
-                    <div 
+                    <div
                         class="relative inline-block transition-all duration-300 m-auto"
                         :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
                         @click="toggleZoom"
@@ -321,7 +321,7 @@ onUnmounted(() => {
                         />
                     </div>
                 </div>
-                
+
                 <div class="relative z-20 pb-10 pt-4 text-center bg-black/40 backdrop-blur-sm w-full">
                     <h2 class="font-heading text-2xl font-bold text-white">{{ artwork.title }}</h2>
                 </div>

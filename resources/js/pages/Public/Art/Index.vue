@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
 import FormSelect from '@/components/FormSelect.vue';
-import SignedImage from '@/Components/SignedImage.vue';
+import SignedImage from '@/components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
-import { useNSFWPreference } from '@/Composables/useNSFWPreference';
+import { useNSFWPreference } from '@/composables/useNSFWPreference';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
@@ -223,7 +223,7 @@ watch(selectedGallery, (value) => {
                     </button>
 
                     <!-- Image Display -->
-                    <div 
+                    <div
                         class="relative flex-1 overflow-auto flex items-center justify-center p-4 sm:p-10"
                         @click.self="closeLightbox"
                     >
@@ -254,7 +254,7 @@ watch(selectedGallery, (value) => {
                              </div>
                         </template>
 
-                        <div 
+                        <div
                             class="relative inline-block transition-all duration-300 m-auto"
                             :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
                             @click="toggleZoom"
