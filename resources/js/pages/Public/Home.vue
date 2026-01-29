@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
-import SignedImage from '@/Components/SignedImage.vue';
+import SignedImage from '@/components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
