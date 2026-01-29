@@ -92,12 +92,13 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+            php artisan horizon:terminate
 
             echo "Flip current symlink"
             ln -sfn "$RELEASE_DIR" "$APP_ROOT/current"
 
             echo "Reload PHP-FPM if available"
-            sudo -n systemctl reload php8.3-fpm 2>/dev/null || true
+            sudo -n systemctl reload php8.4-fpm 2>/dev/null || true
 
             echo "Cleanup old releases"
             cd "$RELEASES_DIR"

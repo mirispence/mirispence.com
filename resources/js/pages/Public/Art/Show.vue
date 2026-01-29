@@ -1,19 +1,56 @@
 <script setup lang="ts">
+import SignedImage from '@/Components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useNSFWPreference } from '@/Composables/useNSFWPreference';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps<{
     artwork: any;
 }>();
 
 const isRevealed = ref(false);
+const showLightbox = ref(false);
+const isZoomed = ref(false);
+const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
 
 const revealNSFW = () => {
     isRevealed.value = true;
 };
+
+const openLightbox = () => {
+    if (props.artwork.nsfw_flag && !isRevealed.value && !nsfwAlwaysReveal.value) {
+        revealNSFW();
+        return;
+    }
+    showLightbox.value = true;
+};
+
+const closeLightbox = () => {
+    showLightbox.value = false;
+    isZoomed.value = false;
+};
+
+const toggleZoom = () => {
+    isZoomed.value = !isZoomed.value;
+};
+
+const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && showLightbox.value) {
+        closeLightbox();
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown);
+});
+
 </script>
 
 <template>
@@ -27,17 +64,24 @@ const revealNSFW = () => {
                     <Card
                         class="group relative w-full overflow-hidden rounded-[2.5rem] border-none p-0 shadow-premium"
                         :class="{
-                            'cursor-pointer': artwork.nsfw_flag && !isRevealed,
+                            'cursor-pointer': (artwork.nsfw_flag && !isRevealed) || artwork.signed_urls?.display,
                         }"
-                        @click="
-                            artwork.nsfw_flag && !isRevealed
-                                ? revealNSFW()
-                                : null
-                        "
+                        @click="openLightbox"
                     >
                         <div class="aspect-square bg-white">
+                            <SignedImage
+                                v-if="artwork.signed_urls?.display"
+                                :urls="artwork.signed_urls.display"
+                                :alt="artwork.alt_text || artwork.title"
+                                class-name="h-full w-full object-contain transition-all duration-700"
+                                :class="{
+                                    'scale-110 opacity-40 blur-3xl grayscale':
+                                        artwork.nsfw_flag && !isRevealed,
+                                }"
+                                sizes="(max-width: 1024px) 100vw, 800px"
+                            />
                             <img
-                                v-if="artwork.image_url"
+                                v-else-if="artwork.image_url"
                                 :src="artwork.image_url"
                                 :alt="artwork.alt_text || artwork.title"
                                 class="h-full w-full object-contain transition-all duration-700"
@@ -56,8 +100,8 @@ const revealNSFW = () => {
 
                             <!-- NSFW Overlay -->
                             <div
-                                v-if="artwork.nsfw_flag && !isRevealed"
-                                class="absolute inset-0 flex flex-col items-center justify-center bg-panel/20 backdrop-blur-md"
+                                v-if="artwork.nsfw_flag && !isRevealed && !nsfwAlwaysReveal"
+                                class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-panel/20 backdrop-blur-md"
                             >
                                 <div
                                     class="max-w-[280px] rounded-[2rem] bg-white/80 p-8 text-center shadow-2xl"
@@ -93,8 +137,20 @@ const revealNSFW = () => {
                                         variant="accent"
                                         size="lg"
                                         class="w-full rounded-full font-bold"
+                                        @click="revealNSFW"
                                         >Show Artwork</Button
                                     >
+                                    <div class="mt-4 flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            id="nsfw-pref-show"
+                                            class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                            @change="setPreference($event.target.checked)"
+                                        />
+                                        <label for="nsfw-pref-show" class="text-xs font-bold text-foreground">
+                                            Show all NSFW artwork this session
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -213,5 +269,63 @@ const revealNSFW = () => {
                 </div>
             </div>
         </div>
+
+        <!-- Lightbox -->
+        <Transition
+            enter-active-class="transition duration-300 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition duration-200 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
+            <div
+                v-if="showLightbox"
+                class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 overflow-hidden"
+                @click.self="closeLightbox"
+            >
+                <button
+                    class="absolute top-8 right-8 z-[110] text-white/70 hover:text-white transition-colors"
+                    @click="closeLightbox"
+                >
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <div 
+                    class="relative h-full w-full flex-1 overflow-auto flex items-center justify-center p-4 sm:p-8"
+                    @click.self="closeLightbox"
+                >
+                    <div 
+                        class="relative inline-block transition-all duration-300 m-auto"
+                        :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
+                        @click="toggleZoom"
+                    >
+                        <SignedImage
+                            v-if="artwork.signed_urls?.display"
+                            :urls="artwork.signed_urls.display"
+                            :alt="artwork.alt_text || artwork.title"
+                            :class-name="[
+                                'shadow-2xl transition-all duration-500 rounded-lg',
+                                isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
+                            ].join(' ')"
+                            sizes="100vw"
+                        />
+                        <img
+                            v-else
+                            :src="artwork.image_url"
+                            :alt="artwork.alt_text || artwork.title"
+                            class="shadow-2xl transition-all duration-500 rounded-lg"
+                            :class="isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'"
+                        />
+                    </div>
+                </div>
+                
+                <div class="relative z-20 pb-10 pt-4 text-center bg-black/40 backdrop-blur-sm w-full">
+                    <h2 class="font-heading text-2xl font-bold text-white">{{ artwork.title }}</h2>
+                </div>
+            </div>
+        </Transition>
     </PublicLayout>
 </template>

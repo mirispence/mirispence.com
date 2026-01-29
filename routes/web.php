@@ -20,6 +20,9 @@ Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.s
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+Route::get('/i/{media}/{conversion}/{filename?}', [App\Http\Controllers\MediaConversionController::class, 'show'])
+    ->name('media.conversion');
+
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -35,4 +38,12 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
     Route::resource('featured-items', App\Http\Controllers\Admin\FeaturedItemController::class);
     Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->only(['index', 'show', 'update', 'destroy']);
+    
+    Route::get('media/{media}/original', [\App\Http\Controllers\Admin\OriginalMediaController::class, 'show'])
+        ->name('media.original');
+    
+    Route::post('artworks/{artwork}/regenerate', [App\Http\Controllers\Admin\ArtworkController::class, 'regenerate'])
+        ->name('artworks.regenerate');
+    Route::post('artworks/bulk-regenerate', [App\Http\Controllers\Admin\ArtworkController::class, 'bulkRegenerate'])
+        ->name('artworks.bulk-regenerate');
 });

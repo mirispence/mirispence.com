@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
+import SignedImage from '@/Components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
@@ -60,7 +61,15 @@ defineProps<{
                                 <div
                                     class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
+                                    <SignedImage
+                                        v-if="featuredArtworks[0].signed_urls?.grid"
+                                        :urls="featuredArtworks[0].signed_urls.grid"
+                                        :alt="featuredArtworks[0].alt_text || featuredArtworks[0].title"
+                                        class-name="h-full w-full object-cover"
+                                        sizes="(max-width: 1024px) 50vw, 400px"
+                                    />
                                     <img
+                                        v-else
                                         :src="featuredArtworks[0].image_url"
                                         class="h-full w-full object-cover"
                                     />
@@ -73,7 +82,15 @@ defineProps<{
                                 <div
                                     class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
+                                    <SignedImage
+                                        v-if="featuredArtworks[1].signed_urls?.grid"
+                                        :urls="featuredArtworks[1].signed_urls.grid"
+                                        :alt="featuredArtworks[1].alt_text || featuredArtworks[1].title"
+                                        class-name="h-full w-full object-cover"
+                                        sizes="(max-width: 1024px) 50vw, 400px"
+                                    />
                                     <img
+                                        v-else
                                         :src="featuredArtworks[1].image_url"
                                         class="h-full w-full object-cover"
                                     />

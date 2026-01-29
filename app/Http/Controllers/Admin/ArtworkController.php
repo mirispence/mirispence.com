@@ -62,6 +62,8 @@ class ArtworkController extends Controller
         if ($request->hasFile('image')) {
             $artwork->addMediaFromRequest('image')
                 ->toMediaCollection('artwork');
+            
+            \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
         }
 
         return redirect()->route('admin.artworks.index')
@@ -115,6 +117,8 @@ class ArtworkController extends Controller
             $artwork->clearMediaCollection('artwork');
             $artwork->addMediaFromRequest('image')
                 ->toMediaCollection('artwork');
+            
+            \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
         }
 
         return redirect()->route('admin.artworks.index')
@@ -127,5 +131,23 @@ class ArtworkController extends Controller
 
         return redirect()->route('admin.artworks.index')
             ->with('success', 'Artwork deleted successfully.');
+    }
+
+    public function regenerate(Artwork $artwork)
+    {
+        \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
+
+        return back()->with('success', 'Image regeneration started in the background.');
+    }
+
+    public function bulkRegenerate(Request $request)
+    {
+        $ids = $request->validate(['ids' => 'required|array'])['ids'];
+        
+        Artwork::whereIn('id', $ids)->get()->each(function ($artwork) {
+            \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
+        });
+
+        return back()->with('success', count($ids) . ' artworks queued for regeneration.');
     }
 }

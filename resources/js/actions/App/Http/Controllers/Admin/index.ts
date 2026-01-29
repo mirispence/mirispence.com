@@ -6,6 +6,7 @@ import ChapterController from './ChapterController'
 import TagController from './TagController'
 import FeaturedItemController from './FeaturedItemController'
 import MessageController from './MessageController'
+import OriginalMediaController from './OriginalMediaController'
 const Admin = {
     DashboardController: Object.assign(DashboardController, DashboardController),
 ArtworkController: Object.assign(ArtworkController, ArtworkController),
@@ -15,6 +16,7 @@ ChapterController: Object.assign(ChapterController, ChapterController),
 TagController: Object.assign(TagController, TagController),
 FeaturedItemController: Object.assign(FeaturedItemController, FeaturedItemController),
 MessageController: Object.assign(MessageController, MessageController),
+OriginalMediaController: Object.assign(OriginalMediaController, OriginalMediaController),
 }
 
 export default Admin

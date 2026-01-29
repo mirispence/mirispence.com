@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
+import { update, regenerate as regenerateAction } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, router } from '@inertiajs/vue3';
 
 const props = defineProps<{
     artwork: any;
@@ -25,6 +25,10 @@ const form = useForm({
 
 const submit = () => {
     form.post(update.url(props.artwork.id));
+};
+
+const regenerate = () => {
+    router.post(regenerateAction.url(props.artwork.id));
 };
 </script>
 
@@ -99,11 +103,49 @@ const submit = () => {
                         >
                         <div class="mt-1 sm:col-span-2 sm:mt-0">
                             <div v-if="artwork.image_url" class="mb-4">
-                                <img
-                                    :src="artwork.image_url"
-                                    alt="Current Image"
-                                    class="h-48 w-auto rounded-md object-cover"
-                                />
+                                <div class="flex items-center gap-4 mb-4">
+                                    <img
+                                        :src="artwork.image_url"
+                                        alt="Current Image"
+                                        class="h-48 w-auto rounded-md object-cover"
+                                    />
+                                    <div class="space-y-2">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm font-medium text-gray-700">Image Pipeline:</span>
+                                            <span 
+                                                :class="[
+                                                    artwork.image_status === 'ready' ? 'bg-green-100 text-green-800' :
+                                                    artwork.image_status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                                                    artwork.image_status === 'failed' ? 'bg-red-100 text-red-800' :
+                                                    'bg-gray-100 text-gray-800',
+                                                    'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium'
+                                                ]"
+                                            >
+                                                {{ artwork.image_status_label }}
+                                            </span>
+                                        </div>
+                                        <div v-if="artwork.image_error" class="text-xs text-red-600 max-w-sm">
+                                            Error: {{ artwork.image_error }}
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button
+                                                type="button"
+                                                @click="regenerate"
+                                                class="text-xs font-semibold text-indigo-600 hover:text-indigo-500"
+                                            >
+                                                Regenerate
+                                            </button>
+                                            <a
+                                                v-if="artwork.signed_urls?.original"
+                                                :href="artwork.signed_urls.original"
+                                                target="_blank"
+                                                class="text-xs font-semibold text-gray-600 hover:text-gray-500"
+                                            >
+                                                Open Original
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <input
                                 @input="form.image = $event.target.files[0]"

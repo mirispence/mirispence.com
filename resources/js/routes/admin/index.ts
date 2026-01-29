@@ -6,6 +6,7 @@ import chapters from './chapters'
 import tags from './tags'
 import featuredItems from './featured-items'
 import messages from './messages'
+import media from './media'
 /**
 * @see \App\Http\Controllers\Admin\DashboardController::dashboard
  * @see app/Http/Controllers/Admin/DashboardController.php:11
@@ -93,6 +94,7 @@ chapters: Object.assign(chapters, chapters),
 tags: Object.assign(tags, tags),
 featuredItems: Object.assign(featuredItems, featuredItems),
 messages: Object.assign(messages, messages),
+media: Object.assign(media, media),
 }
 
 export default admin

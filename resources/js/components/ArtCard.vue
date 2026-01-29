@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import SignedImage from '@/Components/SignedImage.vue';
+import { useNSFWPreference } from '@/Composables/useNSFWPreference';
 import { Link } from '@inertiajs/vue3';
 
 defineProps<{
@@ -9,6 +11,7 @@ defineProps<{
         title: string;
         slug: string;
         image_url: string;
+        signed_urls: any;
         alt_text: string;
         created_on: string;
         nsfw_flag: boolean;
@@ -18,15 +21,19 @@ defineProps<{
 
 defineEmits<{
     (e: 'reveal'): void;
+    (e: 'click-image'): void;
 }>();
+
+const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
 </script>
 
 <template>
     <Card class="group overflow-hidden border-none bg-white">
         <div class="relative aspect-[4/5] overflow-hidden">
-            <template v-if="artwork.nsfw_flag && !isRevealed">
+            <template v-if="artwork.nsfw_flag && !isRevealed && !nsfwAlwaysReveal">
                 <div
-                    class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-panel/60 p-6 text-center backdrop-blur-3xl"
+                    @click.stop="$emit('click-image')"
+                    class="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center bg-panel/60 p-6 text-center backdrop-blur-3xl"
                 >
                     <span
                         class="mb-4 rounded-full bg-accent px-4 py-1 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-lg"
@@ -44,19 +51,40 @@ defineEmits<{
                     >
                         Reveal Artwork
                     </Button>
+                    <div class="mt-4 flex items-center gap-2" @click.stop>
+                        <input
+                            type="checkbox"
+                            :id="`nsfw-pref-${artwork.id}`"
+                            :checked="nsfwAlwaysReveal"
+                            class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                            @change="setPreference($event.target.checked)"
+                        />
+                        <label :for="`nsfw-pref-${artwork.id}`" class="text-[10px] font-bold text-foreground">
+                            Show all NSFW artwork this session
+                        </label>
+                    </div>
                 </div>
                 <img
                     v-if="artwork.image_url"
-                    :src="artwork.image_url"
+                    :src="artwork.signed_urls?.grid?.src || artwork.image_url"
                     class="h-full w-full scale-110 object-cover blur-2xl grayscale transition-transform duration-700 group-hover:scale-125"
                 />
             </template>
             <template v-else>
+                <SignedImage
+                    v-if="artwork.signed_urls?.grid"
+                    :urls="artwork.signed_urls.grid"
+                    :alt="artwork.alt_text || artwork.title"
+                    class-name="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    @click="$emit('click-image')"
+                />
                 <img
-                    v-if="artwork.image_url"
+                    v-else-if="artwork.image_url"
                     :src="artwork.image_url"
                     :alt="artwork.alt_text || artwork.title"
-                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
+                    @click="$emit('click-image')"
                 />
                 <div
                     v-else

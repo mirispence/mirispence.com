@@ -60,6 +60,20 @@ return [
             'report' => false,
         ],
 
+        'media_private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/media'),
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'media_conversions' => [
+            'driver' => 'local',
+            'root' => storage_path('app/media-conversions'),
+            'throw' => false,
+            'report' => false,
+        ],
+
     ],
 
     /*

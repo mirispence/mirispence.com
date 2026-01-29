@@ -6,7 +6,13 @@ return [
      * The disk on which to store added files and derived images by default. Choose
      * one or more of the disks you've configured in config/filesystems.php.
      */
-    'disk_name' => env('MEDIA_DISK', 'public'),
+    'disk_name' => env('MEDIA_DISK', 'media_private'),
+
+    /*
+     * The disk on which to store derived images by default. Choose one or more
+     * of the disks you've configured in config/filesystems.php.
+     */
+    'conversions_disk_name' => env('MEDIA_CONVERSIONS_DISK', 'media_conversions'),
 
     /*
      * The maximum file size of an item in bytes.
