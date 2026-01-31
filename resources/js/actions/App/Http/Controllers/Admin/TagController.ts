@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\TagController::create
- * @see app/Http/Controllers/Admin/TagController.php:25
+ * @see app/Http/Controllers/Admin/TagController.php:27
  * @route '/admin/tags/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\TagController::store
- * @see app/Http/Controllers/Admin/TagController.php:30
+ * @see app/Http/Controllers/Admin/TagController.php:34
  * @route '/admin/tags'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::store
- * @see app/Http/Controllers/Admin/TagController.php:30
+ * @see app/Http/Controllers/Admin/TagController.php:34
  * @route '/admin/tags'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::store
- * @see app/Http/Controllers/Admin/TagController.php:30
+ * @see app/Http/Controllers/Admin/TagController.php:34
  * @route '/admin/tags'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\TagController::store
- * @see app/Http/Controllers/Admin/TagController.php:30
+ * @see app/Http/Controllers/Admin/TagController.php:34
  * @route '/admin/tags'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\TagController::store
- * @see app/Http/Controllers/Admin/TagController.php:30
+ * @see app/Http/Controllers/Admin/TagController.php:34
  * @route '/admin/tags'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
 export const show = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
 show.url = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -255,7 +255,7 @@ show.url = (args: { tag: string | number } | [tag: string | number ] | string | 
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
 show.get = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -264,7 +264,7 @@ show.get = (args: { tag: string | number } | [tag: string | number ] | string | 
 })
 /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
 show.head = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -274,7 +274,7 @@ show.head = (args: { tag: string | number } | [tag: string | number ] | string |
 
     /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
     const showForm = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -284,7 +284,7 @@ show.head = (args: { tag: string | number } | [tag: string | number ] | string |
 
             /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
         showForm.get = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -293,7 +293,7 @@ show.head = (args: { tag: string | number } | [tag: string | number ] | string |
         })
             /**
 * @see \App\Http\Controllers\Admin\TagController::show
- * @see app/Http/Controllers/Admin/TagController.php:45
+ * @see app/Http/Controllers/Admin/TagController.php:51
  * @route '/admin/tags/{tag}'
  */
         showForm.head = (args: { tag: string | number } | [tag: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { tag: string | number } | [tag: string | number ] | string |
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
 export const edit = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
 edit.url = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ edit.url = (args: { tag: number | { id: number } } | [tag: number | { id: number
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
 edit.get = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -366,7 +366,7 @@ edit.get = (args: { tag: number | { id: number } } | [tag: number | { id: number
 })
 /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
 edit.head = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -376,7 +376,7 @@ edit.head = (args: { tag: number | { id: number } } | [tag: number | { id: numbe
 
     /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
     const editForm = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -386,7 +386,7 @@ edit.head = (args: { tag: number | { id: number } } | [tag: number | { id: numbe
 
             /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
         editForm.get = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -395,7 +395,7 @@ edit.head = (args: { tag: number | { id: number } } | [tag: number | { id: numbe
         })
             /**
 * @see \App\Http\Controllers\Admin\TagController::edit
- * @see app/Http/Controllers/Admin/TagController.php:50
+ * @see app/Http/Controllers/Admin/TagController.php:56
  * @route '/admin/tags/{tag}/edit'
  */
         editForm.head = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -411,7 +411,7 @@ edit.head = (args: { tag: number | { id: number } } | [tag: number | { id: numbe
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
 export const update = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -426,7 +426,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
 update.url = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -459,7 +459,7 @@ update.url = (args: { tag: number | { id: number } } | [tag: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
 update.put = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -468,7 +468,7 @@ update.put = (args: { tag: number | { id: number } } | [tag: number | { id: numb
 })
 /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
 update.patch = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -478,7 +478,7 @@ update.patch = (args: { tag: number | { id: number } } | [tag: number | { id: nu
 
     /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
     const updateForm = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -493,7 +493,7 @@ update.patch = (args: { tag: number | { id: number } } | [tag: number | { id: nu
 
             /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
         updateForm.put = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -507,7 +507,7 @@ update.patch = (args: { tag: number | { id: number } } | [tag: number | { id: nu
         })
             /**
 * @see \App\Http\Controllers\Admin\TagController::update
- * @see app/Http/Controllers/Admin/TagController.php:57
+ * @see app/Http/Controllers/Admin/TagController.php:65
  * @route '/admin/tags/{tag}'
  */
         updateForm.patch = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -523,7 +523,7 @@ update.patch = (args: { tag: number | { id: number } } | [tag: number | { id: nu
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\TagController::destroy
- * @see app/Http/Controllers/Admin/TagController.php:74
+ * @see app/Http/Controllers/Admin/TagController.php:84
  * @route '/admin/tags/{tag}'
  */
 export const destroy = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -538,7 +538,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::destroy
- * @see app/Http/Controllers/Admin/TagController.php:74
+ * @see app/Http/Controllers/Admin/TagController.php:84
  * @route '/admin/tags/{tag}'
  */
 destroy.url = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -571,7 +571,7 @@ destroy.url = (args: { tag: number | { id: number } } | [tag: number | { id: num
 
 /**
 * @see \App\Http\Controllers\Admin\TagController::destroy
- * @see app/Http/Controllers/Admin/TagController.php:74
+ * @see app/Http/Controllers/Admin/TagController.php:84
  * @route '/admin/tags/{tag}'
  */
 destroy.delete = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { tag: number | { id: number } } | [tag: number | { id: 
 
     /**
 * @see \App\Http\Controllers\Admin\TagController::destroy
- * @see app/Http/Controllers/Admin/TagController.php:74
+ * @see app/Http/Controllers/Admin/TagController.php:84
  * @route '/admin/tags/{tag}'
  */
     const destroyForm = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -596,7 +596,7 @@ destroy.delete = (args: { tag: number | { id: number } } | [tag: number | { id: 
 
             /**
 * @see \App\Http\Controllers\Admin\TagController::destroy
- * @see app/Http/Controllers/Admin/TagController.php:74
+ * @see app/Http/Controllers/Admin/TagController.php:84
  * @route '/admin/tags/{tag}'
  */
         destroyForm.delete = (args: { tag: number | { id: number } } | [tag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

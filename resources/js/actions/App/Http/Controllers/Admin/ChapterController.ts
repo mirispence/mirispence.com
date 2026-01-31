@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::create
- * @see app/Http/Controllers/Admin/ChapterController.php:38
+ * @see app/Http/Controllers/Admin/ChapterController.php:40
  * @route '/admin/chapters/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::store
- * @see app/Http/Controllers/Admin/ChapterController.php:46
+ * @see app/Http/Controllers/Admin/ChapterController.php:50
  * @route '/admin/chapters'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::store
- * @see app/Http/Controllers/Admin/ChapterController.php:46
+ * @see app/Http/Controllers/Admin/ChapterController.php:50
  * @route '/admin/chapters'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::store
- * @see app/Http/Controllers/Admin/ChapterController.php:46
+ * @see app/Http/Controllers/Admin/ChapterController.php:50
  * @route '/admin/chapters'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\ChapterController::store
- * @see app/Http/Controllers/Admin/ChapterController.php:46
+ * @see app/Http/Controllers/Admin/ChapterController.php:50
  * @route '/admin/chapters'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::store
- * @see app/Http/Controllers/Admin/ChapterController.php:46
+ * @see app/Http/Controllers/Admin/ChapterController.php:50
  * @route '/admin/chapters'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
 export const show = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
 show.url = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -255,7 +255,7 @@ show.url = (args: { chapter: string | number } | [chapter: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
 show.get = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -264,7 +264,7 @@ show.get = (args: { chapter: string | number } | [chapter: string | number ] | s
 })
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
 show.head = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -274,7 +274,7 @@ show.head = (args: { chapter: string | number } | [chapter: string | number ] | 
 
     /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
     const showForm = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -284,7 +284,7 @@ show.head = (args: { chapter: string | number } | [chapter: string | number ] | 
 
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
         showForm.get = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -293,7 +293,7 @@ show.head = (args: { chapter: string | number } | [chapter: string | number ] | 
         })
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::show
- * @see app/Http/Controllers/Admin/ChapterController.php:65
+ * @see app/Http/Controllers/Admin/ChapterController.php:71
  * @route '/admin/chapters/{chapter}'
  */
         showForm.head = (args: { chapter: string | number } | [chapter: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { chapter: string | number } | [chapter: string | number ] | 
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
 export const edit = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
 edit.url = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ edit.url = (args: { chapter: number | { id: number } } | [chapter: number | { id
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
 edit.get = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -366,7 +366,7 @@ edit.get = (args: { chapter: number | { id: number } } | [chapter: number | { id
 })
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
 edit.head = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -376,7 +376,7 @@ edit.head = (args: { chapter: number | { id: number } } | [chapter: number | { i
 
     /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
     const editForm = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -386,7 +386,7 @@ edit.head = (args: { chapter: number | { id: number } } | [chapter: number | { i
 
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
         editForm.get = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -395,7 +395,7 @@ edit.head = (args: { chapter: number | { id: number } } | [chapter: number | { i
         })
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::edit
- * @see app/Http/Controllers/Admin/ChapterController.php:70
+ * @see app/Http/Controllers/Admin/ChapterController.php:76
  * @route '/admin/chapters/{chapter}/edit'
  */
         editForm.head = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -411,7 +411,7 @@ edit.head = (args: { chapter: number | { id: number } } | [chapter: number | { i
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
 export const update = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -426,7 +426,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
 update.url = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -459,7 +459,7 @@ update.url = (args: { chapter: number | { id: number } } | [chapter: number | { 
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
 update.put = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -468,7 +468,7 @@ update.put = (args: { chapter: number | { id: number } } | [chapter: number | { 
 })
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
 update.patch = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -478,7 +478,7 @@ update.patch = (args: { chapter: number | { id: number } } | [chapter: number | 
 
     /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
     const updateForm = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -493,7 +493,7 @@ update.patch = (args: { chapter: number | { id: number } } | [chapter: number | 
 
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
         updateForm.put = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -507,7 +507,7 @@ update.patch = (args: { chapter: number | { id: number } } | [chapter: number | 
         })
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::update
- * @see app/Http/Controllers/Admin/ChapterController.php:78
+ * @see app/Http/Controllers/Admin/ChapterController.php:86
  * @route '/admin/chapters/{chapter}'
  */
         updateForm.patch = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -523,7 +523,7 @@ update.patch = (args: { chapter: number | { id: number } } | [chapter: number | 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::destroy
- * @see app/Http/Controllers/Admin/ChapterController.php:99
+ * @see app/Http/Controllers/Admin/ChapterController.php:109
  * @route '/admin/chapters/{chapter}'
  */
 export const destroy = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -538,7 +538,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::destroy
- * @see app/Http/Controllers/Admin/ChapterController.php:99
+ * @see app/Http/Controllers/Admin/ChapterController.php:109
  * @route '/admin/chapters/{chapter}'
  */
 destroy.url = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -571,7 +571,7 @@ destroy.url = (args: { chapter: number | { id: number } } | [chapter: number | {
 
 /**
 * @see \App\Http\Controllers\Admin\ChapterController::destroy
- * @see app/Http/Controllers/Admin/ChapterController.php:99
+ * @see app/Http/Controllers/Admin/ChapterController.php:109
  * @route '/admin/chapters/{chapter}'
  */
 destroy.delete = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { chapter: number | { id: number } } | [chapter: number 
 
     /**
 * @see \App\Http\Controllers\Admin\ChapterController::destroy
- * @see app/Http/Controllers/Admin/ChapterController.php:99
+ * @see app/Http/Controllers/Admin/ChapterController.php:109
  * @route '/admin/chapters/{chapter}'
  */
     const destroyForm = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -596,7 +596,7 @@ destroy.delete = (args: { chapter: number | { id: number } } | [chapter: number 
 
             /**
 * @see \App\Http\Controllers\Admin\ChapterController::destroy
- * @see app/Http/Controllers/Admin/ChapterController.php:99
+ * @see app/Http/Controllers/Admin/ChapterController.php:109
  * @route '/admin/chapters/{chapter}'
  */
         destroyForm.delete = (args: { chapter: number | { id: number } } | [chapter: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

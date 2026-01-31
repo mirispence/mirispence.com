@@ -1,14 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Laravel\Fortify\Features;
-
 use App\Http\Controllers\Public\ArtworkController;
 use App\Http\Controllers\Public\BookController;
 use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/art', [ArtworkController::class, 'index'])->name('art.index');
@@ -29,7 +27,7 @@ Route::get('dashboard', function () {
 
 require __DIR__.'/settings.php';
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('artworks', App\Http\Controllers\Admin\ArtworkController::class);
     Route::resource('galleries', App\Http\Controllers\Admin\GalleryController::class);
@@ -38,12 +36,17 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
     Route::resource('featured-items', App\Http\Controllers\Admin\FeaturedItemController::class);
     Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->only(['index', 'show', 'update', 'destroy']);
-    
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+
     Route::get('media/{media}/original', [\App\Http\Controllers\Admin\OriginalMediaController::class, 'show'])
+        ->withoutMiddleware([\Spatie\Permission\Middleware\RoleMiddleware::class.':admin'])
+        ->middleware(['permission:can view source image'])
         ->name('media.original');
-    
+
     Route::post('artworks/{artwork}/regenerate', [App\Http\Controllers\Admin\ArtworkController::class, 'regenerate'])
+        ->middleware(['permission:can regenerate image thumbnails'])
         ->name('artworks.regenerate');
     Route::post('artworks/bulk-regenerate', [App\Http\Controllers\Admin\ArtworkController::class, 'bulkRegenerate'])
+        ->middleware(['permission:can regenerate image thumbnails'])
         ->name('artworks.bulk-regenerate');
 });

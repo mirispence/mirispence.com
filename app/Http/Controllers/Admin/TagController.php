@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class TagController extends Controller
 {
@@ -15,6 +15,8 @@ class TagController extends Controller
      */
     public function index()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Tags/Index', [
             'tags' => Tag::withCount(['artworks', 'books'])
                 ->orderBy('name')
@@ -24,11 +26,15 @@ class TagController extends Controller
 
     public function create()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Tags/Create');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('admin');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:artwork,book,both',
@@ -49,6 +55,8 @@ class TagController extends Controller
 
     public function edit(Tag $tag)
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Tags/Edit', [
             'tag' => $tag,
         ]);
@@ -56,13 +64,15 @@ class TagController extends Controller
 
     public function update(Request $request, Tag $tag)
     {
+        $this->authorize('admin');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|in:artwork,book,both',
         ]);
 
         if ($tag->name !== $validated['name']) {
-             $validated['slug'] = Str::slug($validated['name']);
+            $validated['slug'] = Str::slug($validated['name']);
         }
 
         $tag->update($validated);
@@ -73,6 +83,8 @@ class TagController extends Controller
 
     public function destroy(Tag $tag)
     {
+        $this->authorize('admin');
+
         $tag->delete();
 
         return redirect()->route('admin.tags.index')

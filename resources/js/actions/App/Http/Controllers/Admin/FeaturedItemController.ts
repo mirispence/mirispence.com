@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::create
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:25
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:27
  * @route '/admin/featured-items/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::store
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:33
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:37
  * @route '/admin/featured-items'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::store
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:33
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:37
  * @route '/admin/featured-items'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::store
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:33
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:37
  * @route '/admin/featured-items'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::store
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:33
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:37
  * @route '/admin/featured-items'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::store
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:33
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:37
  * @route '/admin/featured-items'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
 export const show = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
 show.url = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -255,7 +255,7 @@ show.url = (args: { featured_item: string | number } | [featured_item: string | 
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
 show.get = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -264,7 +264,7 @@ show.get = (args: { featured_item: string | number } | [featured_item: string | 
 })
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
 show.head = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -274,7 +274,7 @@ show.head = (args: { featured_item: string | number } | [featured_item: string |
 
     /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
     const showForm = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -284,7 +284,7 @@ show.head = (args: { featured_item: string | number } | [featured_item: string |
 
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
         showForm.get = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -293,7 +293,7 @@ show.head = (args: { featured_item: string | number } | [featured_item: string |
         })
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::show
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:48
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:54
  * @route '/admin/featured-items/{featured_item}'
  */
         showForm.head = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { featured_item: string | number } | [featured_item: string |
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
 export const edit = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
 edit.url = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -352,7 +352,7 @@ edit.url = (args: { featured_item: string | number } | [featured_item: string | 
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
 edit.get = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -361,7 +361,7 @@ edit.get = (args: { featured_item: string | number } | [featured_item: string | 
 })
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
 edit.head = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -371,7 +371,7 @@ edit.head = (args: { featured_item: string | number } | [featured_item: string |
 
     /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
     const editForm = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -381,7 +381,7 @@ edit.head = (args: { featured_item: string | number } | [featured_item: string |
 
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
         editForm.get = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -390,7 +390,7 @@ edit.head = (args: { featured_item: string | number } | [featured_item: string |
         })
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::edit
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:53
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:59
  * @route '/admin/featured-items/{featured_item}/edit'
  */
         editForm.head = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -406,7 +406,7 @@ edit.head = (args: { featured_item: string | number } | [featured_item: string |
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
 export const update = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -421,7 +421,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
 update.url = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -449,7 +449,7 @@ update.url = (args: { featured_item: string | number } | [featured_item: string 
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
 update.put = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -458,7 +458,7 @@ update.put = (args: { featured_item: string | number } | [featured_item: string 
 })
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
 update.patch = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -468,7 +468,7 @@ update.patch = (args: { featured_item: string | number } | [featured_item: strin
 
     /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
     const updateForm = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -483,7 +483,7 @@ update.patch = (args: { featured_item: string | number } | [featured_item: strin
 
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
         updateForm.put = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -497,7 +497,7 @@ update.patch = (args: { featured_item: string | number } | [featured_item: strin
         })
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::update
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:62
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:70
  * @route '/admin/featured-items/{featured_item}'
  */
         updateForm.patch = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -513,7 +513,7 @@ update.patch = (args: { featured_item: string | number } | [featured_item: strin
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::destroy
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:77
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:87
  * @route '/admin/featured-items/{featured_item}'
  */
 export const destroy = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -528,7 +528,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::destroy
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:77
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:87
  * @route '/admin/featured-items/{featured_item}'
  */
 destroy.url = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -556,7 +556,7 @@ destroy.url = (args: { featured_item: string | number } | [featured_item: string
 
 /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::destroy
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:77
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:87
  * @route '/admin/featured-items/{featured_item}'
  */
 destroy.delete = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -566,7 +566,7 @@ destroy.delete = (args: { featured_item: string | number } | [featured_item: str
 
     /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::destroy
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:77
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:87
  * @route '/admin/featured-items/{featured_item}'
  */
     const destroyForm = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { featured_item: string | number } | [featured_item: str
 
             /**
 * @see \App\Http\Controllers\Admin\FeaturedItemController::destroy
- * @see app/Http/Controllers/Admin/FeaturedItemController.php:77
+ * @see app/Http/Controllers/Admin/FeaturedItemController.php:87
  * @route '/admin/featured-items/{featured_item}'
  */
         destroyForm.delete = (args: { featured_item: string | number } | [featured_item: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

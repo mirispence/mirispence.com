@@ -14,19 +14,18 @@ class OriginalMediaController extends Controller
      */
     public function show(Request $request, Media $media): StreamedResponse
     {
-        // Authorization is handled by middleware, but we can double check here if needed
-        // For now, relying on the 'auth:web' and 'verified' middleware in web.php
-        
+        // Authorization is handled by middleware
+
         $path = $media->getPath();
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             abort(404, 'Original image not found.');
         }
 
         $headers = [
             'Content-Type' => $media->mime_type,
             'Cache-Control' => 'private, no-store',
-            'Content-Disposition' => 'inline; filename="' . $media->file_name . '"',
+            'Content-Disposition' => 'inline; filename="'.$media->file_name.'"',
         ];
 
         return response()->stream(function () use ($path) {

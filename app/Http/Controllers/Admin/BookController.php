@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class BookController extends Controller
 {
@@ -16,6 +16,8 @@ class BookController extends Controller
      */
     public function index()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Books/Index', [
             'books' => Book::withCount('chapters')
                 ->latest()
@@ -25,6 +27,8 @@ class BookController extends Controller
 
     public function create()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Books/Create', [
             'tags' => Tag::whereIn('type', ['book', 'both'])->get(),
         ]);
@@ -32,6 +36,8 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('can upload book');
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -67,6 +73,8 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Books/Edit', [
             'book' => $book->load(['tags', 'media']),
             'tags' => Tag::whereIn('type', ['book', 'both'])->get(),
@@ -75,6 +83,8 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
+        $this->authorize('can edit book');
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -87,7 +97,7 @@ class BookController extends Controller
         ]);
 
         if ($book->title !== $validated['title']) {
-             $validated['slug'] = Str::slug($validated['title']);
+            $validated['slug'] = Str::slug($validated['title']);
         }
 
         $book->update($validated);
@@ -108,6 +118,8 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        $this->authorize('admin');
+
         $book->delete();
 
         return redirect()->route('admin.books.index')

@@ -27,9 +27,14 @@ class Artwork extends Model implements HasMedia
         'image_processed_at',
     ];
 
-    protected $appends = ['image_url', 'image_status_label', 'signed_urls', 'publish_status_label'];
+    protected $appends = ['image_url', 'image_status_label', 'signed_urls', 'publish_status_label', 'description_html'];
 
     protected $with = ['media'];
+
+    public function getDescriptionHtmlAttribute(): string
+    {
+        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->description);
+    }
 
     protected function casts(): array
     {
@@ -106,24 +111,24 @@ class Artwork extends Model implements HasMedia
     public function getSignedUrlsAttribute(): array
     {
         $media = $this->getFirstMedia('artwork');
-        
-        if (!$media) {
+
+        if (! $media) {
             return [];
         }
 
         return [
             'grid' => [
                 'src' => \App\Services\SignedMediaUrl::url($media, 'grid_640'),
-                'srcset' => \App\Services\SignedMediaUrl::url($media, 'grid_640') . ' 640w, ' .
-                           \App\Services\SignedMediaUrl::url($media, 'grid_960') . ' 960w',
+                'srcset' => \App\Services\SignedMediaUrl::url($media, 'grid_640').' 640w, '.
+                           \App\Services\SignedMediaUrl::url($media, 'grid_960').' 960w',
             ],
             'display' => [
                 'src' => \App\Services\SignedMediaUrl::url($media, 'display_1280'),
-                'srcset' => \App\Services\SignedMediaUrl::url($media, 'display_1280') . ' 1280w, ' .
-                           \App\Services\SignedMediaUrl::url($media, 'display_1600') . ' 1600w, ' .
-                           \App\Services\SignedMediaUrl::url($media, 'display_2048') . ' 2048w',
+                'srcset' => \App\Services\SignedMediaUrl::url($media, 'display_1280').' 1280w, '.
+                           \App\Services\SignedMediaUrl::url($media, 'display_1600').' 1600w, '.
+                           \App\Services\SignedMediaUrl::url($media, 'display_2048').' 2048w',
             ],
-            'original' => auth()->check() ? route('admin.media.original', $media->id) : null,
+            'original' => (auth()->check() && auth()->user()->hasPermissionTo('can view source image')) ? route('admin.media.original', $media->id) : null,
         ];
     }
 

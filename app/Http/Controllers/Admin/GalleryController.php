@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class GalleryController extends Controller
 {
@@ -15,6 +15,8 @@ class GalleryController extends Controller
      */
     public function index()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Galleries/Index', [
             'galleries' => Gallery::withCount('artworks')
                 ->orderBy('sort_order')
@@ -24,11 +26,15 @@ class GalleryController extends Controller
 
     public function create()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Galleries/Create');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('admin');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -57,6 +63,8 @@ class GalleryController extends Controller
 
     public function edit(Gallery $gallery)
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/Galleries/Edit', [
             'gallery' => $gallery->load('media'),
         ]);
@@ -64,6 +72,8 @@ class GalleryController extends Controller
 
     public function update(Request $request, Gallery $gallery)
     {
+        $this->authorize('admin');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -73,7 +83,7 @@ class GalleryController extends Controller
         ]);
 
         if ($gallery->name !== $validated['name']) {
-             $validated['slug'] = Str::slug($validated['name']);
+            $validated['slug'] = Str::slug($validated['name']);
         }
 
         $gallery->update($validated);
@@ -90,6 +100,8 @@ class GalleryController extends Controller
 
     public function destroy(Gallery $gallery)
     {
+        $this->authorize('admin');
+
         $gallery->delete();
 
         return redirect()->route('admin.galleries.index')

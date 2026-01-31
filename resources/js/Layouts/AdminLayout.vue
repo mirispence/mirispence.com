@@ -9,6 +9,7 @@ const navigation = [
     { name: 'Tags', href: '/admin/tags', icon: 'TagIcon' },
     { name: 'Featured', href: '/admin/featured-items', icon: 'StarIcon' },
     { name: 'Messages', href: '/admin/messages', icon: 'EnvelopeIcon' },
+    { name: 'Users', href: '/admin/users', icon: 'UsersIcon' },
 ];
 </script>
 

@@ -6,6 +6,7 @@ import chapters from './chapters'
 import tags from './tags'
 import featuredItems from './featured-items'
 import messages from './messages'
+import users from './users'
 import media from './media'
 /**
 * @see \App\Http\Controllers\Admin\DashboardController::dashboard
@@ -94,6 +95,7 @@ chapters: Object.assign(chapters, chapters),
 tags: Object.assign(tags, tags),
 featuredItems: Object.assign(featuredItems, featuredItems),
 messages: Object.assign(messages, messages),
+users: Object.assign(users, users),
 media: Object.assign(media, media),
 }
 

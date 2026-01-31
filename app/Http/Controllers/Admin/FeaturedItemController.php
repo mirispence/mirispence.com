@@ -14,6 +14,8 @@ class FeaturedItemController extends Controller
      */
     public function index()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/FeaturedItems/Index', [
             'featuredItems' => FeaturedItem::with('item')
                 ->orderBy('display_context')
@@ -24,6 +26,8 @@ class FeaturedItemController extends Controller
 
     public function create()
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/FeaturedItems/Create', [
             'artworks' => \App\Models\Artwork::all(),
             'books' => \App\Models\Book::all(),
@@ -32,6 +36,8 @@ class FeaturedItemController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('admin');
+
         $validated = $request->validate([
             'item_type' => 'required|string|in:artwork,book',
             'item_id' => 'required|integer',
@@ -52,6 +58,8 @@ class FeaturedItemController extends Controller
 
     public function edit(FeaturedItem $featuredItem)
     {
+        $this->authorize('admin');
+
         return Inertia::render('Admin/FeaturedItems/Edit', [
             'featuredItem' => $featuredItem,
             'artworks' => \App\Models\Artwork::all(),
@@ -61,6 +69,8 @@ class FeaturedItemController extends Controller
 
     public function update(Request $request, FeaturedItem $featuredItem)
     {
+        $this->authorize('admin');
+
         $validated = $request->validate([
             'item_type' => 'required|string|in:artwork,book',
             'item_id' => 'required|integer',
@@ -76,6 +86,8 @@ class FeaturedItemController extends Controller
 
     public function destroy(FeaturedItem $featuredItem)
     {
+        $this->authorize('admin');
+
         $featuredItem->delete();
 
         return redirect()->route('admin.featured-items.index')

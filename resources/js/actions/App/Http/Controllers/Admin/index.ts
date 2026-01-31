@@ -6,6 +6,7 @@ import ChapterController from './ChapterController'
 import TagController from './TagController'
 import FeaturedItemController from './FeaturedItemController'
 import MessageController from './MessageController'
+import UserController from './UserController'
 import OriginalMediaController from './OriginalMediaController'
 const Admin = {
     DashboardController: Object.assign(DashboardController, DashboardController),
@@ -16,6 +17,7 @@ ChapterController: Object.assign(ChapterController, ChapterController),
 TagController: Object.assign(TagController, TagController),
 FeaturedItemController: Object.assign(FeaturedItemController, FeaturedItemController),
 MessageController: Object.assign(MessageController, MessageController),
+UserController: Object.assign(UserController, UserController),
 OriginalMediaController: Object.assign(OriginalMediaController, OriginalMediaController),
 }
 

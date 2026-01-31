@@ -80,7 +80,7 @@ const handleFileUpload = (event: Event) => {
                         <label
                             for="description"
                             class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-                            >Description</label
+                            >Description (Markdown)</label
                         >
                         <div class="mt-1 sm:col-span-2 sm:mt-0">
                             <textarea

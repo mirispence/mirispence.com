@@ -21,7 +21,12 @@ class Book extends Model implements HasMedia
         'external_links',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'description_html'];
+
+    public function getDescriptionHtmlAttribute(): string
+    {
+        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->description);
+    }
 
     protected function casts(): array
     {
