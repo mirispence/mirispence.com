@@ -43,7 +43,6 @@ class GalleryController extends Controller
             'cover' => 'nullable|image|max:10240',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
 
         $gallery = Gallery::create($validated);
 
@@ -82,9 +81,6 @@ class GalleryController extends Controller
             'cover' => 'nullable|image|max:10240',
         ]);
 
-        if ($gallery->name !== $validated['name']) {
-            $validated['slug'] = Str::slug($validated['name']);
-        }
 
         $gallery->update($validated);
 

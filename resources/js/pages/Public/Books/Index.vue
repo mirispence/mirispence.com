@@ -33,8 +33,8 @@ defineProps<{
                 >
                     <div class="relative aspect-[2/3] overflow-hidden bg-panel">
                         <img
-                            v-if="book.image_url"
-                            :src="book.image_url"
+                            v-if="book.media_urls?.thumb"
+                            :src="book.media_urls.thumb"
                             :alt="book.title"
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SignedImage from '@/components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useNSFWPreference } from '@/composables/useNSFWPreference';
@@ -64,17 +63,17 @@ onUnmounted(() => {
                     <Card
                         class="group relative w-full overflow-hidden rounded-[2.5rem] border-none p-0 shadow-premium"
                         :class="{
-                            'cursor-pointer': (artwork.nsfw_flag && !isRevealed) || artwork.signed_urls?.display,
+                            'cursor-pointer': (artwork.nsfw_flag && !isRevealed) || artwork.media_urls?.display,
                         }"
                         @click="openLightbox"
                     >
                         <div class="aspect-square bg-white">
-                            <SignedImage
+                            <img
                                 v-if="artwork.media_urls?.display"
                                 :src="artwork.media_urls.display.src"
                                 :srcset="artwork.media_urls.display.srcset"
                                 :alt="artwork.alt_text || artwork.title"
-                                class-name="h-full w-full object-contain transition-all duration-700"
+                                class="h-full w-full object-contain transition-all duration-700"
                                 :class="{
                                     'scale-110 opacity-40 blur-3xl grayscale':
                                         artwork.nsfw_flag && !isRevealed,
@@ -138,7 +137,7 @@ onUnmounted(() => {
                                             type="checkbox"
                                             id="nsfw-pref-show"
                                             class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                                            @change="setPreference($event.target.checked)"
+                                            @change="setPreference(($event.target as HTMLInputElement).checked)"
                                         />
                                         <label for="nsfw-pref-show" class="text-xs font-bold text-foreground">
                                             Show all NSFW artwork this session
@@ -295,15 +294,15 @@ onUnmounted(() => {
                         :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
                         @click="toggleZoom"
                     >
-                        <SignedImage
+                        <img
                             v-if="artwork.media_urls?.display"
                             :src="artwork.media_urls.display.src"
                             :srcset="artwork.media_urls.display.srcset"
                             :alt="artwork.alt_text || artwork.title"
-                            :class-name="[
+                            :class="[
                                 'shadow-2xl transition-all duration-500 rounded-lg',
                                 isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
-                            ].join(' ')"
+                            ]"
                             sizes="100vw"
                         />
 

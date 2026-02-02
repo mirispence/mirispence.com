@@ -9,7 +9,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Book extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, \App\Traits\HasUniqueSlug;
+
+    public function getSlugSourceField(): string
+    {
+        return 'title';
+    }
+
+    protected $with = ['media'];
 
     protected $fillable = [
         'title',
@@ -21,7 +28,7 @@ class Book extends Model implements HasMedia
         'external_links',
     ];
 
-    protected $appends = ['image_url', 'thumb_url', 'description_html'];
+    protected $appends = ['media_urls', 'image_url', 'thumb_url', 'description_html'];
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('cover')
@@ -52,6 +59,19 @@ class Book extends Model implements HasMedia
     public function getImageUrlAttribute(): string
     {
         return $this->getFirstMediaUrl('cover');
+    }
+
+    public function getMediaUrlsAttribute(): array
+    {
+        $media = $this->getFirstMedia('cover');
+        if (! $media) {
+            return [];
+        }
+
+        return [
+            'original' => $media->getUrl(),
+            'thumb' => $media->getUrl('thumb'),
+        ];
     }
 
     public function chapters()

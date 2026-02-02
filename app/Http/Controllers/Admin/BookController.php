@@ -49,7 +49,6 @@ class BookController extends Controller
             'cover' => 'nullable|image|max:10240',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
 
         $book = Book::create($validated);
 
@@ -96,9 +95,6 @@ class BookController extends Controller
             'cover' => 'nullable|image|max:10240',
         ]);
 
-        if ($book->title !== $validated['title']) {
-            $validated['slug'] = Str::slug($validated['title']);
-        }
 
         $book->update($validated);
 

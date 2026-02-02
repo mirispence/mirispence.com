@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import SignedImage from '@/components/SignedImage.vue';
 import { useNSFWPreference } from '@/composables/useNSFWPreference';
 import { Link } from '@inertiajs/vue3';
 
@@ -11,6 +10,7 @@ defineProps<{
         title: string;
         slug: string;
         image_url: string;
+        media_urls: any;
         signed_urls: any;
         alt_text: string;
         created_on: string;
@@ -57,7 +57,7 @@ const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
                             :id="`nsfw-pref-${artwork.id}`"
                             :checked="nsfwAlwaysReveal"
                             class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                            @change="setPreference($event.target.checked)"
+                            @change="setPreference(($event.target as HTMLInputElement).checked)"
                         />
                         <label :for="`nsfw-pref-${artwork.id}`" class="text-[10px] font-bold text-foreground">
                             Show all NSFW artwork this session
@@ -71,12 +71,12 @@ const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
                 />
             </template>
             <template v-else>
-                <SignedImage
+                <img
                     v-if="artwork.media_urls?.grid"
                     :src="artwork.media_urls.grid.src"
                     :srcset="artwork.media_urls.grid.srcset"
                     :alt="artwork.alt_text || artwork.title"
-                    class-name="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
+                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     @click="$emit('click-image')"
                 />

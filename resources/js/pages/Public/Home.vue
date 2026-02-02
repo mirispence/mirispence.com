@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
-import SignedImage from '@/components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
@@ -61,11 +60,12 @@ defineProps<{
                                 <div
                                     class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
-                                    <SignedImage
-                                        v-if="featuredArtworks[0].signed_urls?.grid"
-                                        :urls="featuredArtworks[0].signed_urls.grid"
+                                    <img
+                                        v-if="featuredArtworks[0].media_urls?.grid"
+                                        :src="featuredArtworks[0].media_urls.grid.src"
+                                        :srcset="featuredArtworks[0].media_urls.grid.srcset"
                                         :alt="featuredArtworks[0].alt_text || featuredArtworks[0].title"
-                                        class-name="h-full w-full object-cover"
+                                        class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
                                     />
                                     <img
@@ -82,11 +82,12 @@ defineProps<{
                                 <div
                                     class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
-                                    <SignedImage
-                                        v-if="featuredArtworks[1].signed_urls?.grid"
-                                        :urls="featuredArtworks[1].signed_urls.grid"
+                                    <img
+                                        v-if="featuredArtworks[1].media_urls?.grid"
+                                        :src="featuredArtworks[1].media_urls.grid.src"
+                                        :srcset="featuredArtworks[1].media_urls.grid.srcset"
                                         :alt="featuredArtworks[1].alt_text || featuredArtworks[1].title"
-                                        class-name="h-full w-full object-cover"
+                                        class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
                                     />
                                     <img
@@ -197,8 +198,8 @@ defineProps<{
                     >
                         <div class="aspect-[2/3] overflow-hidden">
                             <img
-                                v-if="book.image_url"
-                                :src="book.image_url"
+                                v-if="book.media_urls?.thumb"
+                                :src="book.media_urls.thumb"
                                 :alt="book.title"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />

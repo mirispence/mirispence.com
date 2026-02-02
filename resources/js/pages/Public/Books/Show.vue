@@ -22,8 +22,8 @@ defineProps<{
                     >
                         <div class="aspect-[2/3] bg-panel">
                             <img
-                                v-if="book.image_url"
-                                :src="book.image_url"
+                                v-if="book.media_urls?.original"
+                                :src="book.media_urls.original"
                                 :alt="book.title"
                                 class="h-full w-full object-cover"
                             />

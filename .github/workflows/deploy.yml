@@ -92,7 +92,7 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            php artisan horizon:terminate
+            sudo -n /usr/bin/supervisorctl restart horizon
 
             echo "Flip current symlink"
             ln -sfn "$RELEASE_DIR" "$APP_ROOT/current"

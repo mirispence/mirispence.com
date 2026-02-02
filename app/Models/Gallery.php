@@ -9,7 +9,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Gallery extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, \App\Traits\HasUniqueSlug;
+
+    public function getSlugSourceField(): string
+    {
+        return 'name';
+    }
+
+    protected $with = ['media'];
 
     protected $fillable = [
         'name',
@@ -19,7 +26,7 @@ class Gallery extends Model implements HasMedia
         'publish_status',
     ];
 
-    protected $appends = ['image_url', 'thumb_url', 'description_html'];
+    protected $appends = ['media_urls', 'image_url', 'thumb_url', 'description_html'];
 
     public function registerMediaCollections(): void
     {
@@ -42,6 +49,19 @@ class Gallery extends Model implements HasMedia
     public function getImageUrlAttribute(): string
     {
         return $this->getFirstMediaUrl('gallery');
+    }
+
+    public function getMediaUrlsAttribute(): array
+    {
+        $media = $this->getFirstMedia('gallery');
+        if (! $media) {
+            return [];
+        }
+
+        return [
+            'original' => $media->getUrl(),
+            'thumb' => $media->getUrl('thumb'),
+        ];
     }
 
     public function artworks()

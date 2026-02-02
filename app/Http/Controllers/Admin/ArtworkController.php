@@ -53,7 +53,6 @@ class ArtworkController extends Controller
             'image' => 'nullable|image|max:10240', // 10MB max
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
 
         $artwork = Artwork::create($validated);
 
@@ -109,9 +108,6 @@ class ArtworkController extends Controller
             'image' => 'nullable|image|max:10240',
         ]);
 
-        if ($artwork->title !== $validated['title']) {
-            $validated['slug'] = Str::slug($validated['title']);
-        }
 
         $artwork->update($validated);
 

@@ -10,7 +10,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Artwork extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, \App\Traits\HasUniqueSlug;
+
+    public function getSlugSourceField(): string
+    {
+        return 'title';
+    }
 
     protected $fillable = [
         'title',

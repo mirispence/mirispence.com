@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
 export const show = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
 show.url = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -255,7 +255,7 @@ show.url = (args: { book: string | number } | [book: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
 show.get = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -264,7 +264,7 @@ show.get = (args: { book: string | number } | [book: string | number ] | string 
 })
 /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
 show.head = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -274,7 +274,7 @@ show.head = (args: { book: string | number } | [book: string | number ] | string
 
     /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
     const showForm = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -284,7 +284,7 @@ show.head = (args: { book: string | number } | [book: string | number ] | string
 
             /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
         showForm.get = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -293,7 +293,7 @@ show.head = (args: { book: string | number } | [book: string | number ] | string
         })
             /**
 * @see \App\Http\Controllers\Admin\BookController::show
- * @see app/Http/Controllers/Admin/BookController.php:69
+ * @see app/Http/Controllers/Admin/BookController.php:68
  * @route '/admin/books/{book}'
  */
         showForm.head = (args: { book: string | number } | [book: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { book: string | number } | [book: string | number ] | string
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
 export const edit = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
 edit.url = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ edit.url = (args: { book: number | { id: number } } | [book: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
 edit.get = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -366,7 +366,7 @@ edit.get = (args: { book: number | { id: number } } | [book: number | { id: numb
 })
 /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
 edit.head = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -376,7 +376,7 @@ edit.head = (args: { book: number | { id: number } } | [book: number | { id: num
 
     /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
     const editForm = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -386,7 +386,7 @@ edit.head = (args: { book: number | { id: number } } | [book: number | { id: num
 
             /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
         editForm.get = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -395,7 +395,7 @@ edit.head = (args: { book: number | { id: number } } | [book: number | { id: num
         })
             /**
 * @see \App\Http\Controllers\Admin\BookController::edit
- * @see app/Http/Controllers/Admin/BookController.php:74
+ * @see app/Http/Controllers/Admin/BookController.php:73
  * @route '/admin/books/{book}/edit'
  */
         editForm.head = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -411,7 +411,7 @@ edit.head = (args: { book: number | { id: number } } | [book: number | { id: num
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
 export const update = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -426,7 +426,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
 update.url = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -459,7 +459,7 @@ update.url = (args: { book: number | { id: number } } | [book: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
 update.put = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -468,7 +468,7 @@ update.put = (args: { book: number | { id: number } } | [book: number | { id: nu
 })
 /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
 update.patch = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -478,7 +478,7 @@ update.patch = (args: { book: number | { id: number } } | [book: number | { id: 
 
     /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
     const updateForm = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -493,7 +493,7 @@ update.patch = (args: { book: number | { id: number } } | [book: number | { id: 
 
             /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
         updateForm.put = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -507,7 +507,7 @@ update.patch = (args: { book: number | { id: number } } | [book: number | { id: 
         })
             /**
 * @see \App\Http\Controllers\Admin\BookController::update
- * @see app/Http/Controllers/Admin/BookController.php:84
+ * @see app/Http/Controllers/Admin/BookController.php:83
  * @route '/admin/books/{book}'
  */
         updateForm.patch = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -523,7 +523,7 @@ update.patch = (args: { book: number | { id: number } } | [book: number | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\BookController::destroy
- * @see app/Http/Controllers/Admin/BookController.php:119
+ * @see app/Http/Controllers/Admin/BookController.php:115
  * @route '/admin/books/{book}'
  */
 export const destroy = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -538,7 +538,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::destroy
- * @see app/Http/Controllers/Admin/BookController.php:119
+ * @see app/Http/Controllers/Admin/BookController.php:115
  * @route '/admin/books/{book}'
  */
 destroy.url = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -571,7 +571,7 @@ destroy.url = (args: { book: number | { id: number } } | [book: number | { id: n
 
 /**
 * @see \App\Http\Controllers\Admin\BookController::destroy
- * @see app/Http/Controllers/Admin/BookController.php:119
+ * @see app/Http/Controllers/Admin/BookController.php:115
  * @route '/admin/books/{book}'
  */
 destroy.delete = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { book: number | { id: number } } | [book: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\BookController::destroy
- * @see app/Http/Controllers/Admin/BookController.php:119
+ * @see app/Http/Controllers/Admin/BookController.php:115
  * @route '/admin/books/{book}'
  */
     const destroyForm = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -596,7 +596,7 @@ destroy.delete = (args: { book: number | { id: number } } | [book: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\BookController::destroy
- * @see app/Http/Controllers/Admin/BookController.php:119
+ * @see app/Http/Controllers/Admin/BookController.php:115
  * @route '/admin/books/{book}'
  */
         destroyForm.delete = (args: { book: number | { id: number } } | [book: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

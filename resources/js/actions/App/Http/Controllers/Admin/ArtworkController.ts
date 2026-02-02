@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
 export const show = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
 show.url = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -255,7 +255,7 @@ show.url = (args: { artwork: string | number } | [artwork: string | number ] | s
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
 show.get = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -264,7 +264,7 @@ show.get = (args: { artwork: string | number } | [artwork: string | number ] | s
 })
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
 show.head = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -274,7 +274,7 @@ show.head = (args: { artwork: string | number } | [artwork: string | number ] | 
 
     /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
     const showForm = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -284,7 +284,7 @@ show.head = (args: { artwork: string | number } | [artwork: string | number ] | 
 
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
         showForm.get = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -293,7 +293,7 @@ show.head = (args: { artwork: string | number } | [artwork: string | number ] | 
         })
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::show
- * @see app/Http/Controllers/Admin/ArtworkController.php:79
+ * @see app/Http/Controllers/Admin/ArtworkController.php:78
  * @route '/admin/artworks/{artwork}'
  */
         showForm.head = (args: { artwork: string | number } | [artwork: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { artwork: string | number } | [artwork: string | number ] | 
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
 export const edit = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
 edit.url = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ edit.url = (args: { artwork: number | { id: number } } | [artwork: number | { id
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
 edit.get = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -366,7 +366,7 @@ edit.get = (args: { artwork: number | { id: number } } | [artwork: number | { id
 })
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
 edit.head = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -376,7 +376,7 @@ edit.head = (args: { artwork: number | { id: number } } | [artwork: number | { i
 
     /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
     const editForm = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -386,7 +386,7 @@ edit.head = (args: { artwork: number | { id: number } } | [artwork: number | { i
 
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
         editForm.get = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -395,7 +395,7 @@ edit.head = (args: { artwork: number | { id: number } } | [artwork: number | { i
         })
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::edit
- * @see app/Http/Controllers/Admin/ArtworkController.php:84
+ * @see app/Http/Controllers/Admin/ArtworkController.php:83
  * @route '/admin/artworks/{artwork}/edit'
  */
         editForm.head = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -411,7 +411,7 @@ edit.head = (args: { artwork: number | { id: number } } | [artwork: number | { i
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
 export const update = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -426,7 +426,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
 update.url = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -459,7 +459,7 @@ update.url = (args: { artwork: number | { id: number } } | [artwork: number | { 
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
 update.put = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -468,7 +468,7 @@ update.put = (args: { artwork: number | { id: number } } | [artwork: number | { 
 })
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
 update.patch = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -478,7 +478,7 @@ update.patch = (args: { artwork: number | { id: number } } | [artwork: number | 
 
     /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
     const updateForm = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -493,7 +493,7 @@ update.patch = (args: { artwork: number | { id: number } } | [artwork: number | 
 
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
         updateForm.put = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -507,7 +507,7 @@ update.patch = (args: { artwork: number | { id: number } } | [artwork: number | 
         })
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::update
- * @see app/Http/Controllers/Admin/ArtworkController.php:95
+ * @see app/Http/Controllers/Admin/ArtworkController.php:94
  * @route '/admin/artworks/{artwork}'
  */
         updateForm.patch = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -523,7 +523,7 @@ update.patch = (args: { artwork: number | { id: number } } | [artwork: number | 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::destroy
- * @see app/Http/Controllers/Admin/ArtworkController.php:138
+ * @see app/Http/Controllers/Admin/ArtworkController.php:134
  * @route '/admin/artworks/{artwork}'
  */
 export const destroy = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -538,7 +538,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::destroy
- * @see app/Http/Controllers/Admin/ArtworkController.php:138
+ * @see app/Http/Controllers/Admin/ArtworkController.php:134
  * @route '/admin/artworks/{artwork}'
  */
 destroy.url = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -571,7 +571,7 @@ destroy.url = (args: { artwork: number | { id: number } } | [artwork: number | {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::destroy
- * @see app/Http/Controllers/Admin/ArtworkController.php:138
+ * @see app/Http/Controllers/Admin/ArtworkController.php:134
  * @route '/admin/artworks/{artwork}'
  */
 destroy.delete = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { artwork: number | { id: number } } | [artwork: number 
 
     /**
 * @see \App\Http\Controllers\Admin\ArtworkController::destroy
- * @see app/Http/Controllers/Admin/ArtworkController.php:138
+ * @see app/Http/Controllers/Admin/ArtworkController.php:134
  * @route '/admin/artworks/{artwork}'
  */
     const destroyForm = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -596,7 +596,7 @@ destroy.delete = (args: { artwork: number | { id: number } } | [artwork: number 
 
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::destroy
- * @see app/Http/Controllers/Admin/ArtworkController.php:138
+ * @see app/Http/Controllers/Admin/ArtworkController.php:134
  * @route '/admin/artworks/{artwork}'
  */
         destroyForm.delete = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -612,7 +612,7 @@ destroy.delete = (args: { artwork: number | { id: number } } | [artwork: number 
     destroy.form = destroyForm
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::regenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:148
+ * @see app/Http/Controllers/Admin/ArtworkController.php:144
  * @route '/admin/artworks/{artwork}/regenerate'
  */
 export const regenerate = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -627,7 +627,7 @@ regenerate.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::regenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:148
+ * @see app/Http/Controllers/Admin/ArtworkController.php:144
  * @route '/admin/artworks/{artwork}/regenerate'
  */
 regenerate.url = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -660,7 +660,7 @@ regenerate.url = (args: { artwork: number | { id: number } } | [artwork: number 
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::regenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:148
+ * @see app/Http/Controllers/Admin/ArtworkController.php:144
  * @route '/admin/artworks/{artwork}/regenerate'
  */
 regenerate.post = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -670,7 +670,7 @@ regenerate.post = (args: { artwork: number | { id: number } } | [artwork: number
 
     /**
 * @see \App\Http\Controllers\Admin\ArtworkController::regenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:148
+ * @see app/Http/Controllers/Admin/ArtworkController.php:144
  * @route '/admin/artworks/{artwork}/regenerate'
  */
     const regenerateForm = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -680,7 +680,7 @@ regenerate.post = (args: { artwork: number | { id: number } } | [artwork: number
 
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::regenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:148
+ * @see app/Http/Controllers/Admin/ArtworkController.php:144
  * @route '/admin/artworks/{artwork}/regenerate'
  */
         regenerateForm.post = (args: { artwork: number | { id: number } } | [artwork: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -691,7 +691,7 @@ regenerate.post = (args: { artwork: number | { id: number } } | [artwork: number
     regenerate.form = regenerateForm
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::bulkRegenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:157
+ * @see app/Http/Controllers/Admin/ArtworkController.php:153
  * @route '/admin/artworks/bulk-regenerate'
  */
 export const bulkRegenerate = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -706,7 +706,7 @@ bulkRegenerate.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::bulkRegenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:157
+ * @see app/Http/Controllers/Admin/ArtworkController.php:153
  * @route '/admin/artworks/bulk-regenerate'
  */
 bulkRegenerate.url = (options?: RouteQueryOptions) => {
@@ -715,7 +715,7 @@ bulkRegenerate.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\ArtworkController::bulkRegenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:157
+ * @see app/Http/Controllers/Admin/ArtworkController.php:153
  * @route '/admin/artworks/bulk-regenerate'
  */
 bulkRegenerate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -725,7 +725,7 @@ bulkRegenerate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => 
 
     /**
 * @see \App\Http\Controllers\Admin\ArtworkController::bulkRegenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:157
+ * @see app/Http/Controllers/Admin/ArtworkController.php:153
  * @route '/admin/artworks/bulk-regenerate'
  */
     const bulkRegenerateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -735,7 +735,7 @@ bulkRegenerate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => 
 
             /**
 * @see \App\Http\Controllers\Admin\ArtworkController::bulkRegenerate
- * @see app/Http/Controllers/Admin/ArtworkController.php:157
+ * @see app/Http/Controllers/Admin/ArtworkController.php:153
  * @route '/admin/artworks/bulk-regenerate'
  */
         bulkRegenerateForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
 import FormSelect from '@/components/FormSelect.vue';
-import SignedImage from '@/components/SignedImage.vue';
 import { Button } from '@/components/ui/button';
 import { useNSFWPreference } from '@/composables/useNSFWPreference';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
@@ -244,7 +243,7 @@ watch(selectedGallery, (value) => {
                                             id="lb-nsfw-pref"
                                             :checked="nsfwAlwaysReveal"
                                             class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                                            @change="setPreference($event.target.checked)"
+                                            @change="setPreference(($event.target as HTMLInputElement).checked)"
                                         />
                                         <label for="lb-nsfw-pref" class="text-xs font-bold text-foreground">
                                             Show all NSFW artwork this session
@@ -259,15 +258,16 @@ watch(selectedGallery, (value) => {
                             :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
                             @click="toggleZoom"
                         >
-                            <SignedImage
-                                v-if="activeArtwork.signed_urls?.display"
-                                :urls="activeArtwork.signed_urls.display"
+                            <img
+                                v-if="activeArtwork.media_urls?.display"
+                                :src="activeArtwork.media_urls.display.src"
+                                :srcset="activeArtwork.media_urls.display.srcset"
                                 :alt="activeArtwork.alt_text || activeArtwork.title"
-                                :class-name="[
+                                :class="[
                                     'shadow-2xl rounded-lg transition-all duration-500',
                                     activeArtwork.nsfw_flag && !isRevealed(activeArtwork.id) && !nsfwAlwaysReveal ? 'blur-3xl opacity-30 grayscale' : '',
                                     isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
-                                ].join(' ')"
+                                ]"
                             />
                             <img
                                 v-else-if="activeArtwork.image_url"

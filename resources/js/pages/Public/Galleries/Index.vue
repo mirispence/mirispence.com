@@ -33,8 +33,8 @@ defineProps<{
                 >
                     <div class="relative aspect-[4/5] overflow-hidden bg-panel">
                         <img
-                            v-if="gallery.cover_image_url"
-                            :src="gallery.cover_image_url"
+                            v-if="gallery.media_urls?.thumb"
+                            :src="gallery.media_urls.thumb"
                             :alt="gallery.name"
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
