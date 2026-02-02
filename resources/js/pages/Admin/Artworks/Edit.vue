@@ -102,17 +102,17 @@ const regenerate = () => {
                             >Image</label
                         >
                         <div class="mt-1 sm:col-span-2 sm:mt-0">
-                            <div v-if="artwork.image_url" class="mb-4">
+                            <div v-if="artwork.thumb_url" class="mb-4">
                                 <div class="flex items-center gap-4 mb-4">
                                     <img
-                                        :src="artwork.image_url"
+                                        :src="artwork.thumb_url"
                                         alt="Current Image"
                                         class="h-48 w-auto rounded-md object-cover"
                                     />
                                     <div class="space-y-2">
                                         <div class="flex items-center gap-2">
                                             <span class="text-sm font-medium text-gray-700">Image Pipeline:</span>
-                                            <span 
+                                            <span
                                                 :class="[
                                                     artwork.image_status === 'ready' ? 'bg-green-100 text-green-800' :
                                                     artwork.image_status === 'processing' ? 'bg-blue-100 text-blue-800' :

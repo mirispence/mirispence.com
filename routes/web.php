@@ -39,7 +39,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
 
     Route::get('media/{media}/original', [\App\Http\Controllers\Admin\OriginalMediaController::class, 'show'])
-        ->withoutMiddleware([\Spatie\Permission\Middleware\RoleMiddleware::class.':admin'])
         ->middleware(['permission:can view source image'])
         ->name('media.original');
 

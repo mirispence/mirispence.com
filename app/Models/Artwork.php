@@ -27,9 +27,20 @@ class Artwork extends Model implements HasMedia
         'image_processed_at',
     ];
 
-    protected $appends = ['image_url', 'image_status_label', 'signed_urls', 'publish_status_label', 'description_html'];
+    protected $appends = ['image_url', 'thumb_url', 'image_status_label', 'signed_urls', 'publish_status_label', 'description_html'];
 
     protected $with = ['media'];
+
+    public function getThumbUrlAttribute(): ?string
+    {
+        $media = $this->getFirstMedia('artwork');
+
+        if (! $media) {
+            return null;
+        }
+
+        return \App\Services\SignedMediaUrl::url($media, 'thumb');
+    }
 
     public function getDescriptionHtmlAttribute(): string
     {

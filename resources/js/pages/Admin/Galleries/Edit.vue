@@ -91,9 +91,9 @@ const submit = () => {
                             >Cover Image</label
                         >
                         <div class="mt-1 sm:col-span-2 sm:mt-0">
-                            <div v-if="gallery.image_url" class="mb-4">
+                            <div v-if="gallery.thumb_url" class="mb-4">
                                 <img
-                                    :src="gallery.image_url"
+                                    :src="gallery.thumb_url"
                                     alt="Current Cover"
                                     class="h-48 w-auto rounded-md object-cover"
                                 />

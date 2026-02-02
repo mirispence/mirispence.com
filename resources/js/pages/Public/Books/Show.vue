@@ -81,19 +81,25 @@ defineProps<{
                                 <div
                                     v-for="chapter in book.chapters"
                                     :key="chapter.id"
-                                    class="flex items-center justify-between p-6 transition-colors hover:bg-white/60"
+                                    class="flex flex-col gap-2 p-6 transition-colors hover:bg-white/60"
                                 >
-                                    <div class="flex items-center gap-4">
-                                        <p class="font-bold text-foreground">
-                                            {{ chapter.title }}
-                                        </p>
-                                        <span
-                                            v-if="chapter.is_sample"
-                                            class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-[10px] font-black tracking-widest text-primary uppercase"
-                                            >Sample</span
-                                        >
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <p class="font-bold text-foreground">
+                                                {{ chapter.title }}
+                                            </p>
+                                            <span
+                                                v-if="chapter.is_sample"
+                                                class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-[10px] font-black tracking-widest text-primary uppercase"
+                                                >Sample</span
+                                            >
+                                        </div>
                                     </div>
-                                    <!-- Read Button if link exists -->
+                                    <div
+                                        v-if="chapter.is_sample && chapter.body_html"
+                                        class="prose prose-sm dark:prose-invert mt-4 max-w-none"
+                                        v-html="chapter.body_html"
+                                    ></div>
                                 </div>
                             </div>
                         </div>

@@ -18,6 +18,13 @@ class Chapter extends Model
         'is_sample',
     ];
 
+    protected $appends = ['body_html'];
+
+    public function getBodyHtmlAttribute(): string
+    {
+        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->body_markdown);
+    }
+
     protected function casts(): array
     {
         return [

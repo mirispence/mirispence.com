@@ -102,9 +102,9 @@ const handleFileUpload = (event: Event) => {
                             >Cover Image</label
                         >
                         <div class="mt-1 sm:col-span-2 sm:mt-0">
-                            <div v-if="book.image_url" class="mb-4">
+                            <div v-if="book.thumb_url" class="mb-4">
                                 <img
-                                    :src="book.image_url"
+                                    :src="book.thumb_url"
                                     alt="Current Cover"
                                     class="h-48 w-auto rounded-md object-cover"
                                 />

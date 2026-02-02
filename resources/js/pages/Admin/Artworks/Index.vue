@@ -152,8 +152,8 @@ const regenerate = (id: number) => {
                                     class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
                                 >
                                     <img
-                                        v-if="artwork.image_url"
-                                        :src="artwork.image_url"
+                                        v-if="artwork.thumb_url"
+                                        :src="artwork.thumb_url"
                                         class="h-10 w-10 rounded-full object-cover"
                                     />
                                     <div

@@ -68,12 +68,11 @@ defineProps<{
                                 {{ gallery.name }}
                             </Link>
                         </h3>
-                        <p
-                            class="line-clamp-2 leading-relaxed text-muted-foreground"
-                            v-if="gallery.description"
-                        >
-                            {{ gallery.description }}
-                        </p>
+                        <div
+                            class="line-clamp-2 leading-relaxed text-muted-foreground prose dark:prose-invert prose-sm"
+                            v-if="gallery.description_html"
+                            v-html="gallery.description_html"
+                        ></div>
                     </div>
                 </Card>
             </div>

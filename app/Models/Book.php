@@ -21,7 +21,18 @@ class Book extends Model implements HasMedia
         'external_links',
     ];
 
-    protected $appends = ['image_url', 'description_html'];
+    protected $appends = ['image_url', 'thumb_url', 'description_html'];
+
+    public function getThumbUrlAttribute(): ?string
+    {
+        $media = $this->getFirstMedia('cover');
+
+        if (! $media) {
+            return null;
+        }
+
+        return \App\Services\SignedMediaUrl::url($media, 'thumb');
+    }
 
     public function getDescriptionHtmlAttribute(): string
     {

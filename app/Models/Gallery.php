@@ -20,7 +20,23 @@ class Gallery extends Model implements HasMedia
         'publish_status',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'thumb_url', 'description_html'];
+
+    public function getThumbUrlAttribute(): ?string
+    {
+        $media = $this->getFirstMedia('gallery');
+
+        if (! $media) {
+            return null;
+        }
+
+        return \App\Services\SignedMediaUrl::url($media, 'thumb');
+    }
+
+    public function getDescriptionHtmlAttribute(): string
+    {
+        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->description);
+    }
 
     public function getImageUrlAttribute(): string
     {
