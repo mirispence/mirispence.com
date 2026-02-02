@@ -33,14 +33,16 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+        @php
+            $isAdmin = auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('staff'));
+            $isAdminPath = request()->is('admin*') || request()->is('dashboard*');
+            $entryPoint = ($isAdmin || $isAdminPath) ? 'resources/js/admin.ts' : 'resources/js/app.ts';
+        @endphp
 
-        @vite(['resources/js/app.ts'])
+        @vite($entryPoint)
+
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

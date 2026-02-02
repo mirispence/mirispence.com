@@ -1,4 +1,37 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Fraunces';
+    src: url('../fonts/Fraunces-Variable.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Fraunces';
+    src: url('../fonts/Fraunces-Italic-Variable.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('../fonts/SourceSans3-Variable.woff2') format('woff2-variations');
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('../fonts/SourceSans3-Italic-Variable.woff2') format('woff2-variations');
+    font-weight: 200 900;
+    font-style: italic;
+    font-display: swap;
+}
+
 
 @import 'tw-animate-css';
 

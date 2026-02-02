@@ -66,24 +66,18 @@ const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
                 </div>
                 <img
                     v-if="artwork.image_url"
-                    :src="artwork.signed_urls?.grid?.src || artwork.image_url"
+                    :src="artwork.image_url.replace(/(\.[^.]+)$/, '_grid_640$1')"
                     class="h-full w-full scale-110 object-cover blur-2xl grayscale transition-transform duration-700 group-hover:scale-125"
                 />
             </template>
             <template v-else>
                 <SignedImage
-                    v-if="artwork.signed_urls?.grid"
-                    :urls="artwork.signed_urls.grid"
+                    v-if="artwork.image_url"
+                    :src="artwork.image_url.replace(/(\.[^.]+)$/, '_grid_640$1')"
+                    :srcset="`${artwork.image_url.replace(/(\.[^.]+)$/, '_grid_640$1')} 640w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_grid_960$1')} 960w`"
                     :alt="artwork.alt_text || artwork.title"
                     class-name="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    @click="$emit('click-image')"
-                />
-                <img
-                    v-else-if="artwork.image_url"
-                    :src="artwork.image_url"
-                    :alt="artwork.alt_text || artwork.title"
-                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
                     @click="$emit('click-image')"
                 />
                 <div

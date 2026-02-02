@@ -60,6 +60,32 @@ return [
             'report' => false,
         ],
 
+        'r2_private' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'us-east-1',
+            'bucket' => env('R2_PRIVATE_BUCKET'),
+            'url' => env('R2_PRIVATE_URL'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => true,
+            'visibility' => 'private',
+        ],
+
+        'r2_public' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'us-east-1',
+            'bucket' => env('R2_PUBLIC_BUCKET'),
+            'url' => env('R2_PUBLIC_URL'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => true,
+            'visibility' => 'public',
+        ],
+
         'media_private' => [
             'driver' => 'local',
             'root' => storage_path('app/media'),

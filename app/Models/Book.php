@@ -25,13 +25,7 @@ class Book extends Model implements HasMedia
 
     public function getThumbUrlAttribute(): ?string
     {
-        $media = $this->getFirstMedia('cover');
-
-        if (! $media) {
-            return null;
-        }
-
-        return \App\Services\SignedMediaUrl::url($media, 'thumb');
+        return $this->getFirstMediaUrl('cover', 'thumb');
     }
 
     public function getDescriptionHtmlAttribute(): string

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
 const props = defineProps<{
-    urls: {
-        src: string;
-        srcset: string;
-    };
+    src: string;
     alt: string;
+    srcset?: string;
     sizes?: string;
+    loading?: 'lazy' | 'eager';
+    fetchpriority?: 'high' | 'low' | 'auto';
     className?: string;
 }>();
 
@@ -17,12 +15,13 @@ const defaultSizes = "(max-width: 768px) 100vw, 1200px";
 <template>
     <div class="relative inline-block overflow-hidden">
         <img
-            :src="urls.src"
-            :srcset="urls.srcset"
+            :src="src"
+            :srcset="srcset"
             :sizes="sizes || defaultSizes"
             :alt="alt"
             :class="className"
-            loading="lazy"
+            :loading="loading || 'lazy'"
+            :fetchpriority="fetchpriority"
             draggable="false"
             oncontextmenu="return true;"
             class="transition-all duration-700"

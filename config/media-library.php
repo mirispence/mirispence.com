@@ -3,16 +3,18 @@
 return [
 
     /*
-     * The disk on which to store added files and derived images by default. Choose
-     * one or more of the disks you've configured in config/filesystems.php.
+     * The disk on which to store added files and derived images by default.
+     * Choose a disk you've configured in config/filesystems.php.
      */
-    'disk_name' => env('MEDIA_DISK', 'media_private'),
+    'disk_name' => env('MEDIA_DISK', 'r2_private'),
 
     /*
-     * The disk on which to store derived images by default. Choose one or more
-     * of the disks you've configured in config/filesystems.php.
+     * The disk on which to store conversions of this item by default.
+     * Choose a disk you've configured in config/filesystems.php.
+     *
+     * If left null, the disk of the item will be used.
      */
-    'conversions_disk_name' => env('MEDIA_CONVERSIONS_DISK', 'media_conversions'),
+    'conversions_disk_name' => env('MEDIA_CONVERSIONS_DISK', 'r2_public'),
 
     /*
      * The maximum file size of an item in bytes.

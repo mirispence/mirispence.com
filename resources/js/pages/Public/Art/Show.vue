@@ -70,8 +70,9 @@ onUnmounted(() => {
                     >
                         <div class="aspect-square bg-white">
                             <SignedImage
-                                v-if="artwork.signed_urls?.display"
-                                :urls="artwork.signed_urls.display"
+                                v-if="artwork.image_url"
+                                :src="artwork.image_url"
+                                :srcset="`${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1280$1')} 1280w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1600$1')} 1600w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_2048$1')} 2048w`"
                                 :alt="artwork.alt_text || artwork.title"
                                 class-name="h-full w-full object-contain transition-all duration-700"
                                 :class="{
@@ -79,16 +80,8 @@ onUnmounted(() => {
                                         artwork.nsfw_flag && !isRevealed,
                                 }"
                                 sizes="(max-width: 1024px) 100vw, 800px"
-                            />
-                            <img
-                                v-else-if="artwork.image_url"
-                                :src="artwork.image_url"
-                                :alt="artwork.alt_text || artwork.title"
-                                class="h-full w-full object-contain transition-all duration-700"
-                                :class="{
-                                    'scale-110 opacity-40 blur-3xl grayscale':
-                                        artwork.nsfw_flag && !isRevealed,
-                                }"
+                                loading="eager"
+                                fetchpriority="high"
                             />
                             <!-- Placeholder -->
                             <div
@@ -303,8 +296,9 @@ onUnmounted(() => {
                         @click="toggleZoom"
                     >
                         <SignedImage
-                            v-if="artwork.signed_urls?.display"
-                            :urls="artwork.signed_urls.display"
+                            v-if="artwork.image_url"
+                            :src="artwork.image_url"
+                            :srcset="`${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1280$1')} 1280w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1600$1')} 1600w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_2048$1')} 2048w`"
                             :alt="artwork.alt_text || artwork.title"
                             :class-name="[
                                 'shadow-2xl transition-all duration-500 rounded-lg',
@@ -312,13 +306,7 @@ onUnmounted(() => {
                             ].join(' ')"
                             sizes="100vw"
                         />
-                        <img
-                            v-else
-                            :src="artwork.image_url"
-                            :alt="artwork.alt_text || artwork.title"
-                            class="shadow-2xl transition-all duration-500 rounded-lg"
-                            :class="isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'"
-                        />
+
                     </div>
                 </div>
 

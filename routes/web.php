@@ -18,9 +18,6 @@ Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.s
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-Route::get('/i/{media}/{conversion}/{filename?}', [App\Http\Controllers\MediaConversionController::class, 'show'])
-    ->name('media.conversion');
-
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

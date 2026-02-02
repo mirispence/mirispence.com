@@ -27,19 +27,13 @@ class Artwork extends Model implements HasMedia
         'image_processed_at',
     ];
 
-    protected $appends = ['image_url', 'thumb_url', 'image_status_label', 'signed_urls', 'publish_status_label', 'description_html'];
+    protected $appends = ['image_url', 'thumb_url', 'image_status_label', 'publish_status_label', 'description_html'];
 
     protected $with = ['media'];
 
     public function getThumbUrlAttribute(): ?string
     {
-        $media = $this->getFirstMedia('artwork');
-
-        if (! $media) {
-            return null;
-        }
-
-        return \App\Services\SignedMediaUrl::url($media, 'thumb');
+        return $this->getFirstMediaUrl('artwork', 'thumb');
     }
 
     public function getDescriptionHtmlAttribute(): string
@@ -63,39 +57,38 @@ class Artwork extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(320)
             ->nonQueued()
-            ->keepOriginalImageFormat()
             ->format('webp')
-            ->quality(82)
+            ->quality(80)
             ->performOnCollections('artwork');
 
         $this->addMediaConversion('grid_640')
             ->width(640)
             ->format('webp')
-            ->quality(82)
+            ->quality(80)
             ->performOnCollections('artwork');
 
         $this->addMediaConversion('grid_960')
             ->width(960)
             ->format('webp')
-            ->quality(82)
+            ->quality(80)
             ->performOnCollections('artwork');
 
         $this->addMediaConversion('display_1280')
             ->width(1280)
             ->format('webp')
-            ->quality(82)
+            ->quality(80)
             ->performOnCollections('artwork');
 
         $this->addMediaConversion('display_1600')
             ->width(1600)
             ->format('webp')
-            ->quality(82)
+            ->quality(80)
             ->performOnCollections('artwork');
 
         $this->addMediaConversion('display_2048')
             ->width(2048)
             ->format('webp')
-            ->quality(82)
+            ->quality(80)
             ->performOnCollections('artwork');
     }
 
@@ -117,30 +110,6 @@ class Artwork extends Model implements HasMedia
     public function getPublishStatusLabelAttribute(): string
     {
         return ucfirst($this->publish_status ?? 'draft');
-    }
-
-    public function getSignedUrlsAttribute(): array
-    {
-        $media = $this->getFirstMedia('artwork');
-
-        if (! $media) {
-            return [];
-        }
-
-        return [
-            'grid' => [
-                'src' => \App\Services\SignedMediaUrl::url($media, 'grid_640'),
-                'srcset' => \App\Services\SignedMediaUrl::url($media, 'grid_640').' 640w, '.
-                           \App\Services\SignedMediaUrl::url($media, 'grid_960').' 960w',
-            ],
-            'display' => [
-                'src' => \App\Services\SignedMediaUrl::url($media, 'display_1280'),
-                'srcset' => \App\Services\SignedMediaUrl::url($media, 'display_1280').' 1280w, '.
-                           \App\Services\SignedMediaUrl::url($media, 'display_1600').' 1600w, '.
-                           \App\Services\SignedMediaUrl::url($media, 'display_2048').' 2048w',
-            ],
-            'original' => (auth()->check() && auth()->user()->hasPermissionTo('can view source image')) ? route('admin.media.original', $media->id) : null,
-        ];
     }
 
     public function galleries()
