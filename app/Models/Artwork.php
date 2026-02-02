@@ -27,7 +27,7 @@ class Artwork extends Model implements HasMedia
         'image_processed_at',
     ];
 
-    protected $appends = ['image_url', 'thumb_url', 'image_status_label', 'publish_status_label', 'description_html'];
+    protected $appends = ['media_urls', 'thumb_url', 'image_status_label', 'publish_status_label', 'description_html'];
 
     protected $with = ['media'];
 
@@ -50,6 +50,14 @@ class Artwork extends Model implements HasMedia
             'metadata' => 'array',
             'image_processed_at' => 'datetime',
         ];
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('artwork')
+            ->singleFile()
+            ->useDisk('r2_private')
+            ->storeConversionsOnDisk('r2_public');
     }
 
     public function registerMediaConversions(?Media $media = null): void
@@ -95,6 +103,29 @@ class Artwork extends Model implements HasMedia
     public function getImageUrlAttribute(): ?string
     {
         return $this->getFirstMediaUrl('artwork');
+    }
+
+    public function getMediaUrlsAttribute(): array
+    {
+        $media = $this->getFirstMedia('artwork');
+        if (! $media) {
+            return [];
+        }
+
+        return [
+            'original' => $media->getUrl(),
+            'thumb' => $media->getUrl('thumb'),
+            'grid' => [
+                'src' => $media->getUrl('grid_640'),
+                'srcset' => $media->getUrl('grid_640') . ' 640w, ' . $media->getUrl('grid_960') . ' 960w',
+            ],
+            'display' => [
+                'src' => $media->getUrl('display_1280'),
+                'srcset' => $media->getUrl('display_1280') . ' 1280w, ' .
+                           $media->getUrl('display_1600') . ' 1600w, ' .
+                           $media->getUrl('display_2048') . ' 2048w',
+            ],
+        ];
     }
 
     public function getImageStatusLabelAttribute(): string

@@ -70,9 +70,9 @@ onUnmounted(() => {
                     >
                         <div class="aspect-square bg-white">
                             <SignedImage
-                                v-if="artwork.image_url"
-                                :src="artwork.image_url"
-                                :srcset="`${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1280$1')} 1280w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1600$1')} 1600w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_2048$1')} 2048w`"
+                                v-if="artwork.media_urls?.display"
+                                :src="artwork.media_urls.display.src"
+                                :srcset="artwork.media_urls.display.srcset"
                                 :alt="artwork.alt_text || artwork.title"
                                 class-name="h-full w-full object-contain transition-all duration-700"
                                 :class="{
@@ -296,9 +296,9 @@ onUnmounted(() => {
                         @click="toggleZoom"
                     >
                         <SignedImage
-                            v-if="artwork.image_url"
-                            :src="artwork.image_url"
-                            :srcset="`${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1280$1')} 1280w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_1600$1')} 1600w, ${artwork.image_url.replace(/(\.[^.]+)$/, '_display_2048$1')} 2048w`"
+                            v-if="artwork.media_urls?.display"
+                            :src="artwork.media_urls.display.src"
+                            :srcset="artwork.media_urls.display.srcset"
                             :alt="artwork.alt_text || artwork.title"
                             :class-name="[
                                 'shadow-2xl transition-all duration-500 rounded-lg',

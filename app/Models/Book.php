@@ -22,6 +22,13 @@ class Book extends Model implements HasMedia
     ];
 
     protected $appends = ['image_url', 'thumb_url', 'description_html'];
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cover')
+            ->singleFile()
+            ->useDisk('r2_private')
+            ->storeConversionsOnDisk('r2_public');
+    }
 
     public function getThumbUrlAttribute(): ?string
     {
