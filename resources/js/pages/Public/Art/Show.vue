@@ -175,7 +175,7 @@ onUnmounted(() => {
                     <div
                         class="prose prose-lg prose-slate mb-12 max-w-none leading-relaxed text-muted-foreground"
                     >
-                        <div v-html="artwork.description_html" />
+                        <div class="artwork-prose" v-html="artwork.description_html" />
                     </div>
 
                     <div class="space-y-12">
