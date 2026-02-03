@@ -12,8 +12,6 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Home" />
-
     <PublicLayout>
         <!-- Hero Section -->
         <section class="relative overflow-hidden py-24 sm:py-32">

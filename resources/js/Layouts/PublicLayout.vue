@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
     seo?: {
         title: string;
         description: string;
@@ -12,32 +13,35 @@ defineProps<{
         jsonld: any;
     };
 }>();
+
+const page = usePage();
+const seoData = computed(() => props.seo || (page.props as any).seo);
 </script>
 
 <template>
     <Head>
-        <title>{{ seo?.title }}</title>
-        <meta name="description" :content="seo?.description" />
-        <link rel="canonical" :href="seo?.canonical" />
-        <meta name="robots" :content="seo?.robots" />
+        <title>{{ seoData?.title }}</title>
+        <meta name="description" :content="seoData?.description" />
+        <link rel="canonical" :href="seoData?.canonical" />
+        <meta name="robots" :content="seoData?.robots" />
 
         <!-- Open Graph -->
-        <meta property="og:type" :content="seo?.og?.type" />
-        <meta property="og:title" :content="seo?.og?.title" />
-        <meta property="og:description" :content="seo?.og?.description" />
-        <meta property="og:url" :content="seo?.og?.url" />
-        <meta property="og:image" :content="seo?.og?.image" />
-        <meta v-if="seo?.og?.['image:alt']" property="og:image:alt" :content="seo?.og?.['image:alt']" />
-        <meta property="og:site_name" :content="seo?.og?.site_name" />
+        <meta property="og:type" :content="seoData?.og?.type" />
+        <meta property="og:title" :content="seoData?.og?.title" />
+        <meta property="og:description" :content="seoData?.og?.description" />
+        <meta property="og:url" :content="seoData?.og?.url" />
+        <meta property="og:image" :content="seoData?.og?.image" />
+        <meta v-if="seoData?.og?.['image:alt']" property="og:image:alt" :content="seoData?.og?.['image:alt']" />
+        <meta property="og:site_name" :content="seoData?.og?.site_name" />
 
         <!-- Twitter -->
-        <meta name="twitter:card" :content="seo?.twitter?.card" />
-        <meta name="twitter:title" :content="seo?.twitter?.title" />
-        <meta name="twitter:description" :content="seo?.twitter?.description" />
-        <meta name="twitter:image" :content="seo?.twitter?.image" />
+        <meta name="twitter:card" :content="seoData?.twitter?.card" />
+        <meta name="twitter:title" :content="seoData?.twitter?.title" />
+        <meta name="twitter:description" :content="seoData?.twitter?.description" />
+        <meta name="twitter:image" :content="seoData?.twitter?.image" />
 
         <!-- JSON-LD -->
-        <component :is="'script'" v-if="seo?.jsonld" type="application/ld+json" v-html="JSON.stringify(seo.jsonld)">
+        <component :is="'script'" v-if="seoData?.jsonld" type="application/ld+json" v-html="JSON.stringify(seoData.jsonld)">
         </component>
     </Head>
     <div

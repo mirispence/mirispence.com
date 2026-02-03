@@ -53,8 +53,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <Head :title="artwork.title" />
-
     <PublicLayout>
         <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-16">
