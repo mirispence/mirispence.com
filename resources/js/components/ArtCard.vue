@@ -76,6 +76,7 @@ const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
                     :src="artwork.media_urls.grid.src"
                     :srcset="artwork.media_urls.grid.srcset"
                     :alt="artwork.alt_text || artwork.title"
+                    fetchpriority="high"
                     class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     @click="$emit('click-image')"

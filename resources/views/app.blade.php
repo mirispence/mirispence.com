@@ -1,32 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"  @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        {{-- Inline script to detect system dark mode preference and apply it immediately --}}
-        <script>
-            (function() {
-                const appearance = '{{ $appearance ?? "system" }}';
-
-                if (appearance === 'system') {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-                    if (prefersDark) {
-                        document.documentElement.classList.add('dark');
-                    }
-                }
-            })();
-        </script>
-
+        <link rel=preconnect  href="https://cdn.mirispence.com">
         {{-- Inline style to set the HTML background color based on our theme in app.css --}}
         <style>
             html {
                 background-color: oklch(1 0 0);
-            }
-
-            html.dark {
-                background-color: oklch(0.145 0 0);
             }
         </style>
 
@@ -38,12 +19,12 @@
         @endphp
 
         <title inertia>{{ $seo['title'] ?? config('app.name', 'Laravel') }}</title>
-        
+
         @if($seo)
             <meta name="description" content="{{ $seo['description'] ?? '' }}">
             <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
             <meta name="robots" content="{{ $seo['robots'] ?? 'index, follow' }}">
-            
+
             @if(isset($seo['og']))
                 <meta property="og:title" content="{{ $seo['og']['title'] ?? ($seo['title'] ?? '') }}">
                 <meta property="og:description" content="{{ $seo['og']['description'] ?? ($seo['description'] ?? '') }}">
