@@ -110,6 +110,48 @@ const seoData = computed(() => (page.props as any).seo);
                     <p class="font-heading text-lg font-bold text-foreground">
                         Miri Spence
                     </p>
+                    <div class="flex items-center gap-6">
+                        <a
+                            href="https://bsky.app/profile/mirispence.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Follow me on Bluesky"
+                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                        >
+                            <img
+                                src="/build/icons/bluesky.svg"
+                                alt=""
+                                class="h-5 w-5 transition-all group-hover:scale-110"
+                            />
+                        </a>
+                        <a
+                            href="https://cara.app/mirialexandria"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Follow me on Cara"
+                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                        >
+                            <img
+                                src="/build/icons/cara.svg"
+                                alt=""
+                                class="h-5 w-5 transition-all group-hover:scale-110"
+                            />
+                        </a>
+                        <a
+                            href="https://www.instagram.com/mirialexandria/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Follow me on Instagram"
+                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                        >
+                            <img
+                                src="/build/icons/instagram.svg"
+                                alt=""
+                                class="h-5 w-5 transition-all group-hover:scale-110"
+                            />
+                        </a>
+                    </div>
+
                     <p class="text-sm text-muted-foreground">
                         &copy; {{ new Date().getFullYear() }} Miri Spence. All
                         rights reserved.
