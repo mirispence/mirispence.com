@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Gallery;
+use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 
 class GalleryController extends Controller
@@ -16,6 +17,7 @@ class GalleryController extends Controller
             'galleries' => Gallery::where('publish_status', 'published')
                 ->orderBy('sort_order')
                 ->get(),
+            'seo' => SeoBuilder::forArtIndex(), // Reuse ArtIndex SEO for Galleries list
         ]);
     }
 
@@ -32,6 +34,11 @@ class GalleryController extends Controller
 
         return Inertia::render('Public/Galleries/Show', [
             'gallery' => $gallery,
+            'seo' => SeoBuilder::make(
+                title: "{$gallery->name} - Art",
+                description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
+                image: asset('images/og/art.png')
+            ),
         ]);
     }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 const navigation = [
     { name: 'Dashboard', href: '/admin', icon: 'HomeIcon' },
@@ -14,6 +14,9 @@ const navigation = [
 </script>
 
 <template>
+    <Head>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
     <div class="min-h-full">
         <div class="flex h-screen overflow-hidden bg-gray-100">
             <!-- Sidebar -->

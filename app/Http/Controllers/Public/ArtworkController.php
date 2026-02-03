@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Artwork;
 use App\Models\Gallery;
 use App\Models\Tag;
+use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 
 class ArtworkController extends Controller
@@ -33,6 +34,7 @@ class ArtworkController extends Controller
             'artworks' => $query->paginate(12)->withQueryString(),
             'filters' => $request->only(['tag', 'gallery']),
             'galleries' => Gallery::where('publish_status', 'published')->orderBy('sort_order')->get(),
+            'seo' => SeoBuilder::forArtIndex(),
         ]);
     }
 
@@ -46,6 +48,7 @@ class ArtworkController extends Controller
 
         return Inertia::render('Public/Art/Show', [
             'artwork' => $artwork,
+            'seo' => SeoBuilder::forArtwork($artwork),
         ]);
     }
 }

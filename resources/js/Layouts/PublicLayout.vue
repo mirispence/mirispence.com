@@ -1,8 +1,46 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
+
+defineProps<{
+    seo?: {
+        title: string;
+        description: string;
+        canonical: string;
+        robots: string;
+        og: Record<string, string>;
+        twitter: Record<string, string>;
+        jsonld: any;
+    };
+}>();
 </script>
 
 <template>
+    <Head>
+        <title>{{ seo?.title }}</title>
+        <meta name="description" :content="seo?.description" />
+        <link rel="canonical" :href="seo?.canonical" />
+        <meta name="robots" :content="seo?.robots" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" :content="seo?.og?.type" />
+        <meta property="og:title" :content="seo?.og?.title" />
+        <meta property="og:description" :content="seo?.og?.description" />
+        <meta property="og:url" :content="seo?.og?.url" />
+        <meta property="og:image" :content="seo?.og?.image" />
+        <meta v-if="seo?.og?.['image:alt']" property="og:image:alt" :content="seo?.og?.['image:alt']" />
+        <meta property="og:site_name" :content="seo?.og?.site_name" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" :content="seo?.twitter?.card" />
+        <meta name="twitter:title" :content="seo?.twitter?.title" />
+        <meta name="twitter:description" :content="seo?.twitter?.description" />
+        <meta name="twitter:image" :content="seo?.twitter?.image" />
+
+        <!-- JSON-LD -->
+        <script v-if="seo?.jsonld" type="application/ld+json">
+            {{ JSON.stringify(seo.jsonld) }}
+        </script>
+    </Head>
     <div
         class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-accent/20 selection:text-accent"
     >

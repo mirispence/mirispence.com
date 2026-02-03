@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Book;
+use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -16,6 +17,7 @@ class BookController extends Controller
             'books' => Book::where('publish_status', 'published')
                 ->latest('release_date')
                 ->get(),
+            'seo' => SeoBuilder::forBooksIndex(),
         ]);
     }
 
@@ -31,6 +33,7 @@ class BookController extends Controller
 
         return Inertia::render('Public/Books/Show', [
             'book' => $book,
+            'seo' => SeoBuilder::forBook($book),
         ]);
     }
 }

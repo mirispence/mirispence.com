@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Artwork;
 use App\Models\Book;
+use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -24,6 +25,7 @@ class HomeController extends Controller
                 ->latest('release_date')
                 ->take(3)
                 ->get(),
+            'seo' => SeoBuilder::forHome(),
         ]);
     }
 }

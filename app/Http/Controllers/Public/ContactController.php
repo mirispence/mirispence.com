@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\ContactMessage;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 
 class ContactController extends Controller
 {
     public function create()
     {
-        return Inertia::render('Public/Contact');
+        return Inertia::render('Public/Contact', [
+            'seo' => SeoBuilder::forContact(),
+        ]);
     }
 
     public function store(ContactRequest $request)
