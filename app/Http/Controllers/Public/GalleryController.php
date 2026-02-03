@@ -13,11 +13,10 @@ class GalleryController extends Controller
 {
     public function index()
     {
+        Inertia::share('seo', SeoBuilder::forArtIndex());
+
         return Inertia::render('Public/Galleries/Index', [
-            'galleries' => Gallery::where('publish_status', 'published')
-                ->orderBy('sort_order')
-                ->get(),
-            'seo' => SeoBuilder::forArtIndex(), // Reuse ArtIndex SEO for Galleries list
+            'galleries' => Gallery::published()->get(),
         ]);
     }
 
@@ -32,13 +31,14 @@ class GalleryController extends Controller
                 ->orderBy('pivot_sort_order');
         }]);
 
+        Inertia::share('seo', SeoBuilder::make(
+            title: "{$gallery->name} - Art",
+            description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
+            image: asset('images/og/art.png')
+        ));
+
         return Inertia::render('Public/Galleries/Show', [
             'gallery' => $gallery,
-            'seo' => SeoBuilder::make(
-                title: "{$gallery->name} - Art",
-                description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
-                image: asset('images/og/art.png')
-            ),
         ]);
     }
 }

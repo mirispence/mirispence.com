@@ -13,11 +13,10 @@ class BookController extends Controller
 {
     public function index()
     {
+        Inertia::share('seo', SeoBuilder::forBooksIndex());
+        
         return Inertia::render('Public/Books/Index', [
-            'books' => Book::where('publish_status', 'published')
-                ->latest('release_date')
-                ->get(),
-            'seo' => SeoBuilder::forBooksIndex(),
+            'books' => Book::published()->latest()->get(),
         ]);
     }
 
@@ -31,9 +30,10 @@ class BookController extends Controller
             $query->orderBy('order');
         }, 'tags']);
 
+        Inertia::share('seo', SeoBuilder::forBook($book));
+
         return Inertia::render('Public/Books/Show', [
             'book' => $book,
-            'seo' => SeoBuilder::forBook($book),
         ]);
     }
 }

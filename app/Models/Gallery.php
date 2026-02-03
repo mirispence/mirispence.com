@@ -117,4 +117,9 @@ class Gallery extends Model implements HasMedia
             ->withPivot('sort_order')
             ->withTimestamps();
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('publish_status', 'published');
+    }
 }

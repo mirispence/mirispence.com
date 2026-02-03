@@ -159,4 +159,14 @@ class Artwork extends Model implements HasMedia
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('publish_status', 'published');
+    }
+
+    public function scopeFeatured($query)
+    {
+        return $query->where('featured_flag', true);
+    }
 }

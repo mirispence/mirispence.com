@@ -2,43 +2,31 @@
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-const props = defineProps<{
-    seo?: {
-        title: string;
-        description: string;
-        canonical: string;
-        robots: string;
-        og: Record<string, string>;
-        twitter: Record<string, string>;
-        jsonld: any;
-    };
-}>();
-
 const page = usePage();
-const seoData = computed(() => props.seo || (page.props as any).seo);
+const seoData = computed(() => (page.props as any).seo);
 </script>
 
 <template>
     <Head>
         <title>{{ seoData?.title }}</title>
-        <meta name="description" :content="seoData?.description" />
-        <link rel="canonical" :href="seoData?.canonical" />
-        <meta name="robots" :content="seoData?.robots" />
+        <meta v-if="seoData?.description" name="description" :content="seoData.description" />
+        <link v-if="seoData?.canonical" rel="canonical" :href="seoData.canonical" />
+        <meta v-if="seoData?.robots" name="robots" :content="seoData.robots" />
 
         <!-- Open Graph -->
-        <meta property="og:type" :content="seoData?.og?.type" />
-        <meta property="og:title" :content="seoData?.og?.title" />
-        <meta property="og:description" :content="seoData?.og?.description" />
-        <meta property="og:url" :content="seoData?.og?.url" />
-        <meta property="og:image" :content="seoData?.og?.image" />
-        <meta v-if="seoData?.og?.['image:alt']" property="og:image:alt" :content="seoData?.og?.['image:alt']" />
-        <meta property="og:site_name" :content="seoData?.og?.site_name" />
+        <meta v-if="seoData?.og?.type" property="og:type" :content="seoData.og.type" />
+        <meta v-if="seoData?.og?.title" property="og:title" :content="seoData.og.title" />
+        <meta v-if="seoData?.og?.description" property="og:description" :content="seoData.og.description" />
+        <meta v-if="seoData?.og?.url" property="og:url" :content="seoData.og.url" />
+        <meta v-if="seoData?.og?.image" property="og:image" :content="seoData.og.image" />
+        <meta v-if="seoData?.og?.['image:alt']" property="og:image:alt" :content="seoData.og['image:alt']" />
+        <meta v-if="seoData?.og?.site_name" property="og:site_name" :content="seoData.og.site_name" />
 
         <!-- Twitter -->
-        <meta name="twitter:card" :content="seoData?.twitter?.card" />
-        <meta name="twitter:title" :content="seoData?.twitter?.title" />
-        <meta name="twitter:description" :content="seoData?.twitter?.description" />
-        <meta name="twitter:image" :content="seoData?.twitter?.image" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta v-if="seoData?.title" name="twitter:title" :content="seoData.title" />
+        <meta v-if="seoData?.description" name="twitter:description" :content="seoData.description" />
+        <meta v-if="seoData?.og?.image" name="twitter:image" :content="seoData.og.image" />
 
         <!-- JSON-LD -->
         <component :is="'script'" v-if="seoData?.jsonld" type="application/ld+json" v-html="JSON.stringify(seoData.jsonld)">
@@ -125,6 +113,7 @@ const seoData = computed(() => props.seo || (page.props as any).seo);
                     <p class="text-sm text-muted-foreground">
                         &copy; {{ new Date().getFullYear() }} Miri Spence. All
                         rights reserved.
+
                     </p>
                 </div>
             </div>

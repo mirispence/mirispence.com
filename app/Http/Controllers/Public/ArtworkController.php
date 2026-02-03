@@ -15,7 +15,7 @@ class ArtworkController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Artwork::where('publish_status', 'published')
+        $query = Artwork::published()
             ->latest('created_on');
 
         if ($request->filled('tag')) {
@@ -30,11 +30,12 @@ class ArtworkController extends Controller
             });
         }
 
+        Inertia::share('seo', SeoBuilder::forArtIndex());
+        
         return Inertia::render('Public/Art/Index', [
             'artworks' => $query->paginate(12)->withQueryString(),
             'filters' => $request->only(['tag', 'gallery']),
-            'galleries' => Gallery::where('publish_status', 'published')->orderBy('sort_order')->get(),
-            'seo' => SeoBuilder::forArtIndex(),
+            'galleries' => Gallery::published()->get(),
         ]);
     }
 
@@ -46,9 +47,10 @@ class ArtworkController extends Controller
 
         $artwork->load(['tags', 'galleries']);
 
+        Inertia::share('seo', SeoBuilder::forArtwork($artwork));
+
         return Inertia::render('Public/Art/Show', [
             'artwork' => $artwork,
-            'seo' => SeoBuilder::forArtwork($artwork),
         ]);
     }
 }

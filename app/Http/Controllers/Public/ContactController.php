@@ -15,9 +15,9 @@ class ContactController extends Controller
 {
     public function create()
     {
-        return Inertia::render('Public/Contact', [
-            'seo' => SeoBuilder::forContact(),
-        ]);
+        Inertia::share('seo', SeoBuilder::forContact());
+        
+        return Inertia::render('Public/Contact');
     }
 
     public function store(ContactRequest $request)

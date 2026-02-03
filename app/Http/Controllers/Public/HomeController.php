@@ -14,18 +14,19 @@ class HomeController extends Controller
 {
     public function index()
     {
+        Inertia::share('seo', SeoBuilder::forHome());
+
         return Inertia::render('Public/Home', [
-            'featuredArtworks' => Artwork::where('featured_flag', true)
-                ->where('publish_status', 'published')
+            'featuredArtworks' => Artwork::featured()
+                ->published()
                 ->latest('created_on')
                 ->take(3)
                 ->get(),
-            'featuredBooks' => Book::where('featured_flag', true)
-                ->where('publish_status', 'published')
+            'featuredBooks' => Book::featured()
+                ->published()
                 ->latest('release_date')
                 ->take(3)
                 ->get(),
-            'seo' => SeoBuilder::forHome(),
         ]);
     }
 }
