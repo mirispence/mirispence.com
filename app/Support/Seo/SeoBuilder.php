@@ -15,10 +15,11 @@ class SeoBuilder
         ?string $image = null,
         ?string $imageAlt = null,
         ?array $jsonld = null,
-        string $robots = 'index,follow'
+        string $robots = 'index,follow',
+        bool $appendBrand = true
     ): SeoPayload {
         $appName = config('app.name');
-        $fullTitle = $title === $appName ? $title : "{$title} - {$appName}";
+        $fullTitle = ($title === $appName || !$appendBrand) ? $title : "{$title} - {$appName}";
         
         $canonical = url()->current();
         
@@ -50,7 +51,9 @@ class SeoBuilder
             robots: $robots,
             og: $og,
             twitter: $twitter,
-            jsonld: $jsonld
+            twitter: $twitter,
+            jsonld: $jsonld,
+            appendBrand: $appendBrand
         );
     }
 
@@ -100,7 +103,8 @@ class SeoBuilder
             type: 'article',
             image: $image,
             imageAlt: $artwork->alt_text ?? "Artwork '{$artwork->title}' by Miri Spence",
-            jsonld: $jsonld
+            jsonld: $jsonld,
+            appendBrand: false
         );
     }
 
@@ -140,7 +144,8 @@ class SeoBuilder
             description: $description,
             type: 'book',
             image: $image,
-            jsonld: $jsonld
+            jsonld: $jsonld,
+            appendBrand: false
         );
     }
 

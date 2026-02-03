@@ -16,6 +16,7 @@ class SeoPayload implements Arrayable
         public array|object|null $jsonld = null,
         public string $locale = 'en_US',
         public ?string $site_name = null,
+        public bool $appendBrand = true,
     ) {
         $this->site_name ??= config('app.name');
         
@@ -46,6 +47,7 @@ class SeoPayload implements Arrayable
             'jsonld' => $this->jsonld,
             'locale' => $this->locale,
             'site_name' => $this->site_name,
+            'appendBrand' => $this->appendBrand,
         ];
     }
 }
