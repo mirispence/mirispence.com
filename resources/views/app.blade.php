@@ -47,7 +47,9 @@
             @if(isset($seo['og']))
                 <meta property="og:title" content="{{ $seo['og']['title'] ?? ($seo['title'] ?? '') }}">
                 <meta property="og:description" content="{{ $seo['og']['description'] ?? ($seo['description'] ?? '') }}">
-                <meta property="og:image" content="{{ $seo['og']['image'] ?? '' }}">
+                @if(!empty($seo['og']['image']))
+                    <meta property="og:image" content="{{ $seo['og']['image'] }}">
+                @endif
                 <meta property="og:type" content="{{ $seo['og']['type'] ?? 'website' }}">
                 <meta property="og:url" content="{{ $seo['og']['url'] ?? url()->current() }}">
                 <meta property="og:site_name" content="{{ $seo['og']['site_name'] ?? config('app.name') }}">
@@ -56,7 +58,9 @@
             <meta name="twitter:card" content="summary_large_image">
             <meta name="twitter:title" content="{{ $seo['twitter']['title'] ?? ($seo['title'] ?? '') }}">
             <meta name="twitter:description" content="{{ $seo['twitter']['description'] ?? ($seo['description'] ?? '') }}">
-            <meta name="twitter:image" content="{{ $seo['twitter']['image'] ?? ($seo['og']['image'] ?? '') }}">
+            @if(!empty($seo['twitter']['image']) || !empty($seo['og']['image']))
+                <meta name="twitter:image" content="{{ $seo['twitter']['image'] ?? $seo['og']['image'] }}">
+            @endif
         @endif
 
         <link rel="icon" href="/favicon.ico" sizes="any">

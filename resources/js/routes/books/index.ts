@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
 export const show = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
 show.url = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -127,7 +127,7 @@ show.url = (args: { book: string | { slug: string } } | [book: string | { slug: 
 
 /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
 show.get = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -136,7 +136,7 @@ show.get = (args: { book: string | { slug: string } } | [book: string | { slug: 
 })
 /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
 show.head = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -146,7 +146,7 @@ show.head = (args: { book: string | { slug: string } } | [book: string | { slug:
 
     /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
     const showForm = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -156,7 +156,7 @@ show.head = (args: { book: string | { slug: string } } | [book: string | { slug:
 
             /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
         showForm.get = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -165,7 +165,7 @@ show.head = (args: { book: string | { slug: string } } | [book: string | { slug:
         })
             /**
 * @see \App\Http\Controllers\Public\BookController::show
- * @see app/Http/Controllers/Public/BookController.php:24
+ * @see app/Http/Controllers/Public/BookController.php:23
  * @route '/books/{book}'
  */
         showForm.head = (args: { book: string | { slug: string } } | [book: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

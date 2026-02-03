@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
 export const show = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
 show.url = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -127,7 +127,7 @@ show.url = (args: { artwork: string | { slug: string } } | [artwork: string | { 
 
 /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
 show.get = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -136,7 +136,7 @@ show.get = (args: { artwork: string | { slug: string } } | [artwork: string | { 
 })
 /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
 show.head = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -146,7 +146,7 @@ show.head = (args: { artwork: string | { slug: string } } | [artwork: string | {
 
     /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
     const showForm = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -156,7 +156,7 @@ show.head = (args: { artwork: string | { slug: string } } | [artwork: string | {
 
             /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
         showForm.get = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -165,7 +165,7 @@ show.head = (args: { artwork: string | { slug: string } } | [artwork: string | {
         })
             /**
 * @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:41
+ * @see app/Http/Controllers/Public/ArtworkController.php:42
  * @route '/art/{artwork}'
  */
         showForm.head = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

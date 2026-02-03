@@ -61,7 +61,7 @@ class SeoBuilder
         return self::make(
             title: config('app.name'),
             description: "Portfolio of Miri Spence - Concept Art, Illustration, and Fantasy Books.",
-            image: asset('images/og/home.png')
+            image: self::getFallbackOgImage()
         );
     }
 
@@ -70,14 +70,14 @@ class SeoBuilder
         return self::make(
             title: 'Art',
             description: "Browse the art gallery of Miri Spence. Digital paintings, character designs, and illustrations.",
-            image: asset('images/og/art.png')
+            image: self::getFallbackOgImage()
         );
     }
 
     public static function forArtwork(Artwork $artwork): SeoPayload
     {
         $description = $artwork->description ?: "View '{$artwork->title}' by Miri Spence.";
-        $image = $artwork->getMediaUrlsAttribute()['display']['src'] ?? $artwork->getFirstMediaUrl('artwork');
+        $image = ($artwork->getMediaUrlsAttribute()['display']['src'] ?? null) ?: $artwork->getFirstMediaUrl('artwork');
         
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -107,19 +107,28 @@ class SeoBuilder
         );
     }
 
+    public static function forGallery(Gallery $gallery): SeoPayload
+    {
+        return self::make(
+            title: "{$gallery->name} - Art",
+            description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
+            image: $gallery->getImageUrlAttribute() ?: self::getFallbackOgImage()
+        );
+    }
+
     public static function forBooksIndex(): SeoPayload
     {
         return self::make(
             title: 'Books',
             description: "Explore the books and stories by Miri Spence. Fantasy novels, world-building, and more.",
-            image: asset('images/og/books.png')
+            image: self::getFallbackOgImage()
         );
     }
 
     public static function forBook(Book $book): SeoPayload
     {
         $description = $book->description ?: "Read more about '{$book->title}' by Miri Spence.";
-        $image = $book->getMediaUrlsAttribute()['original'] ?? $book->getFirstMediaUrl('cover');
+        $image = ($book->getMediaUrlsAttribute()['original'] ?? null) ?: $book->getFirstMediaUrl('cover');
 
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -152,7 +161,8 @@ class SeoBuilder
     {
         return self::make(
             title: 'Contact',
-            description: "Get in touch with Miri Spence for commissions, inquiries, or just to say hello."
+            description: "Get in touch with Miri Spence for commissions, inquiries, or just to say hello.",
+            image: self::getFallbackOgImage()
         );
     }
 
@@ -180,12 +190,27 @@ class SeoBuilder
         return "The official website of Miri Spence, artist and author.";
     }
 
-    protected static function getDefaultOgImage(?string $type): string
+    protected static function getDefaultOgImage(?string $type): ?string
     {
-        return match($type) {
-            'article', 'website' => asset('images/og/home.png'),
-            'book' => asset('images/og/books.png'),
-            default => asset('images/og/home.png'),
-        };
+        return self::getFallbackOgImage();
+    }
+
+    protected static function getFallbackOgImage(): ?string
+    {
+        // 1. First featured artwork
+        $artwork = Artwork::published()->featured()->latest('created_on')->first();
+        
+        if ($artwork) {
+            return ($artwork->getMediaUrlsAttribute()['display']['src'] ?? null) ?: $artwork->getFirstMediaUrl('artwork');
+        }
+
+        // 2. Otherwise, the first image in the artworks table
+        $artwork = Artwork::published()->latest('created_on')->first();
+
+        if ($artwork) {
+            return ($artwork->getMediaUrlsAttribute()['display']['src'] ?? null) ?: $artwork->getFirstMediaUrl('artwork');
+        }
+
+        return null;
     }
 }

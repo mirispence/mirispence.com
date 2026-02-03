@@ -31,11 +31,7 @@ class GalleryController extends Controller
                 ->orderBy('pivot_sort_order');
         }]);
 
-        Inertia::share('seo', SeoBuilder::make(
-            title: "{$gallery->name} - Art",
-            description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
-            image: asset('images/og/art.png')
-        ));
+        Inertia::share('seo', SeoBuilder::forGallery($gallery));
 
         return Inertia::render('Public/Galleries/Show', [
             'gallery' => $gallery,
