@@ -51,7 +51,6 @@ class SeoBuilder
             robots: $robots,
             og: $og,
             twitter: $twitter,
-            twitter: $twitter,
             jsonld: $jsonld,
             appendBrand: $appendBrand
         );
