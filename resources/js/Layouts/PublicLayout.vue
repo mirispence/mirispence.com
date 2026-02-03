@@ -37,9 +37,8 @@ defineProps<{
         <meta name="twitter:image" :content="seo?.twitter?.image" />
 
         <!-- JSON-LD -->
-        <script v-if="seo?.jsonld" type="application/ld+json">
-            {{ JSON.stringify(seo.jsonld) }}
-        </script>
+        <component :is="'script'" v-if="seo?.jsonld" type="application/ld+json" v-html="JSON.stringify(seo.jsonld)">
+        </component>
     </Head>
     <div
         class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-accent/20 selection:text-accent"

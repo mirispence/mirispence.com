@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Public\ContactController::create
- * @see app/Http/Controllers/Public/ContactController.php:15
+ * @see app/Http/Controllers/Public/ContactController.php:16
  * @route '/contact'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Public\ContactController::store
- * @see app/Http/Controllers/Public/ContactController.php:20
+ * @see app/Http/Controllers/Public/ContactController.php:23
  * @route '/contact'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -94,7 +94,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Public\ContactController::store
- * @see app/Http/Controllers/Public/ContactController.php:20
+ * @see app/Http/Controllers/Public/ContactController.php:23
  * @route '/contact'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Public\ContactController::store
- * @see app/Http/Controllers/Public/ContactController.php:20
+ * @see app/Http/Controllers/Public/ContactController.php:23
  * @route '/contact'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Public\ContactController::store
- * @see app/Http/Controllers/Public/ContactController.php:20
+ * @see app/Http/Controllers/Public/ContactController.php:23
  * @route '/contact'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Public\ContactController::store
- * @see app/Http/Controllers/Public/ContactController.php:20
+ * @see app/Http/Controllers/Public/ContactController.php:23
  * @route '/contact'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
