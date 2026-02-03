@@ -38,7 +38,7 @@ class SeoBuilderTest extends TestCase
 
         $payload = SeoBuilder::forArtwork($artwork);
 
-        $this->assertEquals("Test Painting - Art - " . config('app.name'), $payload->title);
+        $this->assertEquals("Test Painting - Art", $payload->title);
         $this->assertEquals("This is a test description.", $payload->description);
         $this->assertEquals('article', $payload->og['type']);
         $this->assertNotNull($payload->jsonld);
@@ -53,7 +53,7 @@ class SeoBuilderTest extends TestCase
 
         $payload = SeoBuilder::forBook($book);
 
-        $this->assertEquals("Test Novel - Books - " . config('app.name'), $payload->title);
+        $this->assertEquals("Test Novel - Books", $payload->title);
         $this->assertEquals("This is a test world.", $payload->description);
         $this->assertEquals('book', $payload->og['type']);
     }
