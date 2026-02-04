@@ -26,10 +26,9 @@ defineProps<{
                         <p
                             class="mt-8 max-w-xl text-xl leading-relaxed text-muted-foreground"
                         >
-                            The portfolio and creative works of Miri Spence.
-                            Exploring the intersections of visual art and
-                            narrative through detailed illustrations and
-                            compelling stories.
+                            The art and books of Miri Spence.<br />
+                            Illustration, storytelling, and personal creative
+                            work.
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
                             <Link href="/art">
@@ -59,10 +58,22 @@ defineProps<{
                                     class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
                                     <img
-                                        v-if="featuredArtworks[0].media_urls?.grid"
-                                        :src="featuredArtworks[0].media_urls.grid.src"
-                                        :srcset="featuredArtworks[0].media_urls.grid.srcset"
-                                        :alt="featuredArtworks[0].alt_text || featuredArtworks[0].title"
+                                        fetchpriority="high"
+                                        v-if="
+                                            featuredArtworks[0].media_urls?.grid
+                                        "
+                                        :src="
+                                            featuredArtworks[0].media_urls.grid
+                                                .src
+                                        "
+                                        :srcset="
+                                            featuredArtworks[0].media_urls.grid
+                                                .srcset
+                                        "
+                                        :alt="
+                                            featuredArtworks[0].alt_text ||
+                                            featuredArtworks[0].title
+                                        "
                                         class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
                                     />
@@ -81,10 +92,22 @@ defineProps<{
                                     class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
                                     <img
-                                        v-if="featuredArtworks[1].media_urls?.grid"
-                                        :src="featuredArtworks[1].media_urls.grid.src"
-                                        :srcset="featuredArtworks[1].media_urls.grid.srcset"
-                                        :alt="featuredArtworks[1].alt_text || featuredArtworks[1].title"
+                                        fetchpriority="high"
+                                        v-if="
+                                            featuredArtworks[1].media_urls?.grid
+                                        "
+                                        :src="
+                                            featuredArtworks[1].media_urls.grid
+                                                .src
+                                        "
+                                        :srcset="
+                                            featuredArtworks[1].media_urls.grid
+                                                .srcset
+                                        "
+                                        :alt="
+                                            featuredArtworks[1].alt_text ||
+                                            featuredArtworks[1].title
+                                        "
                                         class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
                                     />
