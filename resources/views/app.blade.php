@@ -49,7 +49,7 @@
 
         @php
             $isAdmin = auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('staff'));
-            $isAdminPath = request()->is('admin*') || request()->is('dashboard*');
+            $isAdminPath = request()->is('admin*') || request()->is('dashboard*') || request()->is('login*');
             $entryPoint = ($isAdmin || $isAdminPath) ? 'resources/js/admin.ts' : 'resources/js/app.ts';
         @endphp
 

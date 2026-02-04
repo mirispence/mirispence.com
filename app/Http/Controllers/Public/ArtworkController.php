@@ -55,7 +55,7 @@ class ArtworkController extends Controller
         Inertia::share('seo', SeoBuilder::forArtwork($artwork));
 
         return Inertia::render('Public/Art/Show', [
-            'artwork' => new PublicArtworkResource($artwork),
+            'artwork' => PublicArtworkResource::make($artwork)->resolve(),
         ]);
     }
 }

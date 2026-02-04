@@ -25,7 +25,7 @@ class HomeController extends Controller
             ->get();
 
         return Inertia::render('Public/Home', [
-            'featuredArtworks' => PublicArtworkResource::collection($artworks),
+            'featuredArtworks' => PublicArtworkResource::collection($artworks)->resolve(),
             'featuredBooks' => Book::featured()
                 ->published()
                 ->latest('release_date')
