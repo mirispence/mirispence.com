@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PublicArtworkResource;
 use Illuminate\Http\Request;
 
 use App\Models\Artwork;
@@ -16,6 +17,7 @@ class ArtworkController extends Controller
     public function index(Request $request)
     {
         $query = Artwork::published()
+            ->without('media') // Don't eager load media relation
             ->latest('created_on');
 
         if ($request->filled('tag')) {
@@ -31,9 +33,11 @@ class ArtworkController extends Controller
         }
 
         Inertia::share('seo', SeoBuilder::forArtIndex());
-        
+
+        $artworks = $query->paginate(12)->withQueryString();
+
         return Inertia::render('Public/Art/Index', [
-            'artworks' => $query->paginate(12)->withQueryString(),
+            'artworks' => PublicArtworkResource::collection($artworks),
             'filters' => $request->only(['tag', 'gallery']),
             'galleries' => Gallery::published()->get(),
         ]);
@@ -45,12 +49,13 @@ class ArtworkController extends Controller
             abort(404);
         }
 
+        $artwork->unsetRelation('media'); // Remove eager-loaded media relation
         $artwork->load(['tags', 'galleries']);
 
         Inertia::share('seo', SeoBuilder::forArtwork($artwork));
 
         return Inertia::render('Public/Art/Show', [
-            'artwork' => $artwork,
+            'artwork' => new PublicArtworkResource($artwork),
         ]);
     }
 }

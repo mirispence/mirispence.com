@@ -253,8 +253,6 @@ watch(selectedGallery, (value) => {
 
                         <div
                             class="relative inline-block transition-all duration-300 m-auto"
-                            :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
-                            @click="toggleZoom"
                         >
                             <img
                                 v-if="activeArtwork.media_urls?.display"
@@ -277,6 +275,12 @@ watch(selectedGallery, (value) => {
                                     isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
                                 ]"
                             />
+                            <!-- Invisible overlay to discourage casual image saving -->
+                            <div
+                                class="absolute inset-0 z-10"
+                                :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
+                                @click="toggleZoom"
+                            ></div>
                         </div>
                     </div>
 

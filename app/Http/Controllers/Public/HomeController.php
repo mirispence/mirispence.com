@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PublicArtworkResource;
 use Illuminate\Http\Request;
 
 use App\Models\Artwork;
@@ -16,12 +17,15 @@ class HomeController extends Controller
     {
         Inertia::share('seo', SeoBuilder::forHome());
 
+        $artworks = Artwork::featured()
+            ->published()
+            ->without('media') // Don't eager load media relation
+            ->latest('created_on')
+            ->take(3)
+            ->get();
+
         return Inertia::render('Public/Home', [
-            'featuredArtworks' => Artwork::featured()
-                ->published()
-                ->latest('created_on')
-                ->take(3)
-                ->get(),
+            'featuredArtworks' => PublicArtworkResource::collection($artworks),
             'featuredBooks' => Book::featured()
                 ->published()
                 ->latest('release_date')

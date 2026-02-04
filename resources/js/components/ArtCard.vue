@@ -76,10 +76,8 @@ const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
                     :src="artwork.media_urls.grid.src"
                     :srcset="artwork.media_urls.grid.srcset"
                     :alt="artwork.alt_text || artwork.title"
-
-                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
+                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    @click="$emit('click-image')"
                 />
                 <div
                     v-else
@@ -87,6 +85,11 @@ const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
                 >
                     No Image available
                 </div>
+                <!-- Invisible overlay to discourage casual image saving -->
+                <div
+                    class="absolute inset-0 z-[5] cursor-pointer"
+                    @click="$emit('click-image')"
+                ></div>
                 <div
                     class="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-gradient-to-t from-black/60 to-transparent p-6 transition-transform duration-300 group-hover:translate-y-0"
                 >

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PublicArtworkResource;
 use Illuminate\Http\Request;
 
 use App\Models\Gallery;
@@ -28,10 +29,14 @@ class GalleryController extends Controller
 
         $gallery->load(['artworks' => function ($query) {
             $query->where('publish_status', 'published')
+                ->without('media') // Don't eager load media relation
                 ->orderBy('pivot_sort_order');
         }]);
 
         Inertia::share('seo', SeoBuilder::forGallery($gallery));
+
+        // Transform artworks to use public resource
+        $gallery->artworks = PublicArtworkResource::collection($gallery->artworks);
 
         return Inertia::render('Public/Galleries/Show', [
             'gallery' => $gallery,

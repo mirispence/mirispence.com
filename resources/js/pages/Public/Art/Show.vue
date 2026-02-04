@@ -60,10 +60,6 @@ onUnmounted(() => {
                 <div class="flex justify-center lg:sticky lg:top-32">
                     <Card
                         class="group relative w-full overflow-hidden rounded-[2.5rem] border-none p-0 shadow-premium"
-                        :class="{
-                            'cursor-pointer': (artwork.nsfw_flag && !isRevealed) || artwork.media_urls?.display,
-                        }"
-                        @click="openLightbox"
                     >
                         <div class="aspect-square bg-white">
                             <img
@@ -87,6 +83,13 @@ onUnmounted(() => {
                             >
                                 No Image available
                             </div>
+
+                            <!-- Invisible overlay to discourage casual image saving -->
+                            <div
+                                v-if="artwork.media_urls?.display"
+                                class="absolute inset-0 z-10 cursor-pointer"
+                                @click="openLightbox"
+                            ></div>
 
                             <!-- NSFW Overlay -->
                             <div
@@ -289,8 +292,6 @@ onUnmounted(() => {
                 >
                     <div
                         class="relative inline-block transition-all duration-300 m-auto"
-                        :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
-                        @click="toggleZoom"
                     >
                         <img
                             v-if="artwork.media_urls?.display"
@@ -303,7 +304,12 @@ onUnmounted(() => {
                             ]"
                             sizes="100vw"
                         />
-
+                        <!-- Invisible overlay to discourage casual image saving -->
+                        <div
+                            class="absolute inset-0 z-10"
+                            :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
+                            @click="toggleZoom"
+                        ></div>
                     </div>
                 </div>
 
