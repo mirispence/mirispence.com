@@ -50,6 +50,8 @@ _none_
 
 ---
 
+# TASK-005 - Resolve PHPStan level 5 errors (36 errors on first run)
+
 ## Done
 
 _none_
