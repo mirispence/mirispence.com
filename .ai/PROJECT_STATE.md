@@ -40,16 +40,16 @@ Inferred constraints: not multi-tenant, no public user registration, no e-commer
 
 ## Domains / Modules
 
-| Domain | Models | Routes | Admin CRUD |
-|--------|--------|--------|------------|
-| Artwork | `Artwork` | `/art`, `/art/{slug}` | ✓ |
-| Gallery | `Gallery` | `/galleries`, `/galleries/{slug}` | ✓ |
-| Book/Chapter | `Book`, `Chapter` | `/books`, `/books/{slug}` | ✓ |
-| Tag | `Tag` | — | ✓ |
-| Featured Items | `FeaturedItem` | — | ✓ |
-| Contact | `ContactMessage` | `/contact` | read/update/delete only |
-| Commission | `CommissionRequest` | **none** | **none** |
-| User | `User` | `/settings/*` | ✓ |
+| Domain         | Models              | Routes                            | Admin CRUD              |
+| -------------- | ------------------- | --------------------------------- | ----------------------- |
+| Artwork        | `Artwork`           | `/art`, `/art/{slug}`             | ✓                       |
+| Gallery        | `Gallery`           | `/galleries`, `/galleries/{slug}` | ✓                       |
+| Book/Chapter   | `Book`, `Chapter`   | `/books`, `/books/{slug}`         | ✓                       |
+| Tag            | `Tag`               | —                                 | ✓                       |
+| Featured Items | `FeaturedItem`      | —                                 | ✓                       |
+| Contact        | `ContactMessage`    | `/contact`                        | read/update/delete only |
+| Commission     | `CommissionRequest` | **none**                          | **none**                |
+| User           | `User`              | `/settings/*`                     | ✓                       |
 
 ---
 
@@ -72,7 +72,7 @@ Inferred constraints: not multi-tenant, no public user registration, no e-commer
 
 ## What Is Broken or Missing
 
-- **`SecurityFixesTest.php:80–98` — broken test:** calls `$artwork->signed_urls['original']` but `Artwork` model only appends `media_urls` (no `signed_urls` accessor). Accessing `null['original']` in PHP 8.4 throws `TypeError`. Test was likely valid against a prior model version.
+- **`SecurityFixesTest.php:80–98` — stale test:** `artwork model includes signed original url` references the removed `signed_urls` accessor; needs deletion (TASK-001).
 - **`CommissionRequest` model/migration exists** with factory but has no controller, routes, or admin UI. Dead code / incomplete feature.
 - **`.env.example` missing R2 env vars** (`R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`, `R2_PRIVATE_BUCKET`, `R2_PUBLIC_BUCKET`, `R2_PRIVATE_URL`, `R2_PUBLIC_URL`) despite being required by `config/filesystems.php`.
 - **No test CI gate** in `deploy.yml` — tests are not run before deploying to production.

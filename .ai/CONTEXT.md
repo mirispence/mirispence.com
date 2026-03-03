@@ -83,6 +83,7 @@ config/
 - **Admin auto-grant:** `Gate::before` returns `true` for any user with `admin` role
 
 Middleware aliases registered in `bootstrap/app.php`:
+
 - `role` → `RoleMiddleware`
 - `permission` → `PermissionMiddleware`
 - `role_or_permission` → `RoleOrPermissionMiddleware`
