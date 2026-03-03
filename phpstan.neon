@@ -1,0 +1,25 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+
+    # Level 5 is a solid starting point for an existing Laravel codebase.
+    # Increase toward 9 as the codebase gets cleaner.
+    level: 5
+
+    # Teach PHPStan about morph map aliases defined in AppServiceProvider.
+    # Add entries here if you add new morph types.
+    universalObjectCratesClasses:
+        - Illuminate\Database\Eloquent\Model
+
+    # Ignore errors that are known false-positives with Spatie Media Library's
+    # dynamic media URL methods, and Eloquent magic that Larastan can't fully resolve.
+    ignoreErrors:
+        # Spatie MediaLibrary: getUrl() / getFirstMediaUrl() return types
+        - '#Call to an undefined method Spatie\\MediaLibrary\\.*#'
+
+    # Do not scan generated Wayfinder action files — they are auto-generated.
+    excludePaths:
+        - resources/js/actions/
