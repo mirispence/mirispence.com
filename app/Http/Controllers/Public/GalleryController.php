@@ -27,19 +27,18 @@ class GalleryController extends Controller
             abort(404);
         }
 
-        $gallery->load(['artworks' => function ($query) {
-            $query->where('publish_status', 'published')
-                ->without('media') // Don't eager load media relation
-                ->orderBy('pivot_sort_order');
-        }]);
+        $artworks = $gallery->artworks()
+            ->where('publish_status', 'published')
+            ->without('media')
+            ->orderBy('pivot_sort_order')
+            ->paginate(6)
+            ->withQueryString();
 
         Inertia::share('seo', SeoBuilder::forGallery($gallery));
 
-        // Transform artworks to use public resource
-        $gallery->artworks = PublicArtworkResource::collection($gallery->artworks);
-
         return Inertia::render('Public/Galleries/Show', [
             'gallery' => $gallery,
+            'artworks' => PublicArtworkResource::collection($artworks),
         ]);
     }
 }

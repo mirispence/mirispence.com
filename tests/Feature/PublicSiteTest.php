@@ -57,7 +57,7 @@ test('galleries index page renders', function () {
         );
 });
 
-test('galleries show page renders gallery', function () {
+test('galleries show page renders gallery with paginated artworks prop', function () {
     $gallery = Gallery::factory()->create(['publish_status' => 'published']);
 
     $this->get(route('galleries.show', $gallery))
@@ -65,6 +65,24 @@ test('galleries show page renders gallery', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Galleries/Show')
             ->where('gallery.id', $gallery->id)
+            ->has('artworks.data')
+            ->has('artworks.links')
+            ->has('artworks.meta')
+        );
+});
+
+test('galleries show page paginates artworks at 6 per page', function () {
+    $gallery = Gallery::factory()->create(['publish_status' => 'published']);
+    $artworks = Artwork::factory()->count(8)->create(['publish_status' => 'published']);
+    $gallery->artworks()->attach($artworks->pluck('id'));
+
+    $this->get(route('galleries.show', $gallery))
+        ->assertStatus(200)
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Public/Galleries/Show')
+            ->has('artworks.data', 6)
+            ->where('artworks.meta.total', 8)
+            ->where('artworks.meta.per_page', 6)
         );
 });
 

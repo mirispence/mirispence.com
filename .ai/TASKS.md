@@ -4,6 +4,17 @@
 
 _none_
 
+## Done
+
+### TASK-006 · Add pagination to gallery show page; reduce art index to 6 per page
+
+- **Status:** DONE
+- **Branch:** ai/claude/task-006-gallery-pagination
+- **Scope:** `app/Http/Controllers/Public/GalleryController.php`, `app/Http/Controllers/Public/ArtworkController.php`, `resources/js/pages/Public/Galleries/Show.vue`, `tests/Feature/PublicSiteTest.php`, `app/Support/Seo/SeoBuilder.php` (bug fix: missing `use App\Models\Gallery` import)
+- **Summary:** `/galleries/{slug}` show page now queries artworks separately and paginates at 6/page, passing artworks as a dedicated Inertia prop with `data`/`links`/`meta`. Art index reduced from 12 to 6/page. Gallery Show Vue updated to use `artworks.data`, empty state, and pagination nav. Fixed pre-existing missing Gallery import in SeoBuilder that was causing 500 on gallery show.
+- **How to test:** `php artisan test --filter=PublicSiteTest` — 10 tests, 119 assertions, all pass.
+- **Risks:** None.
+
 ## Backlog
 
 ### TASK-001 · Remove broken signed_urls test from SecurityFixesTest

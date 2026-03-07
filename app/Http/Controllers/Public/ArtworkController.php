@@ -34,7 +34,7 @@ class ArtworkController extends Controller
 
         Inertia::share('seo', SeoBuilder::forArtIndex());
 
-        $artworks = $query->paginate(12)->withQueryString();
+        $artworks = $query->paginate(6)->withQueryString();
 
         return Inertia::render('Public/Art/Index', [
             'artworks' => PublicArtworkResource::collection($artworks),

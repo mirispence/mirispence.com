@@ -101,17 +101,7 @@ Inferred constraints: not multi-tenant, no public user registration, no e-commer
 
 ## Next Milestone
 
-`TASKS.md` does not exist. Candidate next milestones based on current state:
-
-1. **Fix broken test** — resolve `signed_urls` vs `media_urls` mismatch in `SecurityFixesTest.php:80–98`
-2. **Admin form restyle** — implement `instructions/update-admin-styles.md` spec across all `resources/js/Pages/Admin/` form pages
-3. **Commission workflow** — add admin controller/UI for `CommissionRequest` (model, factory, migration already exist)
-4. **Test CI gate** — add a test job to `deploy.yml` or a separate workflow that runs `composer test` before deploying
-
 ---
 
 ## Notes
 
-- `/.ai/GUARDRAILS.md` and `/.ai/TASKS.md` do not exist — recommend creating them to guide AI agents and track planned work.
-- `instructions/update-admin-styles.md` at repo root is an in-progress AI task spec — should move to `.ai/` or be tracked in `TASKS.md`.
-- `CONTEXT.md` was absent and has been created alongside this file.

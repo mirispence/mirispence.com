@@ -6,6 +6,11 @@ import { Head, Link } from '@inertiajs/vue3';
 
 defineProps<{
     gallery: any;
+    artworks: {
+        data: Array<any>;
+        links: Array<any>;
+        meta: any;
+    };
 }>();
 </script>
 
@@ -55,14 +60,14 @@ defineProps<{
 
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 <ArtCard
-                    v-for="artwork in gallery.artworks"
+                    v-for="artwork in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
                 />
             </div>
 
             <div
-                v-if="gallery.artworks.length === 0"
+                v-if="artworks.data.length === 0"
                 class="rounded-[3rem] border border-white/60 bg-white/40 py-24 text-center"
             >
                 <div
@@ -88,6 +93,34 @@ defineProps<{
                 <p class="mt-2 text-muted-foreground/60">
                     Check back soon for new additions to this collection.
                 </p>
+            </div>
+
+            <!-- Pagination -->
+            <div
+                class="mt-20 flex items-center justify-center"
+                v-if="artworks.links.length > 3"
+            >
+                <nav class="flex items-center gap-2" aria-label="Pagination">
+                    <template v-for="link in artworks.links" :key="link.label">
+                        <Link
+                            v-if="link.url"
+                            :href="link.url"
+                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
+                            :class="
+                                link.active
+                                    ? 'bg-primary text-white shadow-lg'
+                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
+                            "
+                        >
+                            <span v-html="link.label"></span>
+                        </Link>
+                        <span
+                            v-else
+                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
+                            v-html="link.label"
+                        ></span>
+                    </template>
+                </nav>
             </div>
         </div>
     </PublicLayout>

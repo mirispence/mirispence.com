@@ -4,6 +4,7 @@ namespace App\Support\Seo;
 
 use App\Models\Artwork;
 use App\Models\Book;
+use App\Models\Gallery;
 use Illuminate\Support\Str;
 
 class SeoBuilder
