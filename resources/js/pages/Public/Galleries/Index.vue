@@ -2,10 +2,14 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
 defineProps<{
-    galleries: Array<any>;
+    galleries: {
+        data: Array<any>;
+        links: Array<any>;
+        meta: any;
+    };
 }>();
 </script>
 
@@ -25,7 +29,7 @@ defineProps<{
 
             <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
                 <Card
-                    v-for="gallery in galleries"
+                    v-for="gallery in galleries.data"
                     :key="gallery.id"
                     class="group flex flex-col overflow-hidden border-none bg-white p-0"
                 >
@@ -73,6 +77,61 @@ defineProps<{
                         ></div>
                     </div>
                 </Card>
+            </div>
+
+            <!-- Pagination -->
+            <div
+                class="mt-20 flex items-center justify-center"
+                v-if="galleries.meta && galleries.meta.links && galleries.meta.links.length > 3"
+            >
+                <nav class="flex items-center gap-2" aria-label="Pagination">
+                    <template v-for="link in galleries.meta.links" :key="link.label">
+                        <Link
+                            v-if="link.url"
+                            :href="link.url"
+                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
+                            :class="
+                                link.active
+                                    ? 'bg-primary text-white shadow-lg'
+                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
+                            "
+                        >
+                            <span v-html="link.label"></span>
+                        </Link>
+                        <span
+                            v-else
+                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
+                            v-html="link.label"
+                        ></span>
+                    </template>
+                </nav>
+            </div>
+            <!-- Fallback for older structure if meta is missing but links exist directly -->
+            <div
+                class="mt-20 flex items-center justify-center"
+                v-else-if="galleries.links && galleries.links.length > 3"
+            >
+                <nav class="flex items-center gap-2" aria-label="Pagination">
+                    <template v-for="link in galleries.links" :key="link.label">
+                        <Link
+                            v-if="link.url"
+                            :href="link.url"
+                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
+                            :class="
+                                link.active
+                                    ? 'bg-primary text-white shadow-lg'
+                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
+                            "
+                        >
+                            <span v-html="link.label"></span>
+                        </Link>
+                        <span
+                            v-else
+                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
+                            v-html="link.label"
+                        ></span>
+                    </template>
+                </nav>
             </div>
         </div>
     </PublicLayout>

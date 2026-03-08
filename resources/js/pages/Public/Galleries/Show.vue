@@ -3,6 +3,7 @@ import ArtCard from '@/components/ArtCard.vue';
 import { Button } from '@/components/ui/button';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps<{
     gallery: any;
@@ -12,6 +13,12 @@ defineProps<{
         meta: any;
     };
 }>();
+
+const revealedImages = ref(new Set<number>());
+
+const isRevealed = (id: number) => {
+    return revealedImages.value.has(id);
+};
 </script>
 
 <template>
@@ -63,6 +70,7 @@ defineProps<{
                     v-for="artwork in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
+                    :is-revealed="isRevealed(artwork.id)"
                 />
             </div>
 
@@ -98,10 +106,10 @@ defineProps<{
             <!-- Pagination -->
             <div
                 class="mt-20 flex items-center justify-center"
-                v-if="artworks.links.length > 3"
+                v-if="artworks.meta.links.length > 3"
             >
                 <nav class="flex items-center gap-2" aria-label="Pagination">
-                    <template v-for="link in artworks.links" :key="link.label">
+                    <template v-for="link in artworks.meta.links" :key="link.label">
                         <Link
                             v-if="link.url"
                             :href="link.url"

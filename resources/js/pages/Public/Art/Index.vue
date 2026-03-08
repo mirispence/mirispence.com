@@ -152,10 +152,10 @@ watch(selectedGallery, (value) => {
             <!-- Pagination -->
             <div
                 class="mt-20 flex items-center justify-center"
-                v-if="artworks.links.length > 3"
+                v-if="artworks.meta.links.length > 3"
             >
                 <nav class="flex items-center gap-2" aria-label="Pagination">
-                    <template v-for="link in artworks.links" :key="link.label">
+                    <template v-for="link in artworks.meta.links" :key="link.label">
                         <Link
                             v-if="link.url"
                             :href="link.url"

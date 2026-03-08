@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PublicArtworkResource;
-use Illuminate\Http\Request;
-
 use App\Models\Gallery;
 use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
@@ -17,7 +15,7 @@ class GalleryController extends Controller
         Inertia::share('seo', SeoBuilder::forArtIndex());
 
         return Inertia::render('Public/Galleries/Index', [
-            'galleries' => Gallery::published()->get(),
+            'galleries' => Gallery::published()->orderBy('sort_order')->paginate(6),
         ]);
     }
 

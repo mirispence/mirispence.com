@@ -6,6 +6,15 @@ _none_
 
 ## Done
 
+### TASK-007 · Fix pagination rendering on art and gallery pages
+
+- **Status:** DONE
+- **Branch:** ai/pagination-fix
+- **Scope:** `resources/js/Pages/Public/Art/Index.vue`, `resources/js/Pages/Public/Galleries/Show.vue`, `resources/js/Pages/Public/Galleries/Index.vue`, `tests/Feature/PublicSiteTest.php`
+- **Summary:** Pagination links were not rendering because the Vue components were expecting `links` array at the root of the prop, but `JsonResource::collection` wraps pagination data in `meta.links`. Updated components to use `meta.links` for resources and fallback for raw paginators.
+- **How to test:** `php artisan test --filter=PublicSiteTest`
+- **Risks:** None.
+
 ### TASK-006 · Add pagination to gallery show page; reduce art index to 6 per page
 
 - **Status:** DONE

@@ -67,6 +67,7 @@ Inferred constraints: not multi-tenant, no public user registration, no e-commer
 - MarkdownRenderer XSS stripping — tested in `SecurityFixesTest`
 - Settings: profile edit, password update, 2FA management
 - CI/CD deploy workflow with rollback
+- **Pagination:** Fixed on Art Index, Gallery Index, and Gallery Show pages (TASK-007).
 
 ---
 

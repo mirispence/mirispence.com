@@ -23,15 +23,17 @@ test('home page renders with featured items', function () {
         );
 });
 
-test('art index page renders with artworks', function () {
-    Artwork::factory()->count(3)->create(['publish_status' => 'published']);
+test('art index page renders with pagination when more than 6 artworks exist', function () {
+    Artwork::factory()->count(7)->create(['publish_status' => 'published']);
 
     $this->get(route('art.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Art/Index')
-            ->has('artworks.data', 3)
-            ->has('galleries')
+            ->has('artworks.data', 6)
+            ->has('artworks.links') // Root links object (first, last, etc)
+            ->has('artworks.meta') // Meta object containing links array
+            ->where('artworks.meta.total', 7)
         );
 });
 
@@ -46,14 +48,16 @@ test('art show page renders artwork', function () {
         );
 });
 
-test('galleries index page renders', function () {
-    Gallery::factory()->count(2)->create(['publish_status' => 'published']);
+test('galleries index page renders with pagination', function () {
+    Gallery::factory()->count(7)->create(['publish_status' => 'published']);
 
     $this->get(route('galleries.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Galleries/Index')
-            ->has('galleries', 2)
+            ->has('galleries.data', 6)
+            ->has('galleries.links') // Array of links for raw paginator
+            // Raw paginator does not have 'meta' wrapper by default
         );
 });
 
@@ -124,8 +128,8 @@ test('contact form submits successfully', function () {
         'message' => 'This is a test message that is long enough.',
         'type' => 'general',
     ])
-    ->assertRedirect()
-    ->assertSessionHas('success');
+        ->assertRedirect()
+        ->assertSessionHas('success');
 
     $this->assertDatabaseHas('contact_messages', [
         'email' => 'test@example.com',

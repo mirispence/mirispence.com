@@ -24,7 +24,6 @@ These rules are always in effect unless a task explicitly overrides them.
 
 ## Git rules
 
-- Do not run git commands unless explicitly instructed by the user or task.
 - Do not merge into main/master without explicit instruction.
 - Do not use:
   - `git push --force`

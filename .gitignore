@@ -33,10 +33,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-.gemini
-.junie
-AGENTS.md
-AI Programming Instructions.md
-GEMINI.md
 test_output.txt
 .vscode
