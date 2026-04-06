@@ -4,6 +4,17 @@
 
 _none_
 
+## Done (recent)
+
+### TASK-008 · Document codebase as Obsidian vault
+
+- **Status:** DONE
+- **Branch:** main (documentation-only, no code changes)
+- **Scope:** `vault/documentation/` (new files only)
+- **Summary:** Created a full Obsidian-style markdown vault under `vault/documentation/` covering architecture, all domain models, backend controllers/services/jobs/traits, frontend entry points/pages/layouts/components, infrastructure (media, auth, permissions, SEO, queue, deployment), routing, and testing.
+- **How to test:** Open `vault/documentation/` in Obsidian; navigate from `00 - Index.md`.
+- **Risks:** None — documentation only, no code changed.
+
 ## Done
 
 ### TASK-007 · Fix pagination rendering on art and gallery pages
