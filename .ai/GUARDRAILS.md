@@ -19,8 +19,8 @@ These rules are always in effect unless a task explicitly overrides them.
 
 ## Progress tracking
 
-- Update `.ai/PROJECT_STATE.md` and `.ai/TASKS.md` before marking a task DONE.
-- If progress stalls, update task status to BLOCKED with a reason.
+- Update `.ai/PROJECT_STATE.md` before marking a task DONE.
+- If progress stalls, note the reason in `.ai/PROJECT_STATE.md`.
 
 ## Git rules
 

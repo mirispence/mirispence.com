@@ -1,10 +1,12 @@
 <?php
 
+use Laravel\Fortify\Features;
+
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
     $response->assertStatus(200);
-});
+})->skip(fn () => ! Features::enabled(Features::registration()), 'Registration is disabled');
 
 test('new users can register', function () {
     $response = $this->post(route('register.store'), [
@@ -16,4 +18,4 @@ test('new users can register', function () {
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
-});
+})->skip(fn () => ! Features::enabled(Features::registration()), 'Registration is disabled');

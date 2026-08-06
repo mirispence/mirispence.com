@@ -23,7 +23,7 @@ class CreateUser extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $name = $this->option('name') ?: $this->ask('Name');
         $email = $this->option('email') ?: $this->ask('Email');
@@ -32,6 +32,7 @@ class CreateUser extends Command
 
         if (\App\Models\User::where('email', $email)->exists()) {
             $this->error("User with email {$email} already exists.");
+
             return 1;
         }
 
@@ -45,7 +46,8 @@ class CreateUser extends Command
 
             $this->info("User {$user->email} created successfully!");
         } catch (\Exception $e) {
-            $this->error("Failed to create user: " . $e->getMessage());
+            $this->error('Failed to create user: '.$e->getMessage());
+
             return 1;
         }
 

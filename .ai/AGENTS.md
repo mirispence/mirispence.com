@@ -4,15 +4,12 @@
 
 1) Read:
    - .ai/PROJECT_STATE.md
-   - .ai/TASKS.md
    - .ai/GUARDRAILS.md
    - .ai/CONTEXT.md (if present)
 2) Identify project type:
    - Laravel (confirm version and test style)
    - Non-Laravel (confirm toolchain from CONTEXT)
-3) Select exactly one task or propose a new one.
-4) Claim the task in `.ai/TASKS.md` before coding.
-5) Create a git branch to do all work in
+3) Create a git branch to do all work in
 
 ## Branching rules
 
@@ -39,4 +36,5 @@ Each completed task must provide:
 - Files changed: list
 - How to test: exact commands
 - Risks or follow-ups
-- Updated PROJECT_STATE and TASKS
+- Updated PROJECT_STATE and CONTEXT
+- Updated Obsidian documentation vault files (see skill details in [.ai/skills/update_project_documentation.md](file:///d:/Programming/php/mirispence.com/.ai/skills/update_project_documentation.md))

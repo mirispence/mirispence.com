@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PublicArtworkResource;
-use Illuminate\Http\Request;
-
 use App\Models\Artwork;
 use App\Models\Gallery;
-use App\Models\Tag;
 use App\Support\Seo\SeoBuilder;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ArtworkController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
         $query = Artwork::published()
             ->without('media') // Don't eager load media relation
@@ -43,7 +41,7 @@ class ArtworkController extends Controller
         ]);
     }
 
-    public function show(Artwork $artwork)
+    public function show(Artwork $artwork): \Inertia\Response
     {
         if ($artwork->publish_status !== 'published') {
             abort(404);

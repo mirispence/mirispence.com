@@ -10,8 +10,13 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+});
+
 test('admin can view chapters index', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $book = Book::factory()->create();
     Chapter::factory()->create(['book_id' => $book->id]);
 
@@ -26,6 +31,7 @@ test('admin can view chapters index', function () {
 
 test('admin can create chapter', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $book = Book::factory()->create();
 
     $this->actingAs($user)
@@ -48,6 +54,7 @@ test('admin can create chapter', function () {
 
 test('admin can update chapter', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $book = Book::factory()->create();
     $chapter = Chapter::factory()->create(['book_id' => $book->id]);
 
@@ -72,6 +79,7 @@ test('admin can update chapter', function () {
 
 test('admin can delete chapter', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $book = Book::factory()->create();
     $chapter = Chapter::factory()->create(['book_id' => $book->id]);
 

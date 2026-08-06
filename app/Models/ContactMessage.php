@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ContactMessage extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'email',
@@ -25,7 +26,7 @@ class ContactMessage extends Model
         ];
     }
 
-    public function commissionRequest()
+    public function commissionRequest(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(CommissionRequest::class);
     }

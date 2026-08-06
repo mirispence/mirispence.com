@@ -8,9 +8,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * @property \Illuminate\Support\Carbon|null $release_date
+ */
 class Book extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, \App\Traits\HasUniqueSlug;
+    use \App\Traits\HasUniqueSlug, HasFactory, InteractsWithMedia;
 
     public function getSlugSourceField(): string
     {
@@ -30,11 +33,9 @@ class Book extends Model implements HasMedia
     ];
 
     protected $appends = ['media_urls', 'image_url', 'thumb_url', 'description_html'];
-        
+
     /**
      * Register media collections.
-     *
-     * @return void
      */
     public function registerMediaCollections(): void
     {
@@ -46,24 +47,19 @@ class Book extends Model implements HasMedia
 
     /**
      * Register media conversions.
-     *
-     * @param  \Spatie\MediaLibrary\MediaCollections\Models\Media|null  $media
-     * @return void
      */
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(320)
             ->nonQueued()
+            ->performOnCollections('cover')
+            ->width(320)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('cover');
+            ->quality(80);
     }
 
     /**
      * Get the thumb URL attribute.
-     *
-     * @return string|null
      */
     public function getThumbUrlAttribute(): ?string
     {
@@ -72,8 +68,6 @@ class Book extends Model implements HasMedia
 
     /**
      * Get the description HTML attribute.
-     *
-     * @return string
      */
     public function getDescriptionHtmlAttribute(): string
     {
@@ -82,8 +76,6 @@ class Book extends Model implements HasMedia
 
     /**
      * Get the image URL attribute.
-     *
-     * @return string
      */
     public function getImageUrlAttribute(): string
     {
@@ -92,8 +84,6 @@ class Book extends Model implements HasMedia
 
     /**
      * Get the media URLs attribute.
-     *
-     * @return array
      */
     public function getMediaUrlsAttribute(): array
     {
@@ -110,8 +100,6 @@ class Book extends Model implements HasMedia
 
     /**
      * Get the casts array.
-     *
-     * @return array
      */
     protected function casts(): array
     {
@@ -122,34 +110,25 @@ class Book extends Model implements HasMedia
         ];
     }
 
-
-
-        /**
-     * Get the chapters relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function chapters()
+    public function chapters(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Chapter::class)->orderBy('order');
     }
 
     /**
      * Get the tags relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function tags()
+    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopePublished($query)
+    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('publish_status', 'published');
     }
 
-    public function scopeFeatured($query)
+    public function scopeFeatured(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('featured_flag', true);
     }

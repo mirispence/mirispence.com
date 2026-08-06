@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\Artwork;
-use App\Models\Book;
 use App\Models\FeaturedItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,8 +10,13 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+});
+
 test('admin can view featured items index', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->get(route('admin.featured-items.index'))
@@ -25,6 +29,7 @@ test('admin can view featured items index', function () {
 
 test('admin can create featured item', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $artwork = Artwork::factory()->create();
 
     $this->actingAs($user)
@@ -46,6 +51,7 @@ test('admin can create featured item', function () {
 
 test('admin can update featured item', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $artwork = Artwork::factory()->create();
     $featuredItem = FeaturedItem::create([
         'item_type' => 'artwork',
@@ -72,6 +78,7 @@ test('admin can update featured item', function () {
 
 test('admin can delete featured item', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $artwork = Artwork::factory()->create();
     $featuredItem = FeaturedItem::create([
         'item_type' => 'artwork',

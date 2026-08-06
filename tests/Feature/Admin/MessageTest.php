@@ -9,8 +9,13 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+});
+
 test('admin can view messages index', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->get(route('admin.messages.index'))
@@ -23,6 +28,7 @@ test('admin can view messages index', function () {
 
 test('admin can view message details', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $message = ContactMessage::factory()->create();
 
     $this->actingAs($user)
@@ -36,6 +42,7 @@ test('admin can view message details', function () {
 
 test('admin can update message status', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $message = ContactMessage::factory()->create();
 
     $this->actingAs($user)
@@ -54,6 +61,7 @@ test('admin can update message status', function () {
 
 test('admin can delete message', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $message = ContactMessage::factory()->create();
 
     $this->actingAs($user)

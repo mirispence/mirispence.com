@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class GalleryController extends Controller
 {
-    public function index()
+    public function index(): \Inertia\Response
     {
         Inertia::share('seo', SeoBuilder::forArtIndex());
 
@@ -19,7 +19,7 @@ class GalleryController extends Controller
         ]);
     }
 
-    public function show(Gallery $gallery)
+    public function show(Gallery $gallery): \Inertia\Response
     {
         if ($gallery->publish_status !== 'published') {
             abort(404);

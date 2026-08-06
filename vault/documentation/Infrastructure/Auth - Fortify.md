@@ -12,7 +12,7 @@ Authentication is handled by **Laravel Fortify** (headless). It provides the bac
 
 Configured in `config/fortify.php`. Standard Fortify features in use:
 
-- `Features::registration()` — user registration
+- `Features::registration()` — user registration (disabled in default configuration)
 - `Features::resetPasswords()` — password reset via email
 - `Features::emailVerification()` — email verification required
 - `Features::updateProfileInformation()` — update name/email

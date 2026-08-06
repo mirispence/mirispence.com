@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\Artwork
+ */
 class PublicArtworkResource extends JsonResource
 {
     /**
@@ -25,13 +28,13 @@ class PublicArtworkResource extends JsonResource
                 'thumb' => $media->getUrl('thumb'),
                 'grid' => [
                     'src' => $media->getUrl('grid_640'),
-                    'srcset' => $media->getUrl('grid_640') . ' 640w, ' . $media->getUrl('grid_960') . ' 960w',
+                    'srcset' => $media->getUrl('grid_640').' 640w, '.$media->getUrl('grid_960').' 960w',
                 ],
                 'display' => [
                     'src' => $media->getUrl('display_1280'),
-                    'srcset' => $media->getUrl('display_1280') . ' 1280w, ' .
-                               $media->getUrl('display_1600') . ' 1600w, ' .
-                               $media->getUrl('display_2048') . ' 2048w',
+                    'srcset' => $media->getUrl('display_1280').' 1280w, '.
+                               $media->getUrl('display_1600').' 1600w, '.
+                               $media->getUrl('display_2048').' 2048w',
                 ],
             ];
         }
@@ -46,12 +49,12 @@ class PublicArtworkResource extends JsonResource
             'created_on' => $this->created_on?->format('F Y'),
             'nsfw_flag' => $this->nsfw_flag,
             'media_urls' => $mediaUrls,
-            'tags' => $this->whenLoaded('tags', fn() => $this->tags->map(fn($tag) => [
+            'tags' => $this->whenLoaded('tags', fn () => $this->tags->map(fn ($tag) => [
                 'id' => $tag->id,
                 'name' => $tag->name,
                 'slug' => $tag->slug,
             ])),
-            'galleries' => $this->whenLoaded('galleries', fn() => $this->galleries->map(fn($gallery) => [
+            'galleries' => $this->whenLoaded('galleries', fn () => $this->galleries->map(fn ($gallery) => [
                 'id' => $gallery->id,
                 'name' => $gallery->name,
                 'slug' => $gallery->slug,

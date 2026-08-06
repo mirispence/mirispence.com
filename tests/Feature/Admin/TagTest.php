@@ -9,8 +9,13 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+});
+
 test('admin can view tags index', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->get(route('admin.tags.index'))
@@ -23,6 +28,7 @@ test('admin can view tags index', function () {
 
 test('admin can create tag', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->post(route('admin.tags.store'), [
@@ -40,6 +46,7 @@ test('admin can create tag', function () {
 
 test('admin can update tag', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $tag = Tag::factory()->create();
 
     $this->actingAs($user)
@@ -59,6 +66,7 @@ test('admin can update tag', function () {
 
 test('admin can delete tag', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $tag = Tag::factory()->create();
 
     $this->actingAs($user)

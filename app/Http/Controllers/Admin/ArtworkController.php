@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreArtworkRequest;
+use App\Http\Requests\Admin\UpdateArtworkRequest;
 use App\Models\Artwork;
 use App\Models\Gallery;
 use App\Models\Tag;
@@ -15,7 +17,7 @@ class ArtworkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -26,7 +28,7 @@ class ArtworkController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -36,23 +38,9 @@ class ArtworkController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreArtworkRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('can upload art');
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'alt_text' => 'nullable|string|max:255',
-            'created_on' => 'nullable|date',
-            'publish_status' => 'required|in:draft,published',
-            'nsfw_flag' => 'boolean',
-            'featured_flag' => 'boolean',
-            'galleries' => 'array',
-            'tags' => 'array',
-            'image' => 'nullable|image|max:10240', // 10MB max
-        ]);
-
+        $validated = $request->validated();
 
         $artwork = Artwork::create($validated);
 
@@ -71,16 +59,21 @@ class ArtworkController extends Controller
             \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
         }
 
+        $message = 'Artwork created successfully.';
+        if ($artwork->slug !== Str::slug($artwork->title)) {
+            $message .= " Slug was adjusted to '{$artwork->slug}' due to collision.";
+        }
+
         return redirect()->route('admin.artworks.index')
-            ->with('success', 'Artwork created successfully.');
+            ->with('success', $message);
     }
 
-    public function show(string $id)
+    public function show(Artwork $artwork): void
     {
         //
     }
 
-    public function edit(Artwork $artwork)
+    public function edit(Artwork $artwork): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -91,23 +84,9 @@ class ArtworkController extends Controller
         ]);
     }
 
-    public function update(Request $request, Artwork $artwork)
+    public function update(UpdateArtworkRequest $request, Artwork $artwork): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('can edit art');
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'alt_text' => 'nullable|string|max:255',
-            'created_on' => 'nullable|date',
-            'publish_status' => 'required|in:draft,published',
-            'nsfw_flag' => 'boolean',
-            'featured_flag' => 'boolean',
-            'galleries' => 'array',
-            'tags' => 'array',
-            'image' => 'nullable|image|max:10240',
-        ]);
-
+        $validated = $request->validated();
 
         $artwork->update($validated);
 
@@ -131,7 +110,7 @@ class ArtworkController extends Controller
             ->with('success', 'Artwork updated successfully.');
     }
 
-    public function destroy(Artwork $artwork)
+    public function destroy(Artwork $artwork): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 
@@ -141,7 +120,7 @@ class ArtworkController extends Controller
             ->with('success', 'Artwork deleted successfully.');
     }
 
-    public function regenerate(Artwork $artwork)
+    public function regenerate(Artwork $artwork): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('can regenerate image thumbnails');
 
@@ -150,7 +129,7 @@ class ArtworkController extends Controller
         return back()->with('success', 'Image regeneration started in the background.');
     }
 
-    public function bulkRegenerate(Request $request)
+    public function bulkRegenerate(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('can regenerate image thumbnails');
 

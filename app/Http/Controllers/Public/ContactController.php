@@ -3,26 +3,24 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Http\Requests\ContactRequest;
 use App\Models\ContactMessage;
-use Illuminate\Support\Facades\RateLimiter;
 use App\Support\Seo\SeoBuilder;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
 
 class ContactController extends Controller
 {
-    public function create()
+    public function create(): \Inertia\Response
     {
         Inertia::share('seo', SeoBuilder::forContact());
-        
+
         return Inertia::render('Public/Contact');
     }
 
-    public function store(ContactRequest $request)
+    public function store(ContactRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $key = 'contact:' . $request->ip();
+        $key = 'contact:'.$request->ip();
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             abort(429, 'Too many attempts. Please try again later.');

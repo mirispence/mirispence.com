@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CommissionRequest extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'contact_message_id',
         'project_description',
@@ -26,7 +27,7 @@ class CommissionRequest extends Model
         ];
     }
 
-    public function contactMessage()
+    public function contactMessage(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(ContactMessage::class);
     }

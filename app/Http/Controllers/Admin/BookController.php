@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreBookRequest;
+use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Tag;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -14,7 +14,7 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -25,7 +25,7 @@ class BookController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -34,21 +34,9 @@ class BookController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('can upload book');
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'publish_status' => 'required|in:draft,published',
-            'featured_flag' => 'boolean',
-            'release_date' => 'nullable|date',
-            'external_links' => 'nullable|array',
-            'tags' => 'array',
-            'cover' => 'nullable|image|max:10240',
-        ]);
-
+        $validated = $request->validated();
 
         $book = Book::create($validated);
 
@@ -65,12 +53,12 @@ class BookController extends Controller
             ->with('success', 'Book created successfully.');
     }
 
-    public function show(string $id)
+    public function show(Book $book): void
     {
         //
     }
 
-    public function edit(Book $book)
+    public function edit(Book $book): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -80,21 +68,9 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('can edit book');
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'publish_status' => 'required|in:draft,published',
-            'featured_flag' => 'boolean',
-            'release_date' => 'nullable|date',
-            'external_links' => 'nullable|array',
-            'tags' => 'array',
-            'cover' => 'nullable|image|max:10240',
-        ]);
-
+        $validated = $request->validated();
 
         $book->update($validated);
 
@@ -112,7 +88,7 @@ class BookController extends Controller
             ->with('success', 'Book updated successfully.');
     }
 
-    public function destroy(Book $book)
+    public function destroy(Book $book): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 

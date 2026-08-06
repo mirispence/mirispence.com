@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreTagRequest;
+use App\Http\Requests\Admin\UpdateTagRequest;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -13,7 +14,7 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -24,21 +25,16 @@ class TagController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): \Inertia\Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/Tags/Create');
     }
 
-    public function store(Request $request)
+    public function store(StoreTagRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:artwork,book,both',
-        ]);
+        $validated = $request->validated();
 
         $validated['slug'] = Str::slug($validated['name']);
 
@@ -48,12 +44,12 @@ class TagController extends Controller
             ->with('success', 'Tag created successfully.');
     }
 
-    public function show(string $id)
+    public function show(Tag $tag): void
     {
         //
     }
 
-    public function edit(Tag $tag)
+    public function edit(Tag $tag): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -62,14 +58,9 @@ class TagController extends Controller
         ]);
     }
 
-    public function update(Request $request, Tag $tag)
+    public function update(UpdateTagRequest $request, Tag $tag): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:artwork,book,both',
-        ]);
+        $validated = $request->validated();
 
         if ($tag->name !== $validated['name']) {
             $validated['slug'] = Str::slug($validated['name']);
@@ -81,7 +72,7 @@ class TagController extends Controller
             ->with('success', 'Tag updated successfully.');
     }
 
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 

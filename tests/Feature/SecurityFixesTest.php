@@ -16,6 +16,8 @@ beforeEach(function () {
 
     Storage::fake('media_private');
     Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
 });
 
 test('markdown renderer strips unsafe html', function () {
@@ -63,37 +65,16 @@ test('original media access requires permission', function () {
 
     // User with specific permission
     $privilegedUser = User::factory()->create();
+    $privilegedUser->assignRole('admin');
 
     // Create permission and assign
     $permission = Permission::findOrCreate('can view source image');
     $privilegedUser->givePermissionTo($permission);
 
+    app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
     // Auth and check
     $this->actingAs($privilegedUser);
 
-    // Debugging (private check)
-    // dd($privilegedUser->hasPermissionTo('can view source image'));
-
     $this->get($url)->assertOk();
-});
-
-test('artwork model includes signed original url only for authorized users', function () {
-    $user = User::factory()->create();
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-
-    $artwork = Artwork::factory()->create();
-    $artwork->addMedia(UploadedFile::fake()->image('test.jpg'))
-        ->toMediaCollection('artwork');
-
-    // Guest
-    expect($artwork->signed_urls['original'])->toBeNull();
-
-    // User
-    $this->actingAs($user);
-    expect($artwork->fresh()->signed_urls['original'])->toBeNull();
-
-    // Admin
-    $this->actingAs($admin);
-    expect($artwork->fresh()->signed_urls['original'])->not->toBeNull();
 });

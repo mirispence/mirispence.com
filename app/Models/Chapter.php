@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Chapter extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'book_id',
         'title',
@@ -33,7 +34,7 @@ class Chapter extends Model
         ];
     }
 
-    public function book()
+    public function book(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Book::class);
     }

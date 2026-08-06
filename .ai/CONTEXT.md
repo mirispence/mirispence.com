@@ -152,9 +152,8 @@ Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, 
 
 ---
 
-## Known Issues (as of 2026-03-02)
+## Known Issues (as of 2026-06-25)
 
-1. `SecurityFixesTest::artwork model includes signed original url` — references non-existent `signed_urls` accessor (model has `media_urls`); likely a broken test from a refactor
-2. `CommissionRequest` model/migration/factory exists but has no routes or admin UI
-3. `.env.example` is missing all R2 environment variables
-4. Admin form restyle (`instructions/update-admin-styles.md`) is specced but not yet implemented
+1. `CommissionRequest` model/migration/factory exists but has no routes or admin UI
+2. `.env.example` is missing all R2 environment variables
+3. Admin form restyle (`instructions/update-admin-styles.md`) is specced but not yet implemented

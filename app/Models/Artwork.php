@@ -8,9 +8,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * @property \Illuminate\Support\Carbon|null $created_on
+ */
 class Artwork extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, \App\Traits\HasUniqueSlug;
+    use \App\Traits\HasUniqueSlug, HasFactory, InteractsWithMedia;
 
     public function getSlugSourceField(): string
     {
@@ -68,41 +71,41 @@ class Artwork extends Model implements HasMedia
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(320)
             ->nonQueued()
+            ->performOnCollections('artwork')
+            ->width(320)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('artwork');
+            ->quality(80);
 
         $this->addMediaConversion('grid_640')
+            ->performOnCollections('artwork')
             ->width(640)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('artwork');
+            ->quality(80);
 
         $this->addMediaConversion('grid_960')
+            ->performOnCollections('artwork')
             ->width(960)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('artwork');
+            ->quality(80);
 
         $this->addMediaConversion('display_1280')
+            ->performOnCollections('artwork')
             ->width(1280)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('artwork');
+            ->quality(80);
 
         $this->addMediaConversion('display_1600')
+            ->performOnCollections('artwork')
             ->width(1600)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('artwork');
+            ->quality(80);
 
         $this->addMediaConversion('display_2048')
+            ->performOnCollections('artwork')
             ->width(2048)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('artwork');
+            ->quality(80);
     }
 
     public function getImageUrlAttribute(): ?string
@@ -122,13 +125,13 @@ class Artwork extends Model implements HasMedia
             'thumb' => $media->getUrl('thumb'),
             'grid' => [
                 'src' => $media->getUrl('grid_640'),
-                'srcset' => $media->getUrl('grid_640') . ' 640w, ' . $media->getUrl('grid_960') . ' 960w',
+                'srcset' => $media->getUrl('grid_640').' 640w, '.$media->getUrl('grid_960').' 960w',
             ],
             'display' => [
                 'src' => $media->getUrl('display_1280'),
-                'srcset' => $media->getUrl('display_1280') . ' 1280w, ' .
-                           $media->getUrl('display_1600') . ' 1600w, ' .
-                           $media->getUrl('display_2048') . ' 2048w',
+                'srcset' => $media->getUrl('display_1280').' 1280w, '.
+                           $media->getUrl('display_1600').' 1600w, '.
+                           $media->getUrl('display_2048').' 2048w',
             ],
         ];
     }
@@ -148,24 +151,24 @@ class Artwork extends Model implements HasMedia
         return ucfirst($this->publish_status ?? 'draft');
     }
 
-    public function galleries()
+    public function galleries(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Gallery::class)
             ->withPivot('sort_order')
             ->withTimestamps();
     }
 
-    public function tags()
+    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopePublished($query)
+    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('publish_status', 'published');
     }
 
-    public function scopeFeatured($query)
+    public function scopeFeatured(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('featured_flag', true);
     }

@@ -5,6 +5,7 @@ parameters:
     # Level 5 is a solid starting point for an existing Laravel codebase.
     # Increase toward 9 as the codebase gets cleaner.
     level: 5
+    reportUnmatchedIgnoredErrors: false
 
     # Teach PHPStan about morph map aliases defined in AppServiceProvider.
     # Add entries here if you add new morph types.

@@ -10,7 +10,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Gallery extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, \App\Traits\HasUniqueSlug;
+    use \App\Traits\HasUniqueSlug, HasFactory, InteractsWithMedia;
 
     public function getSlugSourceField(): string
     {
@@ -31,9 +31,7 @@ class Gallery extends Model implements HasMedia
 
     /**
      * Register media collections.
-     *
-     * @return void
-     */ 
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('gallery')
@@ -44,24 +42,19 @@ class Gallery extends Model implements HasMedia
 
     /**
      * Register media conversions.
-     *
-     * @param  \Spatie\MediaLibrary\MediaCollections\Models\Media|null  $media
-     * @return void
      */
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(320)
             ->nonQueued()
+            ->performOnCollections('gallery')
+            ->width(320)
             ->format('webp')
-            ->quality(80)
-            ->performOnCollections('gallery');
+            ->quality(80);
     }
 
     /**
      * Get the thumb URL attribute.
-     *
-     * @return string|null
      */
     public function getThumbUrlAttribute(): ?string
     {
@@ -70,8 +63,6 @@ class Gallery extends Model implements HasMedia
 
     /**
      * Get the description HTML attribute.
-     *
-     * @return string
      */
     public function getDescriptionHtmlAttribute(): string
     {
@@ -80,8 +71,6 @@ class Gallery extends Model implements HasMedia
 
     /**
      * Get the image URL attribute.
-     *
-     * @return string
      */
     public function getImageUrlAttribute(): string
     {
@@ -90,8 +79,6 @@ class Gallery extends Model implements HasMedia
 
     /**
      * Get the media URLs attribute.
-     *
-     * @return array
      */
     public function getMediaUrlsAttribute(): array
     {
@@ -108,17 +95,15 @@ class Gallery extends Model implements HasMedia
 
     /**
      * Get the artworks relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function artworks()
+    public function artworks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Artwork::class)
             ->withPivot('sort_order')
             ->withTimestamps();
     }
 
-    public function scopePublished($query)
+    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('publish_status', 'published');
     }

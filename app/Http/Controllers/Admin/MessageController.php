@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateMessageRequest;
 use App\Models\ContactMessage;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class MessageController extends Controller
@@ -12,7 +12,7 @@ class MessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('can see form answers');
 
@@ -23,7 +23,7 @@ class MessageController extends Controller
         ]);
     }
 
-    public function show(ContactMessage $message)
+    public function show(ContactMessage $message): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -34,20 +34,16 @@ class MessageController extends Controller
         ]);
     }
 
-    public function update(Request $request, ContactMessage $message)
+    public function update(UpdateMessageRequest $request, ContactMessage $message): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'status' => 'required|string|in:new,read,replied,archived',
-        ]);
+        $validated = $request->validated();
 
         $message->update($validated);
 
         return to_route('admin.messages.index')->with('success', 'Message status updated successfully.');
     }
 
-    public function destroy(ContactMessage $message)
+    public function destroy(ContactMessage $message): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 

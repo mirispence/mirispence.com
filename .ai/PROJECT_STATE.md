@@ -1,6 +1,6 @@
 # PROJECT_STATE.md
 
-**Last updated:** 2026-03-02
+**Last updated:** 2026-06-25
 **Phase:** implementation
 
 ---
@@ -68,12 +68,15 @@ Inferred constraints: not multi-tenant, no public user registration, no e-commer
 - Settings: profile edit, password update, 2FA management
 - CI/CD deploy workflow with rollback
 - **Pagination:** Fixed on Art Index, Gallery Index, and Gallery Show pages (TASK-007).
+- **Form Requests & Validation**: Refactored all controller validations into dedicated Form Request classes under `app/Http/Requests/Admin/`, using standardized array-based rules.
+- **Type Hints**: Fully typed all model relationships, scopes, controller action methods, service provider callbacks, and command handlers with explicit PHP 8 return/parameter type declarations.
+- **Static Analysis**: Enforced 100% PHPStan compliance at Level 5 (Larastan) with zero warnings or errors.
+- **Fixed SecurityFixesTest**: Removed stale `signed_urls` test case (TASK-001) and refactored filesystem fakes to prevent hitting real R2 endpoints.
 
 ---
 
 ## What Is Broken or Missing
 
-- **`SecurityFixesTest.php:80–98` — stale test:** `artwork model includes signed original url` references the removed `signed_urls` accessor; needs deletion (TASK-001).
 - **`CommissionRequest` model/migration exists** with factory but has no controller, routes, or admin UI. Dead code / incomplete feature.
 - **`.env.example` missing R2 env vars** (`R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`, `R2_PRIVATE_BUCKET`, `R2_PUBLIC_BUCKET`, `R2_PRIVATE_URL`, `R2_PUBLIC_URL`) despite being required by `config/filesystems.php`.
 - **No test CI gate** in `deploy.yml` — tests are not run before deploying to production.
@@ -105,4 +108,3 @@ Inferred constraints: not multi-tenant, no public user registration, no e-commer
 ---
 
 ## Notes
-

@@ -9,8 +9,13 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+});
+
 test('admin can view books index', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->get(route('admin.books.index'))
@@ -23,6 +28,7 @@ test('admin can view books index', function () {
 
 test('admin can create book', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
 
     $this->actingAs($user)
         ->post(route('admin.books.store'), [
@@ -41,6 +47,7 @@ test('admin can create book', function () {
 
 test('admin can update book', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $book = Book::factory()->create();
 
     $this->actingAs($user)
@@ -63,6 +70,7 @@ test('admin can update book', function () {
 
 test('admin can delete book', function () {
     $user = User::factory()->create();
+    $user->assignRole('admin');
     $book = Book::factory()->create();
 
     $this->actingAs($user)

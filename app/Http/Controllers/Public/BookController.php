@@ -3,24 +3,22 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Models\Book;
 use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(): \Inertia\Response
     {
         Inertia::share('seo', SeoBuilder::forBooksIndex());
-        
+
         return Inertia::render('Public/Books/Index', [
             'books' => Book::published()->latest()->get(),
         ]);
     }
 
-    public function show(Book $book)
+    public function show(Book $book): \Inertia\Response
     {
         if ($book->publish_status !== 'published') {
             abort(404);

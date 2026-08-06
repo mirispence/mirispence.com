@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreFeaturedItemRequest;
+use App\Http\Requests\Admin\UpdateFeaturedItemRequest;
 use App\Models\FeaturedItem;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class FeaturedItemController extends Controller
@@ -12,7 +13,7 @@ class FeaturedItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -24,7 +25,7 @@ class FeaturedItemController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -34,16 +35,9 @@ class FeaturedItemController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreFeaturedItemRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'item_type' => 'required|string|in:artwork,book',
-            'item_id' => 'required|integer',
-            'display_context' => 'required|string|in:home,sidebar,footer',
-            'display_order' => 'required|integer',
-        ]);
+        $validated = $request->validated();
 
         FeaturedItem::create($validated);
 
@@ -51,12 +45,12 @@ class FeaturedItemController extends Controller
             ->with('success', 'Featured item created successfully.');
     }
 
-    public function show(string $id)
+    public function show(FeaturedItem $featuredItem): void
     {
         //
     }
 
-    public function edit(FeaturedItem $featuredItem)
+    public function edit(FeaturedItem $featuredItem): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -67,16 +61,9 @@ class FeaturedItemController extends Controller
         ]);
     }
 
-    public function update(Request $request, FeaturedItem $featuredItem)
+    public function update(UpdateFeaturedItemRequest $request, FeaturedItem $featuredItem): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'item_type' => 'required|string|in:artwork,book',
-            'item_id' => 'required|integer',
-            'display_context' => 'required|string|in:home,sidebar,footer',
-            'display_order' => 'required|integer',
-        ]);
+        $validated = $request->validated();
 
         $featuredItem->update($validated);
 
@@ -84,7 +71,7 @@ class FeaturedItemController extends Controller
             ->with('success', 'Featured item updated successfully.');
     }
 
-    public function destroy(FeaturedItem $featuredItem)
+    public function destroy(FeaturedItem $featuredItem): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FeaturedItem extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'item_type',
         'item_id',
@@ -22,7 +23,7 @@ class FeaturedItem extends Model
         ];
     }
 
-    public function item()
+    public function item(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();
     }

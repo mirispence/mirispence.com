@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreChapterRequest;
+use App\Http\Requests\Admin\UpdateChapterRequest;
 use App\Models\Book;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ class ChapterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -37,7 +39,7 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -47,18 +49,9 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreChapterRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'title' => 'required|string|max:255',
-            'summary' => 'nullable|string',
-            'body_markdown' => 'required|string',
-            'order' => 'required|integer',
-            'is_sample' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         $validated['slug'] = Str::slug($validated['title']);
 
@@ -68,12 +61,12 @@ class ChapterController extends Controller
             ->with('success', 'Chapter created successfully.');
     }
 
-    public function show(string $id)
+    public function show(Chapter $chapter): void
     {
         //
     }
 
-    public function edit(Chapter $chapter)
+    public function edit(Chapter $chapter): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -83,18 +76,9 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function update(Request $request, Chapter $chapter)
+    public function update(UpdateChapterRequest $request, Chapter $chapter): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'title' => 'required|string|max:255',
-            'summary' => 'nullable|string',
-            'body_markdown' => 'required|string',
-            'order' => 'required|integer',
-            'is_sample' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         if ($chapter->title !== $validated['title']) {
             $validated['slug'] = Str::slug($validated['title']);
@@ -106,7 +90,7 @@ class ChapterController extends Controller
             ->with('success', 'Chapter updated successfully.');
     }
 
-    public function destroy(Chapter $chapter)
+    public function destroy(Chapter $chapter): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 

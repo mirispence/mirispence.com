@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreGalleryRequest;
+use App\Http\Requests\Admin\UpdateGalleryRequest;
 use App\Models\Gallery;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class GalleryController extends Controller
@@ -13,7 +13,7 @@ class GalleryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -24,25 +24,16 @@ class GalleryController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): \Inertia\Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/Galleries/Create');
     }
 
-    public function store(Request $request)
+    public function store(StoreGalleryRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'sort_order' => 'nullable|integer',
-            'publish_status' => 'required|in:draft,published',
-            'cover' => 'nullable|image|max:10240',
-        ]);
-
+        $validated = $request->validated();
 
         $gallery = Gallery::create($validated);
 
@@ -55,12 +46,12 @@ class GalleryController extends Controller
             ->with('success', 'Gallery created successfully.');
     }
 
-    public function show(string $id)
+    public function show(Gallery $gallery): void
     {
         //
     }
 
-    public function edit(Gallery $gallery)
+    public function edit(Gallery $gallery): \Inertia\Response
     {
         $this->authorize('admin');
 
@@ -69,18 +60,9 @@ class GalleryController extends Controller
         ]);
     }
 
-    public function update(Request $request, Gallery $gallery)
+    public function update(UpdateGalleryRequest $request, Gallery $gallery): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('admin');
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'sort_order' => 'nullable|integer',
-            'publish_status' => 'required|in:draft,published',
-            'cover' => 'nullable|image|max:10240',
-        ]);
-
+        $validated = $request->validated();
 
         $gallery->update($validated);
 
@@ -94,7 +76,7 @@ class GalleryController extends Controller
             ->with('success', 'Gallery updated successfully.');
     }
 
-    public function destroy(Gallery $gallery)
+    public function destroy(Gallery $gallery): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('admin');
 

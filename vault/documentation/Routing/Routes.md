@@ -72,7 +72,7 @@ Middleware: `auth`, `verified`, `role:admin`. Prefix: `admin`. Name prefix: `adm
 Provided automatically by Fortify. Key routes include:
 - `GET/POST /login`
 - `POST /logout`
-- `GET/POST /register`
+- `GET/POST /register` (disabled in default configuration)
 - `GET/POST /forgot-password`
 - `GET/POST /reset-password/{token}`
 - `GET/POST /email/verify`

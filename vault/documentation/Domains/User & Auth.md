@@ -36,7 +36,7 @@ Uses traits: `HasFactory`, `HasRoles` (Spatie), `Notifiable`, `TwoFactorAuthenti
 
 Handled by **Laravel Fortify** (headless). Features enabled (see `config/fortify.php`):
 - Login / Logout
-- Registration
+- Registration (disabled by default; users are created by the admin in the control panel)
 - Password reset
 - Email verification
 - Two-factor authentication (TOTP)

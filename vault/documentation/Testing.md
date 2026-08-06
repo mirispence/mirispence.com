@@ -71,8 +71,6 @@ Security-specific tests:
 - Admin-only routes are inaccessible to unauthenticated/non-admin users
 - MarkdownRenderer strips HTML and unsafe links
 
-> **Known issue:** `artwork model includes signed original url` test (lines 80–98) is stale and will fail in PHP 8.4 because `signed_urls` accessor was removed. Tracked as **TASK-001**.
-
 ### `DashboardTest.php`
 
 Dashboard access tests.
@@ -115,7 +113,6 @@ php artisan test tests/Unit
 
 | Gap | Tracking |
 |---|---|
-| `SecurityFixesTest::artwork model includes signed original url` is stale | TASK-001 |
 | No unit tests for jobs (`RegenerateArtworkImages`) | No task yet |
 | No unit tests for queue/job dispatch or failure paths | No task yet |
 | No CI test gate before deploy | TASK-004 |
