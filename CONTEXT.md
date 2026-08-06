@@ -1,13 +1,13 @@
 # CONTEXT.md
 
-Quick architectural reference for AI agents working on this codebase.
+Domain and architectural reference for mirispence.com. Read this before exploring the codebase for any non-trivial task — see `docs/agents/domain.md` for how agent skills consume it. High-level stack/commands live in `.claude/CLAUDE.md`; this file goes deeper on layout, domains, and operational detail.
 
 ---
 
 ## What This Is
 
 mirispence.com — personal artist/writer portfolio site with a full admin CMS.
-**Not** a SaaS, marketplace, or multi-tenant app.
+**Not** a SaaS, marketplace, or multi-tenant app. No public registration, no e-commerce/payments.
 
 ---
 
@@ -21,6 +21,7 @@ app/
       Admin/            # Full CRUD for all content types
       Public/           # Read-only public-facing controllers
       Settings/         # Profile, password, 2FA
+    Requests/Admin/     # Form Request validation classes
   Jobs/                 # RegenerateArtworkImages (queued)
   Models/               # Artwork, Gallery, Book, Chapter, Tag, FeaturedItem,
                         #   ContactMessage, CommissionRequest, User
@@ -56,61 +57,36 @@ database/
 tests/
   Feature/
     Admin/              # CRUD tests for all admin resources
-    Auth/               # Full Fortify auth flow tests
-    Settings/           # Profile, password, 2FA settings tests
-    PublicSiteTest.php  # All public routes
-    SecurityFixesTest.php  # XSS, admin gate, media permission, signed URL tests
+    Auth/                # Full Fortify auth flow tests
+    Settings/            # Profile, password, 2FA settings tests
+    PublicSiteTest.php   # All public routes
+    SecurityFixesTest.php # XSS, admin gate, media permission, signed URL tests
     DashboardTest.php
   Unit/
     SeoBuilderTest.php
 
 config/
   filesystems.php       # Defines r2_private, r2_public, media_private disks
-  fortify.php           # Auth feature toggles
-  horizon.php           # Queue config
-  media-library.php     # Spatie Media Library config
-  permission.php        # Spatie Permission config
+  fortify.php            # Auth feature toggles
+  horizon.php             # Queue config
+  media-library.php       # Spatie Media Library config
+  permission.php          # Spatie Permission config
 ```
 
 ---
 
-## Auth & Permissions
+## Domains
 
-- **Auth:** Laravel Fortify. Routes registered automatically. Views are Inertia/Vue.
-- **Roles:** `admin` (only role currently seeded via `RolesAndPermissionsSeeder`)
-- **Permissions:** `can view source image`, `can regenerate image thumbnails`
-- **Gate:** `view-original` gate maps to `can view source image` permission
-- **Admin auto-grant:** `Gate::before` returns `true` for any user with `admin` role
-
-Middleware aliases registered in `bootstrap/app.php`:
-
-- `role` → `RoleMiddleware`
-- `permission` → `PermissionMiddleware`
-- `role_or_permission` → `RoleOrPermissionMiddleware`
-
----
-
-## Storage / Media
-
-- **Original artwork images** → `r2_private` disk (Cloudflare R2, private)
-- **Image conversions** (thumb, grid_640, grid_960, display_1280/1600/2048) → `r2_public` disk (Cloudflare R2, public CDN)
-- All conversions are WebP format
-- `thumb` conversion is **non-queued** (sync); all others are async
-- Admin can regenerate via `POST admin/artworks/{artwork}/regenerate` or bulk via `POST admin/artworks/bulk-regenerate`
-- Original access requires `can view source image` permission via `GET admin/media/{media}/original`
-
-**Test note:** Tests fake `media_private` and `public` disks, NOT `r2_private`/`r2_public`. Media tests use `UploadedFile::fake()`.
-
----
-
-## Frontend Conventions
-
-- All routes use **Inertia.js** (no blade templates for page content)
-- Use **Laravel Wayfinder** typed actions instead of hardcoded URLs — import from `resources/js/actions/`
-- `components/ui/` contains Reka UI + shadcn-style primitives (Button, Card, Badge, etc.)
-- `SignedImage.vue` component for serving protected images
-- Tailwind v4 (no `tailwind.config.js` — config is in CSS)
-- Admin has a pending form design system spec in `instructions/update-admin-styles.md`
+| Domain         | Models              | Routes                            | Admin CRUD              |
+| -------------- | -------------------- | ---------------------------------- | ------------------------ |
+| Artwork        | `Artwork`            | `/art`, `/art/{slug}`              | ✓                        |
+| Gallery        | `Gallery`             | `/galleries`, `/galleries/{slug}`  | ✓                        |
+| Book/Chapter   | `Book`, `Chapter`     | `/books`, `/books/{slug}`          | ✓                        |
+| Tag            | `Tag`                 | —                                  | ✓                        |
+| Featured Items | `FeaturedItem`        | —                                  | ✓                        |
+| Contact        | `ContactMessage`      | `/contact`                         | read/update/delete only  |
+| Commission     | `CommissionRequest`   | **none**                           | **none**                 |
+| User           | `User`                | `/settings/*`                      | ✓                        |
 
 ---
 
@@ -148,12 +124,10 @@ Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, 
 - GitHub Actions: push to `main` triggers SSH deploy
 - Deploy script: clone → composer install → npm ci + build → migrate → cache → reload fpm + horizon
 - Rollback: re-symlinks previous timestamped release
-- **No automated test run in CI pipeline**
+- **No automated test run in CI pipeline** — see `.claude/CLAUDE.md` § Known incomplete areas
 
 ---
 
-## Known Issues (as of 2026-06-25)
+## Known issues
 
-1. `CommissionRequest` model/migration/factory exists but has no routes or admin UI
-2. `.env.example` is missing all R2 environment variables
-3. Admin form restyle (`instructions/update-admin-styles.md`) is specced but not yet implemented
+See `.claude/CLAUDE.md` § Known incomplete areas for the current list — kept in one place to avoid drift between docs.

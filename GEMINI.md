@@ -1,9 +1,4 @@
-Read:
-
-- .ai/AGENTS.md
-- .ai/PROJECT_STATE.md
-- .ai/GUARDRAILS.md
-- .ai/CONTEXT.md (if present)
+Read `.claude/CLAUDE.md` first — it is the source of truth for stack, commands, branching rules, and guardrails for this project, regardless of which agent is reading it. Also read `CONTEXT.md` (domain/architecture reference) and `docs/adr/` (architectural decisions).
 
 <laravel-boost-guidelines>
 === foundation rules ===
@@ -349,9 +344,13 @@ If your application uses the `<Form>` component from Inertia, you can use Wayfin
 ### Pest Tests
 
 - All tests must be written using Pest. Use `php artisan make:test --pest {name}`.
+
 - You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files - these are core to the application.
+
 - Tests should test all of the happy paths, failure paths, and weird paths.
+
 - Tests live in the `tests/Feature` and `tests/Unit` directories.
+
 - Pest tests look and behave like this:
   
   <code-snippet name="Basic Pest Test Example" lang="php">
@@ -573,7 +572,9 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 # Laravel Fortify
 
 - Fortify is a headless authentication backend that provides authentication routes and controllers for Laravel applications.
+
 - IMPORTANT: Always use the `search-docs` tool for detailed Laravel Fortify patterns and documentation.
+
 - IMPORTANT: Activate `developing-with-fortify` skill when working with Fortify authentication features.
   
   </laravel-boost-guidelines>

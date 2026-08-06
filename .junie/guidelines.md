@@ -1,3 +1,5 @@
+Read `.claude/CLAUDE.md` first — it is the source of truth for stack, commands, branching rules, and guardrails for this project, regardless of which agent is reading it. Also read `CONTEXT.md` (domain/architecture reference) and `docs/adr/` (architectural decisions).
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

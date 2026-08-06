@@ -10,9 +10,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Read:
 
-- .ai/PROJECT_STATE.md
-- .ai/GUARDRAILS.md
-- .ai/CONTEXT.md (if present)
+- This file (`.claude/CLAUDE.md`)
+- `CONTEXT.md` (domain/architecture reference)
+- `docs/adr/` — ADRs relevant to the area you're about to work in
 
 ## Branching rules
 
@@ -38,14 +38,23 @@ Each completed task must provide:
 - Files changed: list
 - How to test: exact commands
 - Risks or follow-ups
-- Updated PROJECT_STATE
+- Updated `CONTEXT.md` / `docs/adr/` if the change affects domain layout or is a hard-to-reverse architectural decision (see `.claude/skills/update-project-documentation/SKILL.md`)
 
-## Git rules (from .ai/GUARDRAILS.md)
+## Git rules
 
 - Never merge into main/master without explicit instruction.
 - Do not use `git push --force`, `git merge --squash`, `git rebase`, or `git commit --amend` unless explicitly instructed.
 - No secrets in code, state files, logs, commits, or tests.
 - Changes to logic, validation, orchestration, or security boundaries require tests.
+
+## Laravel guardrails
+
+- Follow Laravel conventions before inventing abstractions.
+- Validation: HTTP via Form Requests (`app/Http/Requests/Admin/`); non-HTTP (jobs, imports, CLI) via dedicated validators or services.
+- Database access: prefer Eloquent or query builder; raw SQL only when necessary, parameterized, and justified.
+- Prefer dependency injection and testable services over static calls.
+- HTTP behavior changes require Feature tests; pure logic changes require Unit tests; queue/job changes must test dispatch, payload shape, and failure paths.
+- Do not migrate test frameworks (PHPUnit ↔ Pest) unless explicitly tasked.
 
 ---
 
