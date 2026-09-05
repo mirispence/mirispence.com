@@ -1,0 +1,19 @@
+{
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/block-main-code-edits.cjs",
+            "statusMessage": "Checking branch before code edit..."
+          }
+        ]
+      }
+    ]
+  }
+}
