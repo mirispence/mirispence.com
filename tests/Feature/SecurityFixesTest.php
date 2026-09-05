@@ -78,3 +78,14 @@ test('original media access requires permission', function () {
 
     $this->get($url)->assertOk();
 });
+
+test('session data is stored using json serialization, not php serialization', function () {
+    $store = app('session.store');
+    $store->put('foo', 'bar');
+    $store->save();
+
+    $raw = $store->getHandler()->read($store->getId());
+
+    expect(json_decode($raw, true))->toBeArray()->toHaveKey('foo', 'bar')
+        ->and($raw)->not->toContain('s:3:"foo"');
+});
