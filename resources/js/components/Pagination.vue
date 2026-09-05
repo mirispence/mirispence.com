@@ -19,6 +19,7 @@ defineProps<{
                     class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-gray-400"
                     v-html="link.label"
                 />
+                <!-- eslint-disable vue/no-v-text-v-html-on-component -- Link has a single <a> root and forwards v-html's innerHTML fallthrough correctly -->
                 <Link
                     v-else
                     :href="link.url"
@@ -30,6 +31,7 @@ defineProps<{
                     "
                     v-html="link.label"
                 />
+                <!-- eslint-enable vue/no-v-text-v-html-on-component -->
             </template>
         </nav>
     </div>

@@ -3,7 +3,7 @@ import { store } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
-const props = defineProps<{
+defineProps<{
     galleries: Array<any>;
     tags: Array<any>;
 }>();

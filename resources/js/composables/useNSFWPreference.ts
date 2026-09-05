@@ -1,4 +1,4 @@
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const ALWAYS_REVEAL_KEY = 'miri_art_nsfw_reveal';
 
