@@ -36,6 +36,10 @@ process.stdin.on('data', (chunk) => {
     input += chunk;
 });
 
+function normalize(p) {
+    return p.replace(/\\/g, '/').toLowerCase();
+}
+
 process.stdin.on('end', () => {
     let payload;
     try {
@@ -47,9 +51,13 @@ process.stdin.on('end', () => {
     const filePath = payload?.tool_input?.file_path;
     if (!filePath) return allow();
 
-    let branch;
+    let branch, repoRoot;
     try {
         branch = execSync('git rev-parse --abbrev-ref HEAD', {
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'ignore'],
+        }).trim();
+        repoRoot = execSync('git rev-parse --show-toplevel', {
             encoding: 'utf8',
             stdio: ['ignore', 'pipe', 'ignore'],
         }).trim();
@@ -58,6 +66,13 @@ process.stdin.on('end', () => {
     }
 
     if (branch !== 'main' && branch !== 'master') return allow();
+
+    // This hook only governs the repo's own working tree. Scratch files,
+    // memory files, and anything else outside the repo aren't code in the
+    // repo and were never in scope for this rule.
+    const normalizedFile = normalize(filePath);
+    const normalizedRoot = normalize(repoRoot);
+    if (!normalizedFile.startsWith(normalizedRoot + '/')) return allow();
 
     if (ALLOWED_PATTERNS.some((pattern) => pattern.test(filePath))) {
         return allow();
