@@ -3,7 +3,7 @@ import ArtCard from '@/components/ArtCard.vue';
 import FormSelect from '@/components/FormSelect.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 const props = defineProps<{

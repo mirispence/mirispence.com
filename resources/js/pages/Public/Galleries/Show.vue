@@ -3,7 +3,7 @@ import ArtCard from '@/components/ArtCard.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
 defineProps<{
     gallery: any;

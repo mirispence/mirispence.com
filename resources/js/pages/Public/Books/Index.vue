@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
 defineProps<{
     books: Array<any>;

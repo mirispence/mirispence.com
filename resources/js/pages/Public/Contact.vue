@@ -4,9 +4,9 @@ import FormTextarea from '@/components/FormTextarea.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
-const props = defineProps<{
+defineProps<{
     success?: string;
 }>();
 

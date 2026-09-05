@@ -29,6 +29,7 @@ const seoData = computed(() => (page.props as any).seo);
         <meta v-if="seoData?.og?.image" name="twitter:image" :content="seoData.og.image" />
 
         <!-- JSON-LD -->
+        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -- :is is always the literal 'script' element -->
         <component :is="'script'" v-if="seoData?.jsonld" type="application/ld+json" v-html="JSON.stringify(seoData.jsonld)">
         </component>
     </Head>

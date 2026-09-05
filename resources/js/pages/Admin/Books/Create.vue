@@ -3,7 +3,7 @@ import { store } from '@/actions/App/Http/Controllers/Admin/BookController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
-const props = defineProps<{
+defineProps<{
     tags: Array<any>;
 }>();
 
