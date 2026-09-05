@@ -37,12 +37,6 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Run test suite
-        run: composer test
-
-      - name: Run PHPStan
-        run: composer analyse
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -52,8 +46,14 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Run ESLint
-        run: npx eslint .
-
       - name: Build frontend
         run: npm run build
+
+      - name: Run test suite
+        run: composer test
+
+      - name: Run PHPStan
+        run: composer analyse
+
+      - name: Run ESLint
+        run: npx eslint .
