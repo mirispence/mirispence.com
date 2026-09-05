@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
 import FormSelect from '@/components/FormSelect.vue';
-import { Button } from '@/components/ui/button';
-import { useNSFWPreference } from '@/composables/useNSFWPreference';
+import PublicPagination from '@/components/PublicPagination.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
@@ -22,7 +21,6 @@ const props = defineProps<{
 
 const selectedGallery = ref(props.filters.gallery || '');
 const revealedImages = ref(new Set<number>());
-const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
 
 const revealNSFW = (id: number) => {
     revealedImages.value.add(id);
@@ -36,14 +34,9 @@ const activeLightboxIndex = ref<number | null>(null);
 const isZoomed = ref(false);
 const activeArtwork = computed(() => activeLightboxIndex.value !== null ? props.artworks.data[activeLightboxIndex.value] : null);
 
+// ArtCard only ever emits click-image once an artwork is already revealed, so the
+// lightbox never needs its own NSFW gate.
 const openLightbox = (index: number) => {
-    const artwork = props.artworks.data[index];
-    if (artwork.nsfw_flag && !isRevealed(artwork.id)) {
-        // We can optionally check nsfwAlwaysReveal here too if we want to skip reveal
-        // But ArtCard handles the click emit, so we just check if it needs manual reveal
-        // Use the composable logic check if preferred
-        revealNSFW(artwork.id);
-    }
     activeLightboxIndex.value = index;
 };
 
@@ -149,33 +142,7 @@ watch(selectedGallery, (value) => {
                 />
             </div>
 
-            <!-- Pagination -->
-            <div
-                class="mt-20 flex items-center justify-center"
-                v-if="artworks.meta.links.length > 3"
-            >
-                <nav class="flex items-center gap-2" aria-label="Pagination">
-                    <template v-for="link in artworks.meta.links" :key="link.label">
-                        <Link
-                            v-if="link.url"
-                            :href="link.url"
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
-                            :class="
-                                link.active
-                                    ? 'bg-primary text-white shadow-lg'
-                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
-                            "
-                        >
-                            <span v-html="link.label"></span>
-                        </Link>
-                        <span
-                            v-else
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
-                            v-html="link.label"
-                        ></span>
-                    </template>
-                </nav>
-            </div>
+            <PublicPagination :links="artworks.meta.links" />
         </div>
 
         <!-- Lightbox Modal -->
@@ -224,33 +191,6 @@ watch(selectedGallery, (value) => {
                         class="relative flex-1 overflow-auto flex items-center justify-center p-4 sm:p-10"
                         @click.self="closeLightbox"
                     >
-                        <template v-if="activeArtwork.nsfw_flag && !isRevealed(activeArtwork.id) && !nsfwAlwaysReveal">
-                             <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-panel/20 backdrop-blur-md">
-                                <div class="max-w-[280px] rounded-[2rem] bg-white/80 p-8 text-center shadow-2xl">
-                                    <h3 class="mb-2 font-heading text-xl font-bold text-foreground">Age Restricted</h3>
-                                    <p class="mb-6 text-sm text-muted-foreground">NSFW Content</p>
-                                    <Button
-                                        variant="accent"
-                                        size="lg"
-                                        class="w-full rounded-full font-bold"
-                                        @click="revealNSFW(activeArtwork.id)"
-                                    >Show Artwork</Button>
-                                    <div class="mt-4 flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            id="lb-nsfw-pref"
-                                            :checked="nsfwAlwaysReveal"
-                                            class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                                            @change="setPreference(($event.target as HTMLInputElement).checked)"
-                                        />
-                                        <label for="lb-nsfw-pref" class="text-xs font-bold text-foreground">
-                                            Show all NSFW artwork this session
-                                        </label>
-                                    </div>
-                                </div>
-                             </div>
-                        </template>
-
                         <div
                             class="relative inline-block transition-all duration-300 m-auto"
                         >
@@ -261,7 +201,6 @@ watch(selectedGallery, (value) => {
                                 :alt="activeArtwork.alt_text || activeArtwork.title"
                                 :class="[
                                     'shadow-2xl rounded-lg transition-all duration-500',
-                                    activeArtwork.nsfw_flag && !isRevealed(activeArtwork.id) && !nsfwAlwaysReveal ? 'blur-3xl opacity-30 grayscale' : '',
                                     isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
                                 ]"
                             />
@@ -271,7 +210,6 @@ watch(selectedGallery, (value) => {
                                 :alt="activeArtwork.alt_text || activeArtwork.title"
                                 class="shadow-2xl rounded-lg transition-all duration-500"
                                 :class="[
-                                    activeArtwork.nsfw_flag && !isRevealed(activeArtwork.id) && !nsfwAlwaysReveal? 'blur-3xl opacity-30 grayscale' : '',
                                     isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
                                 ]"
                             />

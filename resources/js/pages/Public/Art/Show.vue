@@ -1,29 +1,19 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useNSFWPreference } from '@/composables/useNSFWPreference';
+import NsfwGate from '@/components/NsfwGate.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-const props = defineProps<{
+defineProps<{
     artwork: any;
 }>();
 
-const isRevealed = ref(false);
 const showLightbox = ref(false);
 const isZoomed = ref(false);
-const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
-
-const revealNSFW = () => {
-    isRevealed.value = true;
-};
 
 const openLightbox = () => {
-    if (props.artwork.nsfw_flag && !isRevealed.value && !nsfwAlwaysReveal.value) {
-        revealNSFW();
-        return;
-    }
     showLightbox.value = true;
 };
 
@@ -62,90 +52,33 @@ onUnmounted(() => {
                         class="group relative w-full overflow-hidden rounded-[2.5rem] border-none p-0 shadow-premium"
                     >
                         <div class="aspect-square bg-white">
-                            <img
-                                v-if="artwork.media_urls?.display"
-                                :src="artwork.media_urls.display.src"
-                                :srcset="artwork.media_urls.display.srcset"
-                                :alt="artwork.alt_text || artwork.title"
-                                class="h-full w-full object-contain transition-all duration-700"
-                                :class="{
-                                    'scale-110 opacity-40 blur-3xl grayscale':
-                                        artwork.nsfw_flag && !isRevealed,
-                                }"
-                                sizes="(max-width: 1024px) 100vw, 800px"
-                                loading="eager"
-                                fetchpriority="high"
-                            />
-                            <!-- Placeholder -->
-                            <div
-                                v-else
-                                class="flex h-full items-center justify-center font-heading text-2xl text-muted-foreground italic"
-                            >
-                                No Image available
-                            </div>
-
-                            <!-- Invisible overlay to discourage casual image saving -->
-                            <div
-                                v-if="artwork.media_urls?.display"
-                                class="absolute inset-0 z-10 cursor-pointer"
-                                @click="openLightbox"
-                            ></div>
-
-                            <!-- NSFW Overlay -->
-                            <div
-                                v-if="artwork.nsfw_flag && !isRevealed && !nsfwAlwaysReveal"
-                                class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-panel/20 backdrop-blur-md"
-                            >
+                            <NsfwGate :nsfw="artwork.nsfw_flag" variant="detail" v-slot="{ revealed }">
+                                <img
+                                    v-if="artwork.media_urls?.display"
+                                    :src="artwork.media_urls.display.src"
+                                    :srcset="artwork.media_urls.display.srcset"
+                                    :alt="artwork.alt_text || artwork.title"
+                                    class="h-full w-full object-contain transition-all duration-700"
+                                    :class="{ 'scale-110 opacity-40 blur-3xl grayscale': !revealed }"
+                                    sizes="(max-width: 1024px) 100vw, 800px"
+                                    loading="eager"
+                                    fetchpriority="high"
+                                />
+                                <!-- Placeholder -->
                                 <div
-                                    class="max-w-[280px] rounded-[2rem] bg-white/80 p-8 text-center shadow-2xl"
+                                    v-else
+                                    class="flex h-full items-center justify-center font-heading text-2xl text-muted-foreground italic"
                                 >
-                                    <div
-                                        class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent"
-                                    >
-                                        <svg
-                                            class="h-8 w-8"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <h3
-                                        class="mb-2 font-heading text-xl font-bold text-foreground"
-                                    >
-                                        Age Restricted
-                                    </h3>
-                                    <p
-                                        class="mb-6 text-sm text-muted-foreground"
-                                    >
-                                        This artwork contains NSFW content.
-                                    </p>
-                                    <Button
-                                        variant="accent"
-                                        size="lg"
-                                        class="w-full rounded-full font-bold"
-                                        @click="revealNSFW"
-                                        >Show Artwork</Button
-                                    >
-                                    <div class="mt-4 flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            id="nsfw-pref-show"
-                                            class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                                            @change="setPreference(($event.target as HTMLInputElement).checked)"
-                                        />
-                                        <label for="nsfw-pref-show" class="text-xs font-bold text-foreground">
-                                            Show all NSFW artwork this session
-                                        </label>
-                                    </div>
+                                    No Image available
                                 </div>
-                            </div>
+
+                                <!-- Invisible overlay to discourage casual image saving -->
+                                <div
+                                    v-if="revealed && artwork.media_urls?.display"
+                                    class="absolute inset-0 z-10 cursor-pointer"
+                                    @click="openLightbox"
+                                ></div>
+                            </NsfwGate>
                         </div>
                     </Card>
                 </div>

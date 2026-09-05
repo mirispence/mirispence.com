@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
+import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
 
 defineProps<{
     gallery: any;
@@ -13,12 +13,6 @@ defineProps<{
         meta: any;
     };
 }>();
-
-const revealedImages = ref(new Set<number>());
-
-const isRevealed = (id: number) => {
-    return revealedImages.value.has(id);
-};
 </script>
 
 <template>
@@ -70,7 +64,6 @@ const isRevealed = (id: number) => {
                     v-for="artwork in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
-                    :is-revealed="isRevealed(artwork.id)"
                 />
             </div>
 
@@ -103,33 +96,7 @@ const isRevealed = (id: number) => {
                 </p>
             </div>
 
-            <!-- Pagination -->
-            <div
-                class="mt-20 flex items-center justify-center"
-                v-if="artworks.meta.links.length > 3"
-            >
-                <nav class="flex items-center gap-2" aria-label="Pagination">
-                    <template v-for="link in artworks.meta.links" :key="link.label">
-                        <Link
-                            v-if="link.url"
-                            :href="link.url"
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
-                            :class="
-                                link.active
-                                    ? 'bg-primary text-white shadow-lg'
-                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
-                            "
-                        >
-                            <span v-html="link.label"></span>
-                        </Link>
-                        <span
-                            v-else
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
-                            v-html="link.label"
-                        ></span>
-                    </template>
-                </nav>
-            </div>
+            <PublicPagination :links="artworks.meta.links" />
         </div>
     </PublicLayout>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
@@ -79,60 +80,7 @@ defineProps<{
                 </Card>
             </div>
 
-            <!-- Pagination -->
-            <div
-                class="mt-20 flex items-center justify-center"
-                v-if="galleries.meta && galleries.meta.links && galleries.meta.links.length > 3"
-            >
-                <nav class="flex items-center gap-2" aria-label="Pagination">
-                    <template v-for="link in galleries.meta.links" :key="link.label">
-                        <Link
-                            v-if="link.url"
-                            :href="link.url"
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
-                            :class="
-                                link.active
-                                    ? 'bg-primary text-white shadow-lg'
-                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
-                            "
-                        >
-                            <span v-html="link.label"></span>
-                        </Link>
-                        <span
-                            v-else
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
-                            v-html="link.label"
-                        ></span>
-                    </template>
-                </nav>
-            </div>
-            <!-- Fallback for older structure if meta is missing but links exist directly -->
-            <div
-                class="mt-20 flex items-center justify-center"
-                v-else-if="galleries.links && galleries.links.length > 3"
-            >
-                <nav class="flex items-center gap-2" aria-label="Pagination">
-                    <template v-for="link in galleries.links" :key="link.label">
-                        <Link
-                            v-if="link.url"
-                            :href="link.url"
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
-                            :class="
-                                link.active
-                                    ? 'bg-primary text-white shadow-lg'
-                                    : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
-                            "
-                        >
-                            <span v-html="link.label"></span>
-                        </Link>
-                        <span
-                            v-else
-                            class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
-                            v-html="link.label"
-                        ></span>
-                    </template>
-                </nav>
-            </div>
+            <PublicPagination :links="galleries.meta.links" />
         </div>
     </PublicLayout>
 </template>
