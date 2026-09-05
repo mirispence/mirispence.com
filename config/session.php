@@ -38,6 +38,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Session Data Serialization
+    |--------------------------------------------------------------------------
+    |
+    | This option determines how session data is serialized before it is
+    | stored and unserialized when it is retrieved. Using "json" avoids
+    | the security risks associated with PHP's native serialization.
+    |
+    | Supported: "php", "json"
+    |
+    */
+
+    'serialization' => 'json',
+
+    /*
+    |--------------------------------------------------------------------------
     | Session Encryption
     |--------------------------------------------------------------------------
     |

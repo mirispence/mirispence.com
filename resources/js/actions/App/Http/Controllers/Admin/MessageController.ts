@@ -293,7 +293,7 @@ update.patch = (args: { message: number | { id: number } } | [message: number | 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\MessageController::destroy
- * @see app/Http/Controllers/Admin/MessageController.php:50
+ * @see app/Http/Controllers/Admin/MessageController.php:46
  * @route '/admin/messages/{message}'
  */
 export const destroy = (args: { message: number | { id: number } } | [message: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -308,7 +308,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\MessageController::destroy
- * @see app/Http/Controllers/Admin/MessageController.php:50
+ * @see app/Http/Controllers/Admin/MessageController.php:46
  * @route '/admin/messages/{message}'
  */
 destroy.url = (args: { message: number | { id: number } } | [message: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -341,7 +341,7 @@ destroy.url = (args: { message: number | { id: number } } | [message: number | {
 
 /**
 * @see \App\Http\Controllers\Admin\MessageController::destroy
- * @see app/Http/Controllers/Admin/MessageController.php:50
+ * @see app/Http/Controllers/Admin/MessageController.php:46
  * @route '/admin/messages/{message}'
  */
 destroy.delete = (args: { message: number | { id: number } } | [message: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -351,7 +351,7 @@ destroy.delete = (args: { message: number | { id: number } } | [message: number 
 
     /**
 * @see \App\Http\Controllers\Admin\MessageController::destroy
- * @see app/Http/Controllers/Admin/MessageController.php:50
+ * @see app/Http/Controllers/Admin/MessageController.php:46
  * @route '/admin/messages/{message}'
  */
     const destroyForm = (args: { message: number | { id: number } } | [message: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -366,7 +366,7 @@ destroy.delete = (args: { message: number | { id: number } } | [message: number 
 
             /**
 * @see \App\Http\Controllers\Admin\MessageController::destroy
- * @see app/Http/Controllers/Admin/MessageController.php:50
+ * @see app/Http/Controllers/Admin/MessageController.php:46
  * @route '/admin/messages/{message}'
  */
         destroyForm.delete = (args: { message: number | { id: number } } | [message: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

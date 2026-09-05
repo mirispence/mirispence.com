@@ -118,13 +118,13 @@ Personal artist/writer portfolio + admin CMS. Single-tenant, no public registrat
 
 | Layer         | Technology                                                                                    |
 | ------------- | --------------------------------------------------------------------------------------------- |
-| Framework     | Laravel 12, PHP 8.4                                                                           |
+| Framework     | Laravel 13, PHP 8.4                                                                           |
 | Frontend      | Vue 3 + TypeScript + Inertia.js 2                                                             |
 | CSS           | Tailwind v4 (config in CSS, no `tailwind.config.js`)                                          |
 | UI primitives | Reka UI + shadcn-style components in `resources/js/components/ui/`                            |
 | Build         | Vite 7; entries: `app.ts` (public/auth), `admin.ts` (admin), `ssr.ts` (SSR)                   |
 | Auth          | Laravel Fortify (login, register, password reset, email verification, TOTP 2FA)               |
-| RBAC          | Spatie Laravel Permission v6 — `admin` role auto-granted all gates via `Gate::before`         |
+| RBAC          | Spatie Laravel Permission v8 — `admin` role auto-granted all gates via `Gate::before`         |
 | Media         | Spatie Media Library v11; originals on R2 private, WebP conversions on R2 public              |
 | Storage       | Cloudflare R2 via S3 driver (`r2_private`, `r2_public`, `media_private` disks)                |
 | Queue         | Laravel Horizon (Redis prod; `database` driver dev)                                           |
