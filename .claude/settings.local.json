@@ -3,7 +3,12 @@
     "allow": [
       "Bash(php artisan:*)",
       "Bash(powershell.exe:*)",
-      "Bash(bash ~/.claude/statusline-command.sh)"
+      "Bash(bash ~/.claude/statusline-command.sh)",
+      "Bash(git status *)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "laravel-boost",
+    "herd"
+  ]
 }

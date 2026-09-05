@@ -7,6 +7,7 @@ Tags: #testing #pest #feature #unit
 **Pest 4** with `pest-plugin-laravel`. Underlying engine is PHPUnit.
 
 Default command:
+
 ```bash
 php artisan test
 ```
@@ -41,6 +42,7 @@ tests/
 ### `PublicSiteTest.php`
 
 Covers all public routes:
+
 - Home page renders
 - Art index (with/without filters), art show (published and draft 404)
 - Galleries index, gallery show (with artwork pagination)
@@ -50,6 +52,7 @@ Covers all public routes:
 ### `tests/Feature/Auth/`
 
 Full Fortify authentication flow:
+
 - Login / logout
 - Registration
 - Password reset (request + reset)
@@ -59,6 +62,7 @@ Full Fortify authentication flow:
 ### `tests/Feature/Admin/`
 
 Admin CRUD for all resources:
+
 - Artworks (index, create, store, edit, update, destroy, regenerate, bulk-regenerate)
 - Galleries, Books, Chapters, Tags, Featured Items, Messages, Users
 
@@ -67,6 +71,7 @@ Tests use factories and verify HTTP responses and database state.
 ### `SecurityFixesTest.php`
 
 Security-specific tests:
+
 - Original artwork image access requires `can view source image` permission
 - Admin-only routes are inaccessible to unauthenticated/non-admin users
 - MarkdownRenderer strips HTML and unsafe links
@@ -82,6 +87,7 @@ Verifies the pagination data shape in API responses.
 ### `SeoBuilderTest.php` (Unit)
 
 Unit tests for `SeoBuilder`:
+
 - Title formatting with/without brand append
 - Description normalisation (markdown stripped, HTML stripped, length limited)
 - Canonical URL query-string stripping
@@ -111,11 +117,11 @@ php artisan test tests/Unit
 
 ## Known Gaps
 
-| Gap | Tracking |
-|---|---|
-| No unit tests for jobs (`RegenerateArtworkImages`) | No task yet |
+| Gap                                                   | Tracking    |
+| ----------------------------------------------------- | ----------- |
+| No unit tests for jobs (`RegenerateArtworkImages`)    | No task yet |
 | No unit tests for queue/job dispatch or failure paths | No task yet |
-| No CI test gate before deploy | TASK-004 |
+| No CI test gate before deploy                         | TASK-004    |
 
 ---
 

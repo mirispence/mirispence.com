@@ -11,6 +11,7 @@ Implements `ShouldQueue`. Uses: `Dispatchable`, `InteractsWithQueue`, `Queueable
 ### Purpose
 
 Regenerates all Spatie Media Library conversion files for a given `Artwork`. Called when:
+
 - A new artwork image is uploaded (in `ArtworkController::store`)
 - An artwork image is replaced (in `ArtworkController::update`)
 - Triggered manually via the admin `regenerate` or `bulkRegenerate` actions
@@ -21,7 +22,7 @@ Regenerates all Spatie Media Library conversion files for a given `Artwork`. Cal
 public function __construct(public Artwork $artwork)
 ```
 
-The `Artwork` model is serialised (and deserialised on the worker) via `SerializesModels`.
+The `Artwork` model is serialized (and deserialized on the worker) via `SerializesModels`.
 
 ### Execution Flow
 
