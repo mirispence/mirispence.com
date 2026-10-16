@@ -127,11 +127,6 @@ class Artwork extends Model implements HasMedia
             ->quality(80);
     }
 
-    public function getImageUrlAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('artwork');
-    }
-
     /**
      * Admin-facing URL set. Never contains the private original; see MediaUrlBuilder.
      *
