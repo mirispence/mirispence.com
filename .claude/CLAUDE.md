@@ -30,6 +30,13 @@ Read:
 - Work only within the claimed task scope.
 - No opportunistic fixes or refactors.
 
+## Subagents
+
+- Spawning subagents is pre-approved when the work genuinely splits into independent parallel pieces (broad searches, parallel reviews, separate test/implementation tracks) — no need to ask first.
+- Maximum 5 subagents running concurrently.
+- Keep small or sequential work inline.
+- Extra effort is welcome when the task warrants it (higher reasoning effort, parallel local test/build runs) — the dev machine has ample RAM/CPU.
+
 ## Completion requirements
 
 Each completed task must provide:
