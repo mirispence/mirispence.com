@@ -98,6 +98,7 @@ Artwork --< ArtworkGallery >-- Gallery   (pivot: sort_order)
 Gallery >-- Artwork                      (cover_artwork_id, nullable, nullOnDelete: explicit cover)
 Artwork --< ArtworkTag >-- Tag
 Book --< Chapter
+Book >-- Gallery                         (gallery_id, nullable, nullOnDelete: cover source)
 FeaturedItem (morph: artwork | book)
 ContactMessage --< CommissionRequest    (commission is a sub-record of contact; no admin UI yet)
 User (has roles/permissions via Spatie)
@@ -108,6 +109,8 @@ Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, 
 Media URL sets (`media_urls`, `thumb_url`, `PublicArtworkResource`) are built only by `App\Support\Media\MediaUrlBuilder` (`public()` / `admin()`), which never exposes an `original` key. The raw `media` relation is hidden from Artwork serialization (Spatie's `Media::toArray()` includes `original_url`). Originals are reachable only via the gated `admin.media.original` route.
 
 Gallery has no media of its own (not `HasMedia`). Its cover is an explicit pick of one of its own member Artworks (`Gallery::coverArtwork()`, column `cover_artwork_id`), independent of the pivot `sort_order`. `cover_urls` (= cover Artwork's `MediaUrlBuilder::public()`, `[]` if no cover or the cover isn't published) is not auto-appended: eager-load `coverArtwork.media` and call `$gallery->withCoverUrls()`. The cover is chosen on gallery edit (validated as a member); create cannot set one because a new gallery has no members.
+
+Book has no media of its own either (not `HasMedia`). It points at a Gallery (`Book::gallery()`, column `gallery_id`, picked from all galleries on admin create/edit), and its cover is that Gallery's cover Artwork. The `gallery` relation is hidden. The `cover` accessor (not auto-appended) returns `{urls: <gallery cover_urls>, gallery: {name, slug}}`, or `null` when there's no gallery, the gallery isn't published, or the gallery has no visible cover. Eager-load `gallery.coverArtwork.media` and call `$book->withCover()`. The public Book show hero renders `cover.urls.display` and links to `galleries.show`. With no cover, no hero is rendered. Admin books index rows carry `cover_thumb_url`.
 
 ---
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookRequest extends FormRequest
@@ -17,7 +18,7 @@ class StoreBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -29,7 +30,7 @@ class StoreBookRequest extends FormRequest
             'release_date' => ['nullable', 'date'],
             'external_links' => ['nullable', 'array'],
             'tags' => ['array'],
-            'cover' => ['nullable', 'image', 'max:10240'],
+            'gallery_id' => ['nullable', 'integer', 'exists:galleries,id'],
         ];
     }
 }
