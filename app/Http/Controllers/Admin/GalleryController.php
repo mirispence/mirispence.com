@@ -25,10 +25,7 @@ class GalleryController extends Controller
                 ->withCount('artworks')
                 ->orderBy('sort_order')
                 ->paginate(10)
-                ->through(fn (Gallery $gallery) => [
-                    ...$gallery->toArray(),
-                    'cover_thumb_url' => $gallery->coverArtwork->thumb_url ?? '',
-                ]),
+                ->through(fn (Gallery $gallery) => $gallery->append('cover_thumb_url')),
         ]);
     }
 

@@ -17,10 +17,9 @@ class GalleryController extends Controller
 
         return Inertia::render('Public/Galleries/Index', [
             'galleries' => Gallery::published()
-                ->with('coverArtwork.media')
+                ->withPublicCover()
                 ->orderBy('sort_order')
-                ->paginate(6)
-                ->through(fn (Gallery $gallery) => $gallery->withCoverUrls()),
+                ->paginate(6),
         ]);
     }
 

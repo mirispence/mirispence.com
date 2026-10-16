@@ -27,10 +27,7 @@ class BookController extends Controller
                 ->withCount('chapters')
                 ->latest()
                 ->paginate(10)
-                ->through(fn (Book $book) => [
-                    ...$book->toArray(),
-                    'cover_thumb_url' => $book->gallery?->coverArtwork->thumb_url ?? '',
-                ]),
+                ->through(fn (Book $book) => $book->append('cover_thumb_url')),
         ]);
     }
 

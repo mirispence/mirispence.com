@@ -125,6 +125,32 @@ class Book extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    /**
+     * Eager-load the Gallery cover chain and append `cover` to every retrieved Book.
+     */
+    public function scopeWithPublicCover(Builder $query): Builder
+    {
+        return $query
+            ->with(['gallery' => fn ($gallery) => $gallery->withPublicCover()])
+            ->afterQuery(fn ($books) => $books->each(fn (Book $book) => $book->withCover()));
+    }
+
+    /**
+     * Load the Gallery cover chain onto this Book and append `cover`.
+     */
+    public function loadPublicCover(): static
+    {
+        return $this->load(['gallery' => fn ($gallery) => $gallery->withPublicCover()])->withCover();
+    }
+
+    /**
+     * Admin-only cover thumbnail, from the linked Gallery's cover.
+     */
+    public function getCoverThumbUrlAttribute(): string
+    {
+        return $this->gallery->cover_thumb_url ?? '';
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('publish_status', 'published');

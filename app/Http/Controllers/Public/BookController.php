@@ -16,10 +16,9 @@ class BookController extends Controller
 
         return Inertia::render('Public/Books/Index', [
             'books' => Book::published()
-                ->with('gallery.coverArtwork.media')
+                ->withPublicCover()
                 ->latest()
-                ->get()
-                ->each->withCover(),
+                ->get(),
         ]);
     }
 
@@ -31,12 +30,12 @@ class BookController extends Controller
 
         $book->load(['chapters' => function ($query) {
             $query->orderBy('order');
-        }, 'tags', 'gallery.coverArtwork.media']);
+        }, 'tags'])->loadPublicCover();
 
         Inertia::share('seo', SeoBuilder::forBook($book));
 
         return Inertia::render('Public/Books/Show', [
-            'book' => $book->withCover(),
+            'book' => $book,
         ]);
     }
 }
