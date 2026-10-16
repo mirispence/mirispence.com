@@ -195,7 +195,7 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 - `CommissionRequest` model/migration/factory exists but has no routes or admin UI
 - `.env.example` is missing all R2 environment variables
 - Admin form restyle is specced in `instructions/update-admin-styles.md` but not yet applied
-- No automated test run in the CI/CD pipeline before deploy
+- CI (`.github/workflows/ci.yml`) runs tests/PHPStan/ESLint on PRs to `main`; `.github/workflows/deploy.yml` deploys on push to `main` without re-running them
 
 ---
 
