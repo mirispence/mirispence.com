@@ -78,7 +78,7 @@ class SeoBuilder
     public static function forArtwork(Artwork $artwork): SeoPayload
     {
         $description = $artwork->description ?: "View '{$artwork->title}' by Miri Spence.";
-        $image = ($artwork->getMediaUrlsAttribute()['display']['src'] ?? null) ?: $artwork->getFirstMediaUrl('artwork');
+        $image = self::publicDisplayUrl($artwork) ?? self::getFallbackOgImage();
         
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -196,22 +196,22 @@ class SeoBuilder
         return self::getFallbackOgImage();
     }
 
+    /**
+     * Site-wide og:image: the latest featured published artwork, else the latest
+     * published artwork. Only ever a public conversion URL, never the original.
+     */
     protected static function getFallbackOgImage(): ?string
     {
-        // 1. First featured artwork
-        $artwork = Artwork::published()->featured()->latest('created_on')->first();
-        
-        if ($artwork) {
-            return ($artwork->getMediaUrlsAttribute()['display']['src'] ?? null) ?: $artwork->getFirstMediaUrl('artwork');
-        }
+        $artwork = Artwork::published()->featured()->latest('created_on')->first()
+            ?? Artwork::published()->latest('created_on')->first();
 
-        // 2. Otherwise, the first image in the artworks table
-        $artwork = Artwork::published()->latest('created_on')->first();
+        return self::publicDisplayUrl($artwork);
+    }
 
-        if ($artwork) {
-            return ($artwork->getMediaUrlsAttribute()['display']['src'] ?? null) ?: $artwork->getFirstMediaUrl('artwork');
-        }
+    private static function publicDisplayUrl(?Artwork $artwork): ?string
+    {
+        $src = $artwork?->mediaUrlBuilder()->public()['display']['src'] ?? null;
 
-        return null;
+        return is_string($src) && $src !== '' ? $src : null;
     }
 }
