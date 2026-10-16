@@ -57,3 +57,9 @@ test('public artwork resource exposes the same public media urls', function () {
         ->toHaveKeys(['thumb', 'grid', 'display']);
     expect($payload['media_urls']['grid'])->toHaveKeys(['src', 'srcset']);
 });
+
+test('artwork has no image_url accessor exposing the raw original', function () {
+    $artwork = artworkWithImage();
+
+    expect($artwork->image_url)->toBeNull();
+});

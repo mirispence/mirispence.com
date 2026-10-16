@@ -27,11 +27,10 @@ class HomeController extends Controller
             'featuredArtworks' => PublicArtworkResource::collection($artworks)->resolve(),
             'featuredBooks' => Book::featured()
                 ->published()
-                ->with('gallery.coverArtwork.media')
+                ->withPublicCover()
                 ->latest('release_date')
                 ->take(3)
-                ->get()
-                ->each->withCover(),
+                ->get(),
         ]);
     }
 }

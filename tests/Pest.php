@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Assert;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,8 +15,8 @@
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -44,4 +48,41 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * Recursively assert a serialized payload (e.g. Inertia props) never exposes an
+ * original image: no `original` / `original_url` key at any depth, and no string
+ * value containing any of the given private original URLs.
+ *
+ * @param  array<int, string>  $privateUrls
+ */
+function assertNoOriginalMedia(mixed $payload, array $privateUrls = []): void
+{
+    $data = json_decode((string) json_encode($payload), true);
+
+    $walk = function (mixed $value, string $path) use (&$walk, $privateUrls): void {
+        if (is_string($value)) {
+            foreach ($privateUrls as $url) {
+                Assert::assertStringNotContainsString(
+                    $url, $value, "Private original URL leaked at [{$path}]"
+                );
+            }
+
+            return;
+        }
+
+        if (! is_array($value)) {
+            return;
+        }
+
+        foreach ($value as $key => $child) {
+            Assert::assertNotContains(
+                $key, ['original', 'original_url'], "Forbidden key [{$key}] found at [{$path}]"
+            );
+            $walk($child, $path === '' ? (string) $key : "{$path}.{$key}");
+        }
+    };
+
+    $walk($data, '');
 }

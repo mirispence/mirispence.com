@@ -5,19 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreArtworkRequest;
 use App\Http\Requests\Admin\UpdateArtworkRequest;
+use App\Jobs\RegenerateArtworkImages;
 use App\Models\Artwork;
 use App\Models\Gallery;
 use App\Models\Tag;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ArtworkController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         $this->authorize('admin');
 
@@ -28,7 +31,7 @@ class ArtworkController extends Controller
         ]);
     }
 
-    public function create(): \Inertia\Response
+    public function create(): Response
     {
         $this->authorize('admin');
 
@@ -38,14 +41,14 @@ class ArtworkController extends Controller
         ]);
     }
 
-    public function store(StoreArtworkRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreArtworkRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
         $artwork = Artwork::create($validated);
 
         if (isset($validated['galleries'])) {
-            $artwork->galleries()->sync($validated['galleries']);
+            $artwork->syncGalleries($validated['galleries']);
         }
 
         if (isset($validated['tags'])) {
@@ -56,7 +59,7 @@ class ArtworkController extends Controller
             $artwork->addMediaFromRequest('image')
                 ->toMediaCollection('artwork');
 
-            \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
+            RegenerateArtworkImages::dispatch($artwork);
         }
 
         $message = 'Artwork created successfully.';
@@ -73,25 +76,27 @@ class ArtworkController extends Controller
         //
     }
 
-    public function edit(Artwork $artwork): \Inertia\Response
+    public function edit(Artwork $artwork): Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/Artworks/Edit', [
             'artwork' => $artwork->load(['galleries', 'tags', 'media']),
+            // Media id for the gated `admin.media.original` link; the media relation itself is hidden.
+            'originalMediaId' => $artwork->getFirstMedia('artwork')?->id,
             'galleries' => Gallery::all(),
             'tags' => Tag::whereIn('type', ['artwork', 'both'])->get(),
         ]);
     }
 
-    public function update(UpdateArtworkRequest $request, Artwork $artwork): \Illuminate\Http\RedirectResponse
+    public function update(UpdateArtworkRequest $request, Artwork $artwork): RedirectResponse
     {
         $validated = $request->validated();
 
         $artwork->update($validated);
 
         if (isset($validated['galleries'])) {
-            $artwork->galleries()->sync($validated['galleries']);
+            $artwork->syncGalleries($validated['galleries']);
         }
 
         if (isset($validated['tags'])) {
@@ -103,14 +108,14 @@ class ArtworkController extends Controller
             $artwork->addMediaFromRequest('image')
                 ->toMediaCollection('artwork');
 
-            \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
+            RegenerateArtworkImages::dispatch($artwork);
         }
 
         return redirect()->route('admin.artworks.index')
             ->with('success', 'Artwork updated successfully.');
     }
 
-    public function destroy(Artwork $artwork): \Illuminate\Http\RedirectResponse
+    public function destroy(Artwork $artwork): RedirectResponse
     {
         $this->authorize('admin');
 
@@ -120,23 +125,23 @@ class ArtworkController extends Controller
             ->with('success', 'Artwork deleted successfully.');
     }
 
-    public function regenerate(Artwork $artwork): \Illuminate\Http\RedirectResponse
+    public function regenerate(Artwork $artwork): RedirectResponse
     {
         $this->authorize('can regenerate image thumbnails');
 
-        \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
+        RegenerateArtworkImages::dispatch($artwork);
 
         return back()->with('success', 'Image regeneration started in the background.');
     }
 
-    public function bulkRegenerate(Request $request): \Illuminate\Http\RedirectResponse
+    public function bulkRegenerate(Request $request): RedirectResponse
     {
         $this->authorize('can regenerate image thumbnails');
 
         $ids = $request->validate(['ids' => 'required|array'])['ids'];
 
         Artwork::whereIn('id', $ids)->get()->each(function ($artwork) {
-            \App\Jobs\RegenerateArtworkImages::dispatch($artwork);
+            RegenerateArtworkImages::dispatch($artwork);
         });
 
         return back()->with('success', count($ids).' artworks queued for regeneration.');

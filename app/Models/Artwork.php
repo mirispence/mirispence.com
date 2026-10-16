@@ -56,11 +56,9 @@ class Artwork extends Model implements HasMedia
         return new MediaUrlBuilder($this, 'artwork');
     }
 
-    public function getThumbUrlAttribute(): ?string
+    public function getThumbUrlAttribute(): string
     {
-        $thumb = $this->mediaUrlBuilder()->admin()['thumb'] ?? '';
-
-        return is_string($thumb) ? $thumb : '';
+        return $this->mediaUrlBuilder()->thumb();
     }
 
     public function getDescriptionHtmlAttribute(): string
@@ -127,11 +125,6 @@ class Artwork extends Model implements HasMedia
             ->quality(80);
     }
 
-    public function getImageUrlAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('artwork');
-    }
-
     /**
      * Admin-facing URL set. Never contains the private original; see MediaUrlBuilder.
      *
@@ -162,6 +155,24 @@ class Artwork extends Model implements HasMedia
         return $this->belongsToMany(Gallery::class)
             ->withPivot('sort_order')
             ->withTimestamps();
+    }
+
+    /**
+     * Set this Artwork's galleries. Any gallery it leaves that used it as its
+     * cover has the cover cleared, so a gallery never points at a non-member.
+     *
+     * @param  array<int, int|string>  $galleryIds
+     */
+    public function syncGalleries(array $galleryIds): void
+    {
+        $detached = $this->galleries()->sync($galleryIds)['detached'];
+
+        if ($detached !== []) {
+            Gallery::query()
+                ->whereKey($detached)
+                ->where('cover_artwork_id', $this->id)
+                ->update(['cover_artwork_id' => null]);
+        }
     }
 
     public function tags(): BelongsToMany

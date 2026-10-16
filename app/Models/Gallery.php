@@ -38,7 +38,7 @@ class Gallery extends Model
     /**
      * The cover Artwork relation is never serialized directly; use `cover_urls`.
      */
-    protected $hidden = ['coverArtwork'];
+    protected $hidden = ['coverArtwork', 'cover_is_member'];
 
     /**
      * Append `cover_urls` to the serialized form (relation should be eager-loaded).
@@ -68,11 +68,28 @@ class Gallery extends Model
     {
         $cover = $this->coverArtwork;
 
-        if ($cover === null || $cover->publish_status !== 'published') {
+        if ($cover === null || $cover->publish_status !== 'published' || ! $this->coverIsMember()) {
             return [];
         }
 
         return $cover->mediaUrlBuilder()->public();
+    }
+
+    /**
+     * Whether the cover Artwork is still one of this Gallery's artworks.
+     * Uses the `cover_is_member` flag preloaded by `withPublicCover()` when present.
+     */
+    public function coverIsMember(): bool
+    {
+        if ($this->cover_artwork_id === null) {
+            return false;
+        }
+
+        if (array_key_exists('cover_is_member', $this->attributes)) {
+            return (bool) $this->attributes['cover_is_member'];
+        }
+
+        return $this->artworks()->whereKey($this->cover_artwork_id)->exists();
     }
 
     /**
@@ -95,6 +112,27 @@ class Gallery extends Model
         return $this->belongsToMany(Artwork::class)
             ->withPivot('sort_order')
             ->withTimestamps();
+    }
+
+    /**
+     * Eager-load everything `cover_urls` needs (cover artwork + media and the
+     * cover-membership flag) and append it to every retrieved Gallery.
+     */
+    public function scopeWithPublicCover(Builder $query): Builder
+    {
+        return $query
+            ->with('coverArtwork.media')
+            ->withExists(['artworks as cover_is_member' => fn (Builder $artworks) => $artworks
+                ->whereColumn('artworks.id', 'galleries.cover_artwork_id')])
+            ->afterQuery(fn ($galleries) => $galleries->each(fn (Gallery $gallery) => $gallery->withCoverUrls()));
+    }
+
+    /**
+     * Admin-only cover thumbnail (shown even when the cover is a draft).
+     */
+    public function getCoverThumbUrlAttribute(): string
+    {
+        return $this->coverArtwork->thumb_url ?? '';
     }
 
     public function scopePublished(Builder $query): Builder

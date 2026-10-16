@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\Gallery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -239,6 +240,59 @@ test('books show page has no hero when the gallery has no cover', function () {
     $this->get(route('books.show', $book))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page->where('book.cover', null));
+});
+
+test('books show page and galleries index ignore a gallery cover that is no longer a member', function () {
+    Storage::fake('media_private');
+    Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
+
+    $cover = Artwork::factory()->create(['publish_status' => 'published']);
+    $cover->addMedia(UploadedFile::fake()->image('cover.jpg', 400, 600))->toMediaCollection('artwork');
+    $gallery = Gallery::factory()->create(['publish_status' => 'published']);
+    $gallery->artworks()->attach($cover->id);
+    $gallery->update(['cover_artwork_id' => $cover->id]);
+    $gallery->artworks()->detach($cover->id);
+    $book = Book::factory()->create(['publish_status' => 'published', 'gallery_id' => $gallery->id]);
+
+    $this->get(route('books.show', $book))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->where('book.cover', null));
+
+    $this->get(route('galleries.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->where('galleries.data.0.cover_urls', []));
+});
+
+test('withPublicCover serializes covers for galleries and books without per-row queries', function () {
+    Storage::fake('media_private');
+    Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
+
+    foreach (range(1, 3) as $i) {
+        $cover = Artwork::factory()->create(['publish_status' => 'published']);
+        $cover->addMedia(UploadedFile::fake()->image("cover{$i}.jpg"))->toMediaCollection('artwork');
+        $gallery = Gallery::factory()->create(['publish_status' => 'published']);
+        $gallery->artworks()->attach($cover->id);
+        $gallery->update(['cover_artwork_id' => $cover->id]);
+        Book::factory()->create(['publish_status' => 'published', 'gallery_id' => $gallery->id]);
+    }
+
+    DB::flushQueryLog();
+    DB::enableQueryLog();
+    $galleries = Gallery::withPublicCover()->get()->toArray();
+    $books = Book::withPublicCover()->get()->toArray();
+    $queries = count(DB::getQueryLog());
+    DB::disableQueryLog();
+
+    expect($galleries)->toHaveCount(3)
+        ->and(array_column($galleries, 'cover_urls'))->each->toHaveKey('display')
+        ->and($galleries[0])->not->toHaveKey('cover_is_member')
+        ->and(array_column($books, 'cover'))->each->toHaveKey('urls')
+        // galleries + covers + media, then books + galleries + covers + media.
+        ->and($queries)->toBe(7);
 });
 
 test('books show page has no hero when the gallery is not published', function () {

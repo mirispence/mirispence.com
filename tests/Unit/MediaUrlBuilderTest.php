@@ -66,6 +66,15 @@ class MediaUrlBuilderTest extends TestCase
         $this->assertSame([], $builder->admin());
     }
 
+    public function test_thumb_returns_the_thumb_conversion_url_or_empty_string()
+    {
+        $builder = new MediaUrlBuilder($this->artworkWithImage(), 'artwork');
+
+        $this->assertStringContainsString('thumb', $builder->thumb());
+        $this->assertSame($builder->admin()['thumb'], $builder->thumb());
+        $this->assertSame('', (new MediaUrlBuilder(Artwork::factory()->create(), 'artwork'))->thumb());
+    }
+
     public function test_keys_follow_collection_conversions_and_original_is_never_exposed()
     {
         $model = MediaUrlBuilderFixtureModel::create(Artwork::factory()->raw());

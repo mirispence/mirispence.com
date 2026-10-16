@@ -6,6 +6,7 @@ import { Head, useForm, router } from '@inertiajs/vue3';
 
 const props = defineProps<{
     artwork: any;
+    originalMediaId: number | null;
     galleries: Array<any>;
     tags: Array<any>;
 }>();
@@ -36,10 +37,8 @@ const form = useForm<{
     image: null,
 });
 
-const originalMedia = (props.artwork.media ?? []).find(
-    (m: { id: number; collection_name: string }) => m.collection_name === 'artwork',
-);
-const originalUrl = originalMedia ? showOriginal.url(originalMedia.id) : null;
+const originalUrl =
+    props.originalMediaId !== null ? showOriginal.url(props.originalMediaId) : null;
 
 const submit = () => {
     form.post(update.url(props.artwork.id));
