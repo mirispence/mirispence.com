@@ -5,6 +5,8 @@ namespace Tests\Feature\Admin;
 use App\Models\Artwork;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
@@ -83,4 +85,41 @@ test('admin can delete artwork', function () {
     $this->assertDatabaseMissing('artworks', [
         'id' => $artwork->id,
     ]);
+});
+
+test('edit page exposes the original media id for the gated original link without leaking the raw original url', function () {
+    Storage::fake('media_private');
+    Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
+
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $artwork = Artwork::factory()->create();
+    $artwork->addMedia(UploadedFile::fake()->image('art.jpg'))->toMediaCollection('artwork');
+    $media = $artwork->getFirstMedia('artwork');
+
+    $response = $this->actingAs($user)
+        ->get(route('admin.artworks.edit', $artwork))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Admin/Artworks/Edit')
+            ->where('originalMediaId', $media->id)
+            ->missing('artwork.media')
+        );
+
+    $props = json_encode($response->viewData('page')['props']);
+    expect($props)->not->toContain('original_url')
+        ->and($props)->not->toContain(json_encode($media->getUrl()));
+});
+
+test('edit page has no original media id when the artwork has no image', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $artwork = Artwork::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('admin.artworks.edit', $artwork))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->where('originalMediaId', null));
 });

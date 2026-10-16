@@ -79,6 +79,8 @@ class ArtworkController extends Controller
 
         return Inertia::render('Admin/Artworks/Edit', [
             'artwork' => $artwork->load(['galleries', 'tags', 'media']),
+            // Media id for the gated `admin.media.original` link; the media relation itself is hidden.
+            'originalMediaId' => $artwork->getFirstMedia('artwork')?->id,
             'galleries' => Gallery::all(),
             'tags' => Tag::whereIn('type', ['artwork', 'both'])->get(),
         ]);
