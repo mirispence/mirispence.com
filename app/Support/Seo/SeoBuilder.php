@@ -129,7 +129,7 @@ class SeoBuilder
     public static function forBook(Book $book): SeoPayload
     {
         $description = $book->description ?: "Read more about '{$book->title}' by Miri Spence.";
-        $image = ($book->getMediaUrlsAttribute()['original'] ?? null) ?: $book->getFirstMediaUrl('cover');
+        $image = ($book->cover['urls']['display']['src'] ?? null) ?: self::getFallbackOgImage();
 
         $jsonld = [
             '@context' => 'https://schema.org',

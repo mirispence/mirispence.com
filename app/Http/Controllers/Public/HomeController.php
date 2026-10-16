@@ -8,10 +8,11 @@ use App\Models\Artwork;
 use App\Models\Book;
 use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         Inertia::share('seo', SeoBuilder::forHome());
 
@@ -26,9 +27,11 @@ class HomeController extends Controller
             'featuredArtworks' => PublicArtworkResource::collection($artworks)->resolve(),
             'featuredBooks' => Book::featured()
                 ->published()
+                ->with('gallery.coverArtwork.media')
                 ->latest('release_date')
                 ->take(3)
-                ->get(),
+                ->get()
+                ->each->withCover(),
         ]);
     }
 }

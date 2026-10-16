@@ -93,8 +93,8 @@ const deleteBook = (id: number) => {
                                     class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
                                 >
                                     <img
-                                        v-if="book.thumb_url"
-                                        :src="book.thumb_url"
+                                        v-if="book.cover_thumb_url"
+                                        :src="book.cover_thumb_url"
                                         class="h-10 w-10 rounded-full object-cover"
                                     />
                                     <div
@@ -115,7 +115,7 @@ const deleteBook = (id: number) => {
                                     <Link
                                         :href="
                                             chapterIndex.url({
-                                                book_id: book.id,
+                                                query: { book_id: book.id },
                                             })
                                         "
                                         class="text-indigo-600 hover:text-indigo-900"

@@ -1,11 +1,29 @@
 <script setup lang="ts">
+import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
+interface ResponsiveImage {
+    src: string;
+    srcset: string;
+}
+
+interface BookCover {
+    urls: {
+        thumb?: string;
+        grid?: ResponsiveImage;
+        display?: ResponsiveImage;
+    };
+    gallery: {
+        name: string;
+        slug: string;
+    };
+}
+
 defineProps<{
-    book: any;
+    book: Record<string, any> & { cover: BookCover | null };
 }>();
 </script>
 
@@ -14,26 +32,29 @@ defineProps<{
         <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-16">
                 <!-- Cover -->
-                <div class="flex justify-center lg:sticky lg:top-32">
-                    <Card
-                        class="w-full max-w-[450px] overflow-hidden rounded-[2rem] border-none p-0 shadow-2xl"
+                <div
+                    v-if="book.cover?.urls?.display?.src"
+                    class="flex justify-center lg:sticky lg:top-32"
+                >
+                    <Link
+                        :href="galleryShow.url(book.cover.gallery.slug)"
+                        class="block w-full max-w-[450px]"
+                        :aria-label="`View the ${book.cover.gallery.name} gallery`"
                     >
-                        <div class="aspect-[2/3] bg-panel">
-                            <img
-                                v-if="book.media_urls?.original"
-                                :src="book.media_urls.original"
-                                :alt="book.title"
-                                class="h-full w-full object-cover"
-                            />
-                            <!-- Placeholder -->
-                            <div
-                                v-else
-                                class="flex h-full items-center justify-center font-heading text-2xl text-muted-foreground italic"
-                            >
-                                No Cover
+                        <Card
+                            class="w-full overflow-hidden rounded-[2rem] border-none p-0 shadow-2xl"
+                        >
+                            <div class="aspect-[2/3] bg-panel">
+                                <img
+                                    :src="book.cover.urls.display.src"
+                                    :srcset="book.cover.urls.display.srcset"
+                                    sizes="(min-width: 1024px) 450px, 100vw"
+                                    :alt="book.title"
+                                    class="h-full w-full object-cover"
+                                />
                             </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    </Link>
                 </div>
 
                 <!-- Info -->
@@ -81,9 +102,13 @@ defineProps<{
                                     :key="chapter.id"
                                     class="flex flex-col gap-2 p-6 transition-colors hover:bg-white/60"
                                 >
-                                    <div class="flex items-center justify-between">
+                                    <div
+                                        class="flex items-center justify-between"
+                                    >
                                         <div class="flex items-center gap-4">
-                                            <p class="font-bold text-foreground">
+                                            <p
+                                                class="font-bold text-foreground"
+                                            >
                                                 {{ chapter.title }}
                                             </p>
                                             <span
@@ -94,7 +119,10 @@ defineProps<{
                                         </div>
                                     </div>
                                     <div
-                                        v-if="chapter.is_sample && chapter.body_html"
+                                        v-if="
+                                            chapter.is_sample &&
+                                            chapter.body_html
+                                        "
                                         class="prose prose-sm dark:prose-invert mt-4 max-w-none"
                                         v-html="chapter.body_html"
                                     ></div>

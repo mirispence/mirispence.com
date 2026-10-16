@@ -229,8 +229,8 @@ defineProps<{
                     >
                         <div class="aspect-[2/3] overflow-hidden">
                             <img
-                                v-if="book.media_urls?.thumb"
-                                :src="book.media_urls.thumb"
+                                v-if="book.cover?.urls?.thumb"
+                                :src="book.cover.urls.thumb"
                                 :alt="book.title"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
