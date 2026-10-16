@@ -6,19 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class BookController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         Inertia::share('seo', SeoBuilder::forBooksIndex());
 
         return Inertia::render('Public/Books/Index', [
-            'books' => Book::published()->latest()->get(),
+            'books' => Book::published()
+                ->withPublicCover()
+                ->latest()
+                ->get(),
         ]);
     }
 
-    public function show(Book $book): \Inertia\Response
+    public function show(Book $book): Response
     {
         if ($book->publish_status !== 'published') {
             abort(404);
@@ -26,7 +30,7 @@ class BookController extends Controller
 
         $book->load(['chapters' => function ($query) {
             $query->orderBy('order');
-        }, 'tags']);
+        }, 'tags'])->loadPublicCover();
 
         Inertia::share('seo', SeoBuilder::forBook($book));
 

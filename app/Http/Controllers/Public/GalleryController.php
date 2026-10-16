@@ -7,23 +7,29 @@ use App\Http\Resources\PublicArtworkResource;
 use App\Models\Gallery;
 use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class GalleryController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         Inertia::share('seo', SeoBuilder::forArtIndex());
 
         return Inertia::render('Public/Galleries/Index', [
-            'galleries' => Gallery::published()->orderBy('sort_order')->paginate(6),
+            'galleries' => Gallery::published()
+                ->withPublicCover()
+                ->orderBy('sort_order')
+                ->paginate(6),
         ]);
     }
 
-    public function show(Gallery $gallery): \Inertia\Response
+    public function show(Gallery $gallery): Response
     {
         if ($gallery->publish_status !== 'published') {
             abort(404);
         }
+
+        $gallery->load('coverArtwork.media');
 
         $artworks = $gallery->artworks()
             ->where('publish_status', 'published')

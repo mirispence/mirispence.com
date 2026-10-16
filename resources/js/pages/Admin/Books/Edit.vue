@@ -3,13 +3,18 @@ import { update } from '@/actions/App/Http/Controllers/Admin/BookController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
+interface GalleryOption {
+    id: number;
+    name: string;
+}
+
 const props = defineProps<{
     book: any;
     tags: Array<any>;
+    galleries: GalleryOption[];
 }>();
 
 const form = useForm({
-    _method: 'PUT',
     title: props.book.title,
     description: props.book.description,
     publish_status: props.book.publish_status,
@@ -17,18 +22,11 @@ const form = useForm({
     release_date: props.book.release_date,
     external_links: props.book.external_links,
     tags: props.book.tags.map((t: any) => t.id),
-    cover: null as File | null,
+    gallery_id: (props.book.gallery_id ?? null) as number | null,
 });
 
 const submit = () => {
-    form.post(update.url(props.book.id));
-};
-
-const handleFileUpload = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-        form.cover = target.files[0];
-    }
+    form.put(update.url(props.book.id));
 };
 </script>
 
@@ -60,7 +58,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="description" class="form-label">Description (Markdown)</label>
+                            <label for="description" class="form-label"
+                                >Description (Markdown)</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.description"
@@ -68,36 +68,51 @@ const handleFileUpload = (event: Event) => {
                                     rows="3"
                                     class="control control-textarea"
                                 ></textarea>
-                                <div v-if="form.errors.description" class="error">
+                                <div
+                                    v-if="form.errors.description"
+                                    class="error"
+                                >
                                     {{ form.errors.description }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="cover" class="form-label">Cover Image</label>
+                            <label for="gallery_id" class="form-label"
+                                >Cover Gallery</label
+                            >
                             <div class="form-field">
-                                <div v-if="book.thumb_url" class="mb-4">
-                                    <img
-                                        :src="book.thumb_url"
-                                        alt="Current Cover"
-                                        class="rounded-lg ring-1 ring-gray-200 max-h-[320px] w-auto object-contain bg-gray-50"
-                                    />
-                                </div>
-                                <input
-                                    @input="handleFileUpload"
-                                    type="file"
-                                    id="cover"
-                                    class="control-file"
-                                />
-                                <div v-if="form.errors.cover" class="error">
-                                    {{ form.errors.cover }}
+                                <select
+                                    v-model="form.gallery_id"
+                                    id="gallery_id"
+                                    class="control control-select"
+                                >
+                                    <option :value="null">No gallery</option>
+                                    <option
+                                        v-for="gallery in galleries"
+                                        :key="gallery.id"
+                                        :value="gallery.id"
+                                    >
+                                        {{ gallery.name }}
+                                    </option>
+                                </select>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    The book's cover is this gallery's cover
+                                    artwork.
+                                </p>
+                                <div
+                                    v-if="form.errors.gallery_id"
+                                    class="error"
+                                >
+                                    {{ form.errors.gallery_id }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="publish_status" class="form-label">Status</label>
+                            <label for="publish_status" class="form-label"
+                                >Status</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.publish_status"
@@ -131,7 +146,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="release_date" class="form-label">Release Date</label>
+                            <label for="release_date" class="form-label"
+                                >Release Date</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.release_date"
@@ -152,7 +169,11 @@ const handleFileUpload = (event: Event) => {
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label for="featured_flag" class="ml-2 block text-sm text-gray-900">Featured</label>
+                                    <label
+                                        for="featured_flag"
+                                        class="ml-2 block text-sm text-gray-900"
+                                        >Featured</label
+                                    >
                                 </div>
                             </div>
                         </div>

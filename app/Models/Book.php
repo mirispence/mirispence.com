@@ -2,25 +2,27 @@
 
 namespace App\Models;
 
+use App\Services\MarkdownRenderer;
+use App\Traits\HasUniqueSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
- * @property \Illuminate\Support\Carbon|null $release_date
+ * @property Carbon|null $release_date
  */
-class Book extends Model implements HasMedia
+class Book extends Model
 {
-    use \App\Traits\HasUniqueSlug, HasFactory, InteractsWithMedia;
+    use HasFactory, HasUniqueSlug;
 
     public function getSlugSourceField(): string
     {
         return 'title';
     }
-
-    protected $with = ['media'];
 
     protected $fillable = [
         'title',
@@ -30,71 +32,61 @@ class Book extends Model implements HasMedia
         'featured_flag',
         'release_date',
         'external_links',
+        'gallery_id',
     ];
 
-    protected $appends = ['media_urls', 'image_url', 'thumb_url', 'description_html'];
+    protected $appends = ['description_html'];
 
     /**
-     * Register media collections.
+     * The Gallery relation is never serialized directly; use `cover`.
      */
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('cover')
-            ->singleFile()
-            ->useDisk('r2_private')
-            ->storeConversionsOnDisk('r2_public');
-    }
-
-    /**
-     * Register media conversions.
-     */
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->nonQueued()
-            ->performOnCollections('cover')
-            ->width(320)
-            ->format('webp')
-            ->quality(80);
-    }
-
-    /**
-     * Get the thumb URL attribute.
-     */
-    public function getThumbUrlAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('cover', 'thumb');
-    }
+    protected $hidden = ['gallery'];
 
     /**
      * Get the description HTML attribute.
      */
     public function getDescriptionHtmlAttribute(): string
     {
-        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->description);
+        return app(MarkdownRenderer::class)->toHtml($this->description);
     }
 
     /**
-     * Get the image URL attribute.
+     * Append `cover` to the serialized form. Eager-load
+     * `gallery.coverArtwork.media` first to avoid N+1 queries.
      */
-    public function getImageUrlAttribute(): string
+    public function withCover(): static
     {
-        return $this->getFirstMediaUrl('cover');
+        return $this->append('cover');
     }
 
     /**
-     * Get the media URLs attribute.
+     * The Book's cover: its Gallery's public-safe cover URLs plus a link
+     * target for that Gallery. Null when there is no Gallery, the Gallery is
+     * not published (its show page would 404), or it has no visible cover.
+     * Never contains an `original` key (see MediaUrlBuilder::public()).
+     *
+     * @return array{urls: array<string, mixed>, gallery: array{name: string, slug: string}}|null
      */
-    public function getMediaUrlsAttribute(): array
+    public function getCoverAttribute(): ?array
     {
-        $media = $this->getFirstMedia('cover');
-        if (! $media) {
-            return [];
+        $gallery = $this->gallery;
+
+        if ($gallery === null || $gallery->publish_status !== 'published') {
+            return null;
+        }
+
+        $urls = $gallery->cover_urls;
+
+        if ($urls === []) {
+            return null;
         }
 
         return [
-            'original' => $media->getUrl(),
-            'thumb' => $media->getUrl('thumb'),
+            'urls' => $urls,
+            'gallery' => [
+                'name' => $gallery->name,
+                'slug' => $gallery->slug,
+            ],
         ];
     }
 
@@ -110,7 +102,17 @@ class Book extends Model implements HasMedia
         ];
     }
 
-    public function chapters(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * The Gallery whose cover Artwork is this Book's cover.
+     *
+     * @return BelongsTo<Gallery, $this>
+     */
+    public function gallery(): BelongsTo
+    {
+        return $this->belongsTo(Gallery::class);
+    }
+
+    public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class)->orderBy('order');
     }
@@ -118,17 +120,43 @@ class Book extends Model implements HasMedia
     /**
      * Get the tags relationship.
      */
-    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+    /**
+     * Eager-load the Gallery cover chain and append `cover` to every retrieved Book.
+     */
+    public function scopeWithPublicCover(Builder $query): Builder
+    {
+        return $query
+            ->with(['gallery' => fn ($gallery) => $gallery->withPublicCover()])
+            ->afterQuery(fn ($books) => $books->each(fn (Book $book) => $book->withCover()));
+    }
+
+    /**
+     * Load the Gallery cover chain onto this Book and append `cover`.
+     */
+    public function loadPublicCover(): static
+    {
+        return $this->load(['gallery' => fn ($gallery) => $gallery->withPublicCover()])->withCover();
+    }
+
+    /**
+     * Admin-only cover thumbnail, from the linked Gallery's cover.
+     */
+    public function getCoverThumbUrlAttribute(): string
+    {
+        return $this->gallery->cover_thumb_url ?? '';
+    }
+
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('publish_status', 'published');
     }
 
-    public function scopeFeatured(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+    public function scopeFeatured(Builder $query): Builder
     {
         return $query->where('featured_flag', true);
     }

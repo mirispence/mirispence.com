@@ -163,8 +163,10 @@ All routes return Inertia responses — no Blade page templates. Pages live in `
 
 ```
 Artwork --< ArtworkGallery >-- Gallery   (pivot: sort_order)
+Gallery.cover_artwork_id -> Artwork      (cover; must be a member)
 Artwork --< ArtworkTag >-- Tag
 Book --< Chapter
+Book.gallery_id -> Gallery               (cover source)
 FeaturedItem (morph: artwork | book)
 ContactMessage (commission sub-record exists but has no routes/UI)
 User (roles/permissions via Spatie)

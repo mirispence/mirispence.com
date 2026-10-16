@@ -204,15 +204,6 @@ watch(selectedGallery, (value) => {
                                     isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
                                 ]"
                             />
-                            <img
-                                v-else-if="activeArtwork.image_url"
-                                :src="activeArtwork.image_url"
-                                :alt="activeArtwork.alt_text || activeArtwork.title"
-                                class="shadow-2xl rounded-lg transition-all duration-500"
-                                :class="[
-                                    isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
-                                ]"
-                            />
                             <!-- Invisible overlay to discourage casual image saving -->
                             <div
                                 class="absolute inset-0 z-10"

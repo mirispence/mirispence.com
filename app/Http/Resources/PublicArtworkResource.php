@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Artwork;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\Artwork
+ * @mixin Artwork
  */
 class PublicArtworkResource extends JsonResource
 {
@@ -19,26 +20,6 @@ class PublicArtworkResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $media = $this->getFirstMedia('artwork');
-
-        // Build media_urls with ONLY public conversion URLs
-        $mediaUrls = [];
-        if ($media) {
-            $mediaUrls = [
-                'thumb' => $media->getUrl('thumb'),
-                'grid' => [
-                    'src' => $media->getUrl('grid_640'),
-                    'srcset' => $media->getUrl('grid_640').' 640w, '.$media->getUrl('grid_960').' 960w',
-                ],
-                'display' => [
-                    'src' => $media->getUrl('display_1280'),
-                    'srcset' => $media->getUrl('display_1280').' 1280w, '.
-                               $media->getUrl('display_1600').' 1600w, '.
-                               $media->getUrl('display_2048').' 2048w',
-                ],
-            ];
-        }
-
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -48,7 +29,7 @@ class PublicArtworkResource extends JsonResource
             'alt_text' => $this->alt_text,
             'created_on' => $this->created_on?->format('F Y'),
             'nsfw_flag' => $this->nsfw_flag,
-            'media_urls' => $mediaUrls,
+            'media_urls' => $this->mediaUrlBuilder()->public(),
             'tags' => $this->whenLoaded('tags', fn () => $this->tags->map(fn ($tag) => [
                 'id' => $tag->id,
                 'name' => $tag->name,

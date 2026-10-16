@@ -9,9 +9,7 @@ defineProps<{
         id: number;
         title: string;
         slug: string;
-        image_url: string;
         media_urls: any;
-        signed_urls: any;
         alt_text: string;
         created_on: string;
         nsfw_flag: boolean;

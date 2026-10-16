@@ -8,18 +8,10 @@ const form = useForm({
     description: '',
     sort_order: 0,
     publish_status: 'published',
-    cover: null as File | null,
 });
 
 const submit = () => {
     form.post(store.url());
-};
-
-const handleFileUpload = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-        form.cover = target.files[0];
-    }
 };
 </script>
 
@@ -51,7 +43,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label"
+                                >Description</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.description"
@@ -59,29 +53,30 @@ const handleFileUpload = (event: Event) => {
                                     rows="3"
                                     class="control control-textarea"
                                 ></textarea>
-                                <div v-if="form.errors.description" class="error">
+                                <div
+                                    v-if="form.errors.description"
+                                    class="error"
+                                >
                                     {{ form.errors.description }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="cover" class="form-label">Cover Image</label>
+                            <span class="form-label">Cover</span>
                             <div class="form-field">
-                                <input
-                                    @input="handleFileUpload"
-                                    type="file"
-                                    id="cover"
-                                    class="control-file"
-                                />
-                                <div v-if="form.errors.cover" class="error">
-                                    {{ form.errors.cover }}
-                                </div>
+                                <p class="text-sm text-gray-500">
+                                    The cover is chosen from this gallery's
+                                    artworks. Add artworks to the gallery, then
+                                    pick a cover when editing it.
+                                </p>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="sort_order" class="form-label">Sort Order</label>
+                            <label for="sort_order" class="form-label"
+                                >Sort Order</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.sort_order"
@@ -89,14 +84,19 @@ const handleFileUpload = (event: Event) => {
                                     id="sort_order"
                                     class="control"
                                 />
-                                <div v-if="form.errors.sort_order" class="error">
+                                <div
+                                    v-if="form.errors.sort_order"
+                                    class="error"
+                                >
                                     {{ form.errors.sort_order }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="publish_status" class="form-label">Status</label>
+                            <label for="publish_status" class="form-label"
+                                >Status</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.publish_status"

@@ -6,35 +6,42 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBookRequest;
 use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Models\Book;
+use App\Models\Gallery;
 use App\Models\Tag;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/Books/Index', [
-            'books' => Book::withCount('chapters')
+            'books' => Book::with('gallery.coverArtwork.media')
+                ->withCount('chapters')
                 ->latest()
-                ->paginate(10),
+                ->paginate(10)
+                ->through(fn (Book $book) => $book->append('cover_thumb_url')),
         ]);
     }
 
-    public function create(): \Inertia\Response
+    public function create(): Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/Books/Create', [
             'tags' => Tag::whereIn('type', ['book', 'both'])->get(),
+            'galleries' => $this->galleryOptions(),
         ]);
     }
 
-    public function store(StoreBookRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreBookRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -42,11 +49,6 @@ class BookController extends Controller
 
         if (isset($validated['tags'])) {
             $book->tags()->sync($validated['tags']);
-        }
-
-        if ($request->hasFile('cover')) {
-            $book->addMediaFromRequest('cover')
-                ->toMediaCollection('cover');
         }
 
         return redirect()->route('admin.books.index')
@@ -58,17 +60,18 @@ class BookController extends Controller
         //
     }
 
-    public function edit(Book $book): \Inertia\Response
+    public function edit(Book $book): Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/Books/Edit', [
-            'book' => $book->load(['tags', 'media']),
+            'book' => $book->load('tags'),
             'tags' => Tag::whereIn('type', ['book', 'both'])->get(),
+            'galleries' => $this->galleryOptions(),
         ]);
     }
 
-    public function update(UpdateBookRequest $request, Book $book): \Illuminate\Http\RedirectResponse
+    public function update(UpdateBookRequest $request, Book $book): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -78,17 +81,11 @@ class BookController extends Controller
             $book->tags()->sync($validated['tags']);
         }
 
-        if ($request->hasFile('cover')) {
-            $book->clearMediaCollection('cover');
-            $book->addMediaFromRequest('cover')
-                ->toMediaCollection('cover');
-        }
-
         return redirect()->route('admin.books.index')
             ->with('success', 'Book updated successfully.');
     }
 
-    public function destroy(Book $book): \Illuminate\Http\RedirectResponse
+    public function destroy(Book $book): RedirectResponse
     {
         $this->authorize('admin');
 
@@ -96,5 +93,17 @@ class BookController extends Controller
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Book deleted successfully.');
+    }
+
+    /**
+     * Galleries offered by the Book cover picker.
+     *
+     * @return Collection<int, array{id: int, name: string}>
+     */
+    private function galleryOptions(): Collection
+    {
+        return Gallery::orderBy('name')
+            ->get(['id', 'name'])
+            ->map(fn (Gallery $gallery) => ['id' => $gallery->id, 'name' => $gallery->name]);
     }
 }

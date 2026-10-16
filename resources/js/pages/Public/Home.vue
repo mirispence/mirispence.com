@@ -77,11 +77,6 @@ defineProps<{
                                         class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
                                     />
-                                    <img
-                                        v-else
-                                        :src="featuredArtworks[0].image_url"
-                                        class="h-full w-full object-cover"
-                                    />
                                     <!-- Invisible overlay to discourage casual image saving -->
                                     <div
                                         class="absolute inset-0 z-[5] cursor-pointer"
@@ -115,11 +110,6 @@ defineProps<{
                                         "
                                         class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
-                                    />
-                                    <img
-                                        v-else
-                                        :src="featuredArtworks[1].image_url"
-                                        class="h-full w-full object-cover"
                                     />
                                     <!-- Invisible overlay to discourage casual image saving -->
                                     <div
@@ -229,8 +219,8 @@ defineProps<{
                     >
                         <div class="aspect-[2/3] overflow-hidden">
                             <img
-                                v-if="book.media_urls?.thumb"
-                                :src="book.media_urls.thumb"
+                                v-if="book.cover?.urls?.thumb"
+                                :src="book.cover.urls.thumb"
                                 :alt="book.title"
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />

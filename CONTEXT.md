@@ -29,6 +29,7 @@ app/
                         #   HorizonServiceProvider
   Services/             # MarkdownRenderer
   Support/
+    Media/              # MediaUrlBuilder (single source of media URL sets)
     MediaLibrary/       # CustomPathGenerator
     Seo/                # SeoBuilder, SeoPayload
   Traits/               # HasUniqueSlug
@@ -59,11 +60,15 @@ tests/
     Admin/              # CRUD tests for all admin resources
     Auth/                # Full Fortify auth flow tests
     Settings/            # Profile, password, 2FA settings tests
-    PublicSiteTest.php   # All public routes
-    SecurityFixesTest.php # XSS, admin gate, media permission, signed URL tests
+    PublicSiteTest.php   # All public routes, gallery/book covers, withPublicCover query count
+    PublicOriginalMediaLeakTest.php # No `original` key / original URL in public props or seo
+    ArtworkMediaUrlsTest.php # Artwork media_urls/thumb_url never expose the original
+    SecurityFixesTest.php # XSS, admin gate, media permission, presigned original URL tests
     DashboardTest.php
+  Pest.php               # assertNoOriginalMedia() recursive leak helper
   Unit/
     SeoBuilderTest.php
+    MediaUrlBuilderTest.php
 
 config/
   filesystems.php       # Defines r2_private, r2_public, media_private disks
@@ -94,14 +99,22 @@ config/
 
 ```
 Artwork --< ArtworkGallery >-- Gallery   (pivot: sort_order)
+Gallery >-- Artwork                      (cover_artwork_id, nullable, nullOnDelete: explicit cover)
 Artwork --< ArtworkTag >-- Tag
 Book --< Chapter
+Book >-- Gallery                         (gallery_id, nullable, nullOnDelete: cover source)
 FeaturedItem (morph: artwork | book)
 ContactMessage --< CommissionRequest    (commission is a sub-record of contact; no admin UI yet)
 User (has roles/permissions via Spatie)
 ```
 
 Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, `image_status_label`, `publish_status_label`, `description_html`
+
+Media URL sets (`media_urls`, `thumb_url`, `PublicArtworkResource`) are built only by `App\Support\Media\MediaUrlBuilder` (`public()` / `admin()`), which never exposes an `original` key. The raw `media` relation is hidden from Artwork serialization (Spatie's `Media::toArray()` includes `original_url`). Originals are reachable only via the gated `admin.media.original` route.
+
+Gallery has no media of its own (not `HasMedia`). Its cover is an explicit pick of one of its own member Artworks (`Gallery::coverArtwork()`, column `cover_artwork_id`), independent of the pivot `sort_order`. `cover_urls` (= cover Artwork's `MediaUrlBuilder::public()`, `[]` if no cover, the cover isn't published, or it is no longer a member) is not auto-appended: query with the `withPublicCover()` scope (eager-loads the cover chain + membership flag and appends it). The cover is chosen on gallery edit (validated as a member); create cannot set one because a new gallery has no members. `Artwork::syncGalleries()` clears the cover of any gallery the artwork leaves. See ADR-0003.
+
+Book has no media of its own either (not `HasMedia`). It points at a Gallery (`Book::gallery()`, column `gallery_id`, picked from all galleries on admin create/edit), and its cover is that Gallery's cover Artwork. The `gallery` relation is hidden. The `cover` accessor (not auto-appended) returns `{urls: <gallery cover_urls>, gallery: {name, slug}}`, or `null` when there's no gallery, the gallery isn't published, or the gallery has no visible cover. Use the `withPublicCover()` scope (or `$book->loadPublicCover()` for one model). The public Book show hero renders `cover.urls.display` and links to `galleries.show`. With no cover, no hero is rendered. Admin books index rows carry `cover_thumb_url`.
 
 ---
 
