@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 uses(RefreshDatabase::class);
 
@@ -61,7 +62,7 @@ test('original media access requires permission', function () {
     $this->actingAs($user)->get($url)->assertForbidden();
 
     // Admin (has all permissions)
-    $this->actingAs($admin)->get($url)->assertOk();
+    $this->actingAs($admin)->get($url)->assertRedirect();
 
     // User with specific permission
     $privilegedUser = User::factory()->create();
@@ -71,12 +72,49 @@ test('original media access requires permission', function () {
     $permission = Permission::findOrCreate('can view source image');
     $privilegedUser->givePermissionTo($permission);
 
-    app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    app(PermissionRegistrar::class)->forgetCachedPermissions();
 
     // Auth and check
     $this->actingAs($privilegedUser);
 
-    $this->get($url)->assertOk();
+    $this->get($url)->assertRedirect();
+});
+
+test('original media redirects to a signed temporary url on a non-local (s3-like) disk', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+
+    $artwork = Artwork::factory()->create();
+    $artwork->addMedia(UploadedFile::fake()->image('test.jpg'))
+        ->toMediaCollection('artwork');
+
+    $media = $artwork->getFirstMedia('artwork');
+
+    // Swap the faked local disk for a real S3-driver disk (as R2 is in production).
+    // Presigning happens locally, so no network access is needed; getPath() on this
+    // disk does not resolve to a local file, which is what broke the old controller.
+    config()->set('filesystems.disks.r2_private', [
+        'driver' => 's3',
+        'key' => 'test-key',
+        'secret' => 'test-secret',
+        'region' => 'us-east-1',
+        'bucket' => 'private-bucket',
+        'endpoint' => 'https://account.r2.cloudflarestorage.com',
+        'use_path_style_endpoint' => true,
+    ]);
+    config()->set('media-library.temporary_url_default_lifetime', 7);
+    Storage::forgetDisk('r2_private');
+
+    $response = $this->actingAs($admin)->get(route('admin.media.original', $media->id));
+
+    $response->assertRedirect();
+    $location = $response->headers->get('Location');
+
+    expect($location)
+        ->toStartWith('https://account.r2.cloudflarestorage.com/private-bucket/')
+        ->toContain($media->file_name)
+        ->toContain('X-Amz-Signature=')
+        ->toContain('X-Amz-Expires=420');
 });
 
 test('session data is stored using json serialization, not php serialization', function () {

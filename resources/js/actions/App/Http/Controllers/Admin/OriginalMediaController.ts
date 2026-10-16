@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
 export const show = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
 show.url = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ show.url = (args: { media: number | { id: number } } | [media: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
 show.get = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -58,7 +58,7 @@ show.get = (args: { media: number | { id: number } } | [media: number | { id: nu
 })
 /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
 show.head = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -68,7 +68,7 @@ show.head = (args: { media: number | { id: number } } | [media: number | { id: n
 
     /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
     const showForm = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -78,7 +78,7 @@ show.head = (args: { media: number | { id: number } } | [media: number | { id: n
 
             /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
         showForm.get = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -87,7 +87,7 @@ show.head = (args: { media: number | { id: number } } | [media: number | { id: n
         })
             /**
 * @see \App\Http\Controllers\Admin\OriginalMediaController::show
- * @see app/Http/Controllers/Admin/OriginalMediaController.php:15
+ * @see app/Http/Controllers/Admin/OriginalMediaController.php:16
  * @route '/admin/media/{media}/original'
  */
         showForm.head = (args: { media: number | { id: number } } | [media: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

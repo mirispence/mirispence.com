@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { update, regenerate as regenerateAction } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
+import { show as showOriginal } from '@/actions/App/Http/Controllers/Admin/OriginalMediaController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 
@@ -34,6 +35,11 @@ const form = useForm<{
     tags: props.artwork.tags.map((t: any) => t.id),
     image: null,
 });
+
+const originalMedia = (props.artwork.media ?? []).find(
+    (m: { id: number; collection_name: string }) => m.collection_name === 'artwork',
+);
+const originalUrl = originalMedia ? showOriginal.url(originalMedia.id) : null;
 
 const submit = () => {
     form.post(update.url(props.artwork.id));
@@ -131,9 +137,10 @@ const handleFileUpload = (event: Event) => {
                                                     Regenerate
                                                 </button>
                                                 <a
-                                                    v-if="artwork.signed_urls?.original"
-                                                    :href="artwork.signed_urls.original"
+                                                    v-if="originalUrl"
+                                                    :href="originalUrl"
                                                     target="_blank"
+                                                    rel="noopener"
                                                     class="btn-link"
                                                 >
                                                     Open Original
