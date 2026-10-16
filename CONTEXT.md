@@ -29,6 +29,7 @@ app/
                         #   HorizonServiceProvider
   Services/             # MarkdownRenderer
   Support/
+    Media/              # MediaUrlBuilder (single source of media URL sets)
     MediaLibrary/       # CustomPathGenerator
     Seo/                # SeoBuilder, SeoPayload
   Traits/               # HasUniqueSlug
@@ -102,6 +103,8 @@ User (has roles/permissions via Spatie)
 ```
 
 Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, `image_status_label`, `publish_status_label`, `description_html`
+
+Media URL sets (`media_urls`, `thumb_url`, `PublicArtworkResource`) are built only by `App\Support\Media\MediaUrlBuilder` (`public()` / `admin()`), which never exposes an `original` key. The raw `media` relation is hidden from Artwork serialization (Spatie's `Media::toArray()` includes `original_url`). Originals are reachable only via the gated `admin.media.original` route.
 
 ---
 

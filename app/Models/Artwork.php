@@ -2,18 +2,24 @@
 
 namespace App\Models;
 
+use App\Services\MarkdownRenderer;
+use App\Support\Media\MediaUrlBuilder;
+use App\Traits\HasUniqueSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
- * @property \Illuminate\Support\Carbon|null $created_on
+ * @property Carbon|null $created_on
  */
 class Artwork extends Model implements HasMedia
 {
-    use \App\Traits\HasUniqueSlug, HasFactory, InteractsWithMedia;
+    use HasFactory, HasUniqueSlug, InteractsWithMedia;
 
     public function getSlugSourceField(): string
     {
@@ -39,14 +45,27 @@ class Artwork extends Model implements HasMedia
 
     protected $with = ['media'];
 
+    /**
+     * Spatie's Media::toArray() includes `original_url`; keep the raw relation
+     * out of serialized payloads. Use media_urls (via MediaUrlBuilder) instead.
+     */
+    protected $hidden = ['media'];
+
+    public function mediaUrlBuilder(): MediaUrlBuilder
+    {
+        return new MediaUrlBuilder($this, 'artwork');
+    }
+
     public function getThumbUrlAttribute(): ?string
     {
-        return $this->getFirstMediaUrl('artwork', 'thumb');
+        $thumb = $this->mediaUrlBuilder()->admin()['thumb'] ?? '';
+
+        return is_string($thumb) ? $thumb : '';
     }
 
     public function getDescriptionHtmlAttribute(): string
     {
-        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->description);
+        return app(MarkdownRenderer::class)->toHtml($this->description);
     }
 
     protected function casts(): array
@@ -113,27 +132,14 @@ class Artwork extends Model implements HasMedia
         return $this->getFirstMediaUrl('artwork');
     }
 
+    /**
+     * Admin-facing URL set. Never contains the private original; see MediaUrlBuilder.
+     *
+     * @return array<string, string|array{src: string, srcset: string}>
+     */
     public function getMediaUrlsAttribute(): array
     {
-        $media = $this->getFirstMedia('artwork');
-        if (! $media) {
-            return [];
-        }
-
-        return [
-            'original' => $media->getUrl(),
-            'thumb' => $media->getUrl('thumb'),
-            'grid' => [
-                'src' => $media->getUrl('grid_640'),
-                'srcset' => $media->getUrl('grid_640').' 640w, '.$media->getUrl('grid_960').' 960w',
-            ],
-            'display' => [
-                'src' => $media->getUrl('display_1280'),
-                'srcset' => $media->getUrl('display_1280').' 1280w, '.
-                           $media->getUrl('display_1600').' 1600w, '.
-                           $media->getUrl('display_2048').' 2048w',
-            ],
-        ];
+        return $this->mediaUrlBuilder()->admin();
     }
 
     public function getImageStatusLabelAttribute(): string
@@ -151,24 +157,24 @@ class Artwork extends Model implements HasMedia
         return ucfirst($this->publish_status ?? 'draft');
     }
 
-    public function galleries(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function galleries(): BelongsToMany
     {
         return $this->belongsToMany(Gallery::class)
             ->withPivot('sort_order')
             ->withTimestamps();
     }
 
-    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('publish_status', 'published');
     }
 
-    public function scopeFeatured(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+    public function scopeFeatured(Builder $query): Builder
     {
         return $query->where('featured_flag', true);
     }
