@@ -121,10 +121,10 @@ Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, 
 
 ## CI / Deploy
 
-- GitHub Actions: push to `main` triggers SSH deploy
+- `ci.yml`: on PRs to `main`, runs `composer test`, `composer analyse` (PHPStan), `npx eslint .`
+- `deploy.yml`: push to `main` triggers SSH deploy directly — does not re-run the CI checks
 - Deploy script: clone → composer install → npm ci + build → migrate → cache → reload fpm + horizon
 - Rollback: re-symlinks previous timestamped release
-- **No automated test run in CI pipeline** — see `.claude/CLAUDE.md` § Known incomplete areas
 
 ---
 
