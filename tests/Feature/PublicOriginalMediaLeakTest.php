@@ -5,6 +5,7 @@ use App\Models\Gallery;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\ExpectationFailedException;
 
 beforeEach(function () {
     Storage::fake('media_private');
@@ -90,7 +91,7 @@ test('artwork without an image falls back to the site og image, never an origina
 
 test('the no-original helper catches a leaked original key and url', function () {
     expect(fn () => assertNoOriginalMedia(['a' => ['original' => 'x']]))
-        ->toThrow(PHPUnit\Framework\ExpectationFailedException::class);
+        ->toThrow(ExpectationFailedException::class);
     expect(fn () => assertNoOriginalMedia(['a' => ['b' => 'https://cdn/x/orig.jpg']], ['https://cdn/x/orig.jpg']))
-        ->toThrow(PHPUnit\Framework\ExpectationFailedException::class);
+        ->toThrow(ExpectationFailedException::class);
 });

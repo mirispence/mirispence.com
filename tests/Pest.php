@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Assert;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,8 +15,8 @@
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -60,7 +64,7 @@ function assertNoOriginalMedia(mixed $payload, array $privateUrls = []): void
     $walk = function (mixed $value, string $path) use (&$walk, $privateUrls): void {
         if (is_string($value)) {
             foreach ($privateUrls as $url) {
-                PHPUnit\Framework\Assert::assertStringNotContainsString(
+                Assert::assertStringNotContainsString(
                     $url, $value, "Private original URL leaked at [{$path}]"
                 );
             }
@@ -73,7 +77,7 @@ function assertNoOriginalMedia(mixed $payload, array $privateUrls = []): void
         }
 
         foreach ($value as $key => $child) {
-            PHPUnit\Framework\Assert::assertNotContains(
+            Assert::assertNotContains(
                 $key, ['original', 'original_url'], "Forbidden key [{$key}] found at [{$path}]"
             );
             $walk($child, $path === '' ? (string) $key : "{$path}.{$key}");

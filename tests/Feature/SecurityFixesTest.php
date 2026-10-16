@@ -3,6 +3,7 @@
 use App\Models\Artwork;
 use App\Models\User;
 use App\Services\MarkdownRenderer;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -123,7 +124,7 @@ test('original media redirects to a signed temporary url on a non-local (s3-like
         ->toContain('X-Amz-Expires=');
 
     parse_str((string) parse_url($location, PHP_URL_QUERY), $query);
-    $signedAt = Carbon\CarbonImmutable::createFromFormat('Ymd\THis\Z', $query['X-Amz-Date'], 'UTC');
+    $signedAt = CarbonImmutable::createFromFormat('Ymd\THis\Z', $query['X-Amz-Date'], 'UTC');
 
     expect($signedAt->getTimestamp() + (int) $query['X-Amz-Expires'])
         ->toBe($now->copy()->addMinutes(7)->getTimestamp());

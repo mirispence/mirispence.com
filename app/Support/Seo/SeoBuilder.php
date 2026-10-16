@@ -20,10 +20,10 @@ class SeoBuilder
         bool $appendBrand = true
     ): SeoPayload {
         $appName = config('app.name');
-        $fullTitle = ($title === $appName || !$appendBrand) ? $title : "{$title} - {$appName}";
-        
+        $fullTitle = ($title === $appName || ! $appendBrand) ? $title : "{$title} - {$appName}";
+
         $canonical = url()->current();
-        
+
         // Strip query strings for canonical unless they are meaningful
         // For this site, we generally want clean URLs
         if ($pos = strpos($canonical, '?')) {
@@ -61,7 +61,7 @@ class SeoBuilder
     {
         return self::make(
             title: config('app.name'),
-            description: "Portfolio of Miri Spence - Concept Art, Illustration, and Fantasy Books.",
+            description: 'Portfolio of Miri Spence - Concept Art, Illustration, and Fantasy Books.',
             image: self::getFallbackOgImage()
         );
     }
@@ -70,7 +70,7 @@ class SeoBuilder
     {
         return self::make(
             title: 'Art',
-            description: "Browse the art gallery of Miri Spence. Digital paintings, character designs, and illustrations.",
+            description: 'Browse the art gallery of Miri Spence. Digital paintings, character designs, and illustrations.',
             image: self::getFallbackOgImage()
         );
     }
@@ -79,7 +79,7 @@ class SeoBuilder
     {
         $description = $artwork->description ?: "View '{$artwork->title}' by Miri Spence.";
         $image = self::publicDisplayUrl($artwork) ?? self::getFallbackOgImage();
-        
+
         $jsonld = [
             '@context' => 'https://schema.org',
             '@type' => 'VisualArtwork',
@@ -121,7 +121,7 @@ class SeoBuilder
     {
         return self::make(
             title: 'Books',
-            description: "Explore the books and stories by Miri Spence. Fantasy novels, world-building, and more.",
+            description: 'Explore the books and stories by Miri Spence. Fantasy novels, world-building, and more.',
             image: self::getFallbackOgImage()
         );
     }
@@ -162,33 +162,35 @@ class SeoBuilder
     {
         return self::make(
             title: 'Contact',
-            description: "Get in touch with Miri Spence for commissions, inquiries, or just to say hello.",
+            description: 'Get in touch with Miri Spence for commissions, inquiries, or just to say hello.',
             image: self::getFallbackOgImage()
         );
     }
 
     protected static function normalizeDescription(?string $text): string
     {
-        if (!$text) return '';
-        
+        if (! $text) {
+            return '';
+        }
+
         // Replace HTML tags with spaces to avoid merging words
         $text = preg_replace('/<[^>]+>/', ' ', $text);
-        
+
         // Strip URLs from markdown links [text](url) -> [text]
         $text = preg_replace('/\]\([^\)]+\)/', ']', $text);
-        
+
         // Strip other markdown-style characters
         $text = preg_replace('/(\*\*|__|`|#|>|\[|\]|\(|\))/', '', $text);
-        
+
         // Normalize whitespace
         $text = preg_replace('/\s+/', ' ', $text);
-        
+
         return Str::limit(trim($text), 160);
     }
 
     protected static function getDefaultDescription(): string
     {
-        return "The official website of Miri Spence, artist and author.";
+        return 'The official website of Miri Spence, artist and author.';
     }
 
     protected static function getDefaultOgImage(?string $type): ?string
