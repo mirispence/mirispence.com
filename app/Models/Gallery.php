@@ -68,11 +68,28 @@ class Gallery extends Model
     {
         $cover = $this->coverArtwork;
 
-        if ($cover === null || $cover->publish_status !== 'published') {
+        if ($cover === null || $cover->publish_status !== 'published' || ! $this->coverIsMember()) {
             return [];
         }
 
         return $cover->mediaUrlBuilder()->public();
+    }
+
+    /**
+     * Whether the cover Artwork is still one of this Gallery's artworks.
+     * Uses the `cover_is_member` flag preloaded by `withPublicCover()` when present.
+     */
+    public function coverIsMember(): bool
+    {
+        if ($this->cover_artwork_id === null) {
+            return false;
+        }
+
+        if (array_key_exists('cover_is_member', $this->attributes)) {
+            return (bool) $this->attributes['cover_is_member'];
+        }
+
+        return $this->artworks()->whereKey($this->cover_artwork_id)->exists();
     }
 
     /**

@@ -241,6 +241,29 @@ test('books show page has no hero when the gallery has no cover', function () {
         ->assertInertia(fn (Assert $page) => $page->where('book.cover', null));
 });
 
+test('books show page and galleries index ignore a gallery cover that is no longer a member', function () {
+    Storage::fake('media_private');
+    Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
+
+    $cover = Artwork::factory()->create(['publish_status' => 'published']);
+    $cover->addMedia(UploadedFile::fake()->image('cover.jpg', 400, 600))->toMediaCollection('artwork');
+    $gallery = Gallery::factory()->create(['publish_status' => 'published']);
+    $gallery->artworks()->attach($cover->id);
+    $gallery->update(['cover_artwork_id' => $cover->id]);
+    $gallery->artworks()->detach($cover->id);
+    $book = Book::factory()->create(['publish_status' => 'published', 'gallery_id' => $gallery->id]);
+
+    $this->get(route('books.show', $book))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->where('book.cover', null));
+
+    $this->get(route('galleries.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->where('galleries.data.0.cover_urls', []));
+});
+
 test('books show page has no hero when the gallery is not published', function () {
     $cover = Artwork::factory()->create(['publish_status' => 'published']);
     $gallery = Gallery::factory()->create(['publish_status' => 'draft']);

@@ -45,7 +45,7 @@ class ArtworkController extends Controller
         $artwork = Artwork::create($validated);
 
         if (isset($validated['galleries'])) {
-            $artwork->galleries()->sync($validated['galleries']);
+            $artwork->syncGalleries($validated['galleries']);
         }
 
         if (isset($validated['tags'])) {
@@ -93,7 +93,7 @@ class ArtworkController extends Controller
         $artwork->update($validated);
 
         if (isset($validated['galleries'])) {
-            $artwork->galleries()->sync($validated['galleries']);
+            $artwork->syncGalleries($validated['galleries']);
         }
 
         if (isset($validated['tags'])) {

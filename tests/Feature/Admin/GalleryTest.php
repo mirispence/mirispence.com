@@ -8,6 +8,7 @@ use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -169,6 +170,68 @@ test('deleting the cover artwork clears the gallery cover', function () {
     $artwork->delete();
 
     expect($gallery->fresh()->cover_artwork_id)->toBeNull();
+});
+
+test('removing the cover artwork from a gallery via artwork update clears only that gallery cover', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $artwork = Artwork::factory()->create();
+    $leaving = Gallery::factory()->create();
+    $staying = Gallery::factory()->create();
+    $artwork->galleries()->attach([$leaving->id, $staying->id]);
+    $leaving->update(['cover_artwork_id' => $artwork->id]);
+    $staying->update(['cover_artwork_id' => $artwork->id]);
+
+    $this->actingAs($user)
+        ->put(route('admin.artworks.update', $artwork), [
+            'title' => $artwork->title,
+            'publish_status' => 'published',
+            'galleries' => [$staying->id],
+        ])
+        ->assertSessionHasNoErrors();
+
+    expect($leaving->fresh()->cover_artwork_id)->toBeNull()
+        ->and($staying->fresh()->cover_artwork_id)->toBe($artwork->id);
+});
+
+test('removing a non-cover artwork from a gallery keeps the gallery cover', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $cover = Artwork::factory()->create();
+    $other = Artwork::factory()->create();
+    $gallery = Gallery::factory()->create();
+    $gallery->artworks()->attach([$cover->id, $other->id]);
+    $gallery->update(['cover_artwork_id' => $cover->id]);
+
+    $this->actingAs($user)
+        ->put(route('admin.artworks.update', $other), [
+            'title' => $other->title,
+            'publish_status' => 'published',
+            'galleries' => [],
+        ])
+        ->assertSessionHasNoErrors();
+
+    expect($gallery->fresh()->cover_artwork_id)->toBe($cover->id);
+});
+
+test('gallery cover urls ignore a cover artwork that is no longer a member', function () {
+    Storage::fake('media_private');
+    Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
+
+    $cover = Artwork::factory()->create(['publish_status' => 'published']);
+    $cover->addMedia(UploadedFile::fake()->image('cover.jpg'))->toMediaCollection('artwork');
+    $gallery = Gallery::factory()->create(['publish_status' => 'published']);
+    $gallery->artworks()->attach($cover->id);
+    $gallery->update(['cover_artwork_id' => $cover->id]);
+
+    expect($gallery->fresh()->cover_urls)->toHaveKey('thumb');
+
+    // Membership removed outside the admin artwork flow, leaving a stale pointer.
+    $gallery->artworks()->detach($cover->id);
+
+    expect($gallery->fresh()->cover_urls)->toBe([]);
 });
 
 test('edit page offers only the gallery own artworks as cover candidates', function () {
