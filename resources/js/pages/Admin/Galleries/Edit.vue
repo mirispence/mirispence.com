@@ -2,29 +2,35 @@
 import { update } from '@/actions/App/Http/Controllers/Admin/GalleryController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+interface CoverCandidate {
+    id: number;
+    title: string;
+    thumb_url: string;
+}
 
 const props = defineProps<{
     gallery: any;
+    coverCandidates: CoverCandidate[];
 }>();
 
 const form = useForm({
-    _method: 'PUT',
     name: props.gallery.name,
     description: props.gallery.description,
     sort_order: props.gallery.sort_order,
     publish_status: props.gallery.publish_status,
-    cover: null as File | null,
+    cover_artwork_id: (props.gallery.cover_artwork_id ?? null) as number | null,
 });
 
-const submit = () => {
-    form.post(update.url(props.gallery.id));
-};
+const selectedCover = computed(
+    () =>
+        props.coverCandidates.find((c) => c.id === form.cover_artwork_id) ??
+        null,
+);
 
-const handleFileUpload = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-        form.cover = target.files[0];
-    }
+const submit = () => {
+    form.put(update.url(props.gallery.id));
 };
 </script>
 
@@ -56,7 +62,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label"
+                                >Description</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.description"
@@ -64,36 +72,62 @@ const handleFileUpload = (event: Event) => {
                                     rows="3"
                                     class="control control-textarea"
                                 ></textarea>
-                                <div v-if="form.errors.description" class="error">
+                                <div
+                                    v-if="form.errors.description"
+                                    class="error"
+                                >
                                     {{ form.errors.description }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="cover" class="form-label">Cover Image</label>
+                            <label for="cover_artwork_id" class="form-label"
+                                >Cover</label
+                            >
                             <div class="form-field">
-                                <div v-if="gallery.thumb_url" class="mb-4">
+                                <div
+                                    v-if="selectedCover?.thumb_url"
+                                    class="mb-4"
+                                >
                                     <img
-                                        :src="gallery.thumb_url"
-                                        alt="Current Cover"
-                                        class="rounded-lg ring-1 ring-gray-200 max-h-[320px] w-auto object-contain bg-gray-50"
+                                        :src="selectedCover.thumb_url"
+                                        :alt="selectedCover.title"
+                                        class="max-h-[320px] w-auto rounded-lg bg-gray-50 object-contain ring-1 ring-gray-200"
                                     />
                                 </div>
-                                <input
-                                    @input="handleFileUpload"
-                                    type="file"
-                                    id="cover"
-                                    class="control-file"
-                                />
-                                <div v-if="form.errors.cover" class="error">
-                                    {{ form.errors.cover }}
+                                <select
+                                    v-if="coverCandidates.length > 0"
+                                    v-model="form.cover_artwork_id"
+                                    id="cover_artwork_id"
+                                    class="control control-select"
+                                >
+                                    <option :value="null">No cover</option>
+                                    <option
+                                        v-for="candidate in coverCandidates"
+                                        :key="candidate.id"
+                                        :value="candidate.id"
+                                    >
+                                        {{ candidate.title }}
+                                    </option>
+                                </select>
+                                <p v-else class="text-sm text-gray-500">
+                                    This gallery has no artworks yet. Add
+                                    artworks to it to choose a cover.
+                                </p>
+                                <div
+                                    v-if="form.errors.cover_artwork_id"
+                                    class="error"
+                                >
+                                    {{ form.errors.cover_artwork_id }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="sort_order" class="form-label">Sort Order</label>
+                            <label for="sort_order" class="form-label"
+                                >Sort Order</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.sort_order"
@@ -101,14 +135,19 @@ const handleFileUpload = (event: Event) => {
                                     id="sort_order"
                                     class="control"
                                 />
-                                <div v-if="form.errors.sort_order" class="error">
+                                <div
+                                    v-if="form.errors.sort_order"
+                                    class="error"
+                                >
                                     {{ form.errors.sort_order }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="publish_status" class="form-label">Status</label>
+                            <label for="publish_status" class="form-label"
+                                >Status</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.publish_status"

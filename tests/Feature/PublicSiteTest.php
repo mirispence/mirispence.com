@@ -6,6 +6,8 @@ use App\Models\Artwork;
 use App\Models\Book;
 use App\Models\Gallery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
@@ -58,6 +60,48 @@ test('galleries index page renders with pagination', function () {
             ->has('galleries.data', 6)
             ->has('galleries.links') // Array of links for raw paginator
             // Raw paginator does not have 'meta' wrapper by default
+        );
+});
+
+test('galleries index renders each gallery chosen cover from public media urls only', function () {
+    Storage::fake('media_private');
+    Storage::fake('public');
+    Storage::fake('r2_private');
+    Storage::fake('r2_public');
+
+    $cover = Artwork::factory()->create(['publish_status' => 'published']);
+    $cover->addMedia(UploadedFile::fake()->image('cover.jpg', 400, 300))->toMediaCollection('artwork');
+    $originalUrl = $cover->getFirstMedia('artwork')->getUrl();
+
+    $gallery = Gallery::factory()->create(['publish_status' => 'published', 'sort_order' => 1]);
+    $gallery->artworks()->attach($cover->id);
+    $gallery->update(['cover_artwork_id' => $cover->id]);
+
+    $response = $this->get(route('galleries.index'))->assertOk();
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Public/Galleries/Index')
+        ->where('galleries.data.0.cover_urls', $cover->fresh()->mediaUrlBuilder()->public())
+        ->has('galleries.data.0.cover_urls.grid.src')
+        ->missing('galleries.data.0.cover_urls.original')
+        ->missing('galleries.data.0.cover_artwork')
+    );
+
+    $galleries = json_encode($response->viewData('page')['props']['galleries']);
+    expect($galleries)->not->toContain('"original"')
+        ->and($galleries)->not->toContain(json_encode($originalUrl));
+});
+
+test('galleries index hides a cover artwork that is not published', function () {
+    $draft = Artwork::factory()->create(['publish_status' => 'draft']);
+    $gallery = Gallery::factory()->create(['publish_status' => 'published']);
+    $gallery->artworks()->attach($draft->id);
+    $gallery->update(['cover_artwork_id' => $draft->id]);
+
+    $this->get(route('galleries.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('galleries.data.0.cover_urls', [])
         );
 });
 

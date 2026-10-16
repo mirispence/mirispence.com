@@ -36,8 +36,10 @@ defineProps<{
                 >
                     <div class="relative aspect-[4/5] overflow-hidden bg-panel">
                         <img
-                            v-if="gallery.media_urls?.thumb"
-                            :src="gallery.media_urls.thumb"
+                            v-if="gallery.cover_urls?.grid?.src"
+                            :src="gallery.cover_urls.grid.src"
+                            :srcset="gallery.cover_urls.grid.srcset"
+                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                             :alt="gallery.name"
                             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
@@ -72,7 +74,7 @@ defineProps<{
                             </Link>
                         </h3>
                         <div
-                            class="line-clamp-2 leading-relaxed text-muted-foreground prose dark:prose-invert prose-sm"
+                            class="prose dark:prose-invert prose-sm line-clamp-2 leading-relaxed text-muted-foreground"
                             v-if="gallery.description_html"
                             v-html="gallery.description_html"
                         ></div>

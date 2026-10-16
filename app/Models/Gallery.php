@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
+use App\Services\MarkdownRenderer;
+use App\Traits\HasUniqueSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Gallery extends Model implements HasMedia
+class Gallery extends Model
 {
-    use \App\Traits\HasUniqueSlug, HasFactory, InteractsWithMedia;
+    use HasFactory, HasUniqueSlug;
 
     public function getSlugSourceField(): string
     {
         return 'name';
     }
-
-    protected $with = ['media'];
 
     protected $fillable = [
         'name',
@@ -25,40 +25,27 @@ class Gallery extends Model implements HasMedia
         'description',
         'sort_order',
         'publish_status',
+        'cover_artwork_id',
     ];
 
-    protected $appends = ['media_urls', 'image_url', 'thumb_url', 'description_html'];
+    /**
+     * `cover_urls` is deliberately not appended globally: it needs the
+     * coverArtwork relation, so callers eager-load `coverArtwork.media`
+     * and append it explicitly (see `withCoverUrls()`).
+     */
+    protected $appends = ['description_html'];
 
     /**
-     * Register media collections.
+     * The cover Artwork relation is never serialized directly; use `cover_urls`.
      */
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('gallery')
-            ->singleFile()
-            ->useDisk('r2_private')
-            ->storeConversionsOnDisk('r2_public');
-    }
+    protected $hidden = ['coverArtwork'];
 
     /**
-     * Register media conversions.
+     * Append `cover_urls` to the serialized form (relation should be eager-loaded).
      */
-    public function registerMediaConversions(?Media $media = null): void
+    public function withCoverUrls(): static
     {
-        $this->addMediaConversion('thumb')
-            ->nonQueued()
-            ->performOnCollections('gallery')
-            ->width(320)
-            ->format('webp')
-            ->quality(80);
-    }
-
-    /**
-     * Get the thumb URL attribute.
-     */
-    public function getThumbUrlAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('gallery', 'thumb');
+        return $this->append('cover_urls');
     }
 
     /**
@@ -66,44 +53,51 @@ class Gallery extends Model implements HasMedia
      */
     public function getDescriptionHtmlAttribute(): string
     {
-        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->description);
+        return app(MarkdownRenderer::class)->toHtml($this->description);
     }
 
     /**
-     * Get the image URL attribute.
+     * Public-safe media URLs of the cover Artwork (never contains `original`).
+     * Empty when there is no cover or the cover Artwork is not published,
+     * so a draft artwork never surfaces through its gallery.
+     * Eager-load `coverArtwork.media` when listing galleries to avoid N+1.
+     *
+     * @return array<string, mixed>
      */
-    public function getImageUrlAttribute(): string
+    public function getCoverUrlsAttribute(): array
     {
-        return $this->getFirstMediaUrl('gallery');
-    }
+        $cover = $this->coverArtwork;
 
-    /**
-     * Get the media URLs attribute.
-     */
-    public function getMediaUrlsAttribute(): array
-    {
-        $media = $this->getFirstMedia('gallery');
-        if (! $media) {
+        if ($cover === null || $cover->publish_status !== 'published') {
             return [];
         }
 
-        return [
-            'original' => $media->getUrl(),
-            'thumb' => $media->getUrl('thumb'),
-        ];
+        return $cover->mediaUrlBuilder()->public();
+    }
+
+    /**
+     * The explicitly chosen cover Artwork, independent of artwork_gallery.sort_order.
+     *
+     * @return BelongsTo<Artwork, $this>
+     */
+    public function coverArtwork(): BelongsTo
+    {
+        return $this->belongsTo(Artwork::class, 'cover_artwork_id');
     }
 
     /**
      * Get the artworks relationship.
+     *
+     * @return BelongsToMany<Artwork, $this>
      */
-    public function artworks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function artworks(): BelongsToMany
     {
         return $this->belongsToMany(Artwork::class)
             ->withPivot('sort_order')
             ->withTimestamps();
     }
 
-    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('publish_status', 'published');
     }

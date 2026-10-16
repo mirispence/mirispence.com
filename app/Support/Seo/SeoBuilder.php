@@ -113,7 +113,7 @@ class SeoBuilder
         return self::make(
             title: "{$gallery->name} - Art",
             description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
-            image: $gallery->getImageUrlAttribute() ?: self::getFallbackOgImage()
+            image: ($gallery->cover_urls['display']['src'] ?? null) ?: self::getFallbackOgImage()
         );
     }
 

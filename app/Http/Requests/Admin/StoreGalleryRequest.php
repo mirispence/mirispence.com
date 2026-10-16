@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGalleryRequest extends FormRequest
@@ -17,7 +18,7 @@ class StoreGalleryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -26,7 +27,19 @@ class StoreGalleryRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'sort_order' => ['nullable', 'integer'],
             'publish_status' => ['required', 'in:draft,published'],
-            'cover' => ['nullable', 'image', 'max:10240'],
+            // A new gallery has no member artworks yet, so there is nothing to
+            // pick a cover from. The cover is chosen on edit, once artworks exist.
+            'cover_artwork_id' => ['prohibited'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'cover_artwork_id.prohibited' => 'Add artworks to the gallery first, then choose a cover when editing it.',
         ];
     }
 }
