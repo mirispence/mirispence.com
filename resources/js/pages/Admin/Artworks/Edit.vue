@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { update, regenerate as regenerateAction } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
+import {
+    regenerate as regenerateAction,
+    update,
+} from '@/actions/App/Http/Controllers/Admin/ArtworkController';
+import { show as showOriginal } from '@/actions/App/Http/Controllers/Admin/OriginalMediaController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 
 const props = defineProps<{
     artwork: any;
@@ -34,6 +38,12 @@ const form = useForm<{
     tags: props.artwork.tags.map((t: any) => t.id),
     image: null,
 });
+
+const originalMedia = (props.artwork.media ?? []).find(
+    (m: { id: number; collection_name: string }) =>
+        m.collection_name === 'artwork',
+);
+const originalUrl = originalMedia ? showOriginal.url(originalMedia.id) : null;
 
 const submit = () => {
     form.post(update.url(props.artwork.id));
@@ -79,7 +89,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label"
+                                >Description</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.description"
@@ -87,7 +99,10 @@ const handleFileUpload = (event: Event) => {
                                     rows="3"
                                     class="control control-textarea"
                                 ></textarea>
-                                <div v-if="form.errors.description" class="error">
+                                <div
+                                    v-if="form.errors.description"
+                                    class="error"
+                                >
                                     {{ form.errors.description }}
                                 </div>
                             </div>
@@ -96,29 +111,45 @@ const handleFileUpload = (event: Event) => {
                         <div class="form-row">
                             <label for="image" class="form-label">Image</label>
                             <div class="form-field">
-                                <div v-if="artwork.thumb_url" class="mb-6 rounded-lg ring-1 ring-gray-200 p-4">
-                                    <div class="flex flex-col sm:flex-row gap-6">
+                                <div
+                                    v-if="artwork.thumb_url"
+                                    class="mb-6 rounded-lg p-4 ring-1 ring-gray-200"
+                                >
+                                    <div
+                                        class="flex flex-col gap-6 sm:flex-row"
+                                    >
                                         <div class="sm:w-1/3">
                                             <img
                                                 :src="artwork.thumb_url"
                                                 alt="Current Image"
-                                                class="rounded-lg ring-1 ring-gray-200 max-h-[320px] w-full object-contain bg-gray-50"
+                                                class="max-h-[320px] w-full rounded-lg bg-gray-50 object-contain ring-1 ring-gray-200"
                                             />
                                         </div>
                                         <div class="flex-1 space-y-4">
                                             <div>
-                                                <span class="block text-sm font-semibold text-gray-900 mb-1">Status</span>
+                                                <span
+                                                    class="mb-1 block text-sm font-semibold text-gray-900"
+                                                    >Status</span
+                                                >
                                                 <span
                                                     :class="[
                                                         'badge',
-                                                        artwork.image_status === 'ready' ? 'badge-green' : 'badge-gray'
+                                                        artwork.image_status ===
+                                                        'ready'
+                                                            ? 'badge-green'
+                                                            : 'badge-gray',
                                                     ]"
                                                 >
-                                                    {{ artwork.image_status_label }}
+                                                    {{
+                                                        artwork.image_status_label
+                                                    }}
                                                 </span>
                                             </div>
 
-                                            <div v-if="artwork.image_error" class="error">
+                                            <div
+                                                v-if="artwork.image_error"
+                                                class="error"
+                                            >
                                                 Error: {{ artwork.image_error }}
                                             </div>
 
@@ -131,9 +162,10 @@ const handleFileUpload = (event: Event) => {
                                                     Regenerate
                                                 </button>
                                                 <a
-                                                    v-if="artwork.signed_urls?.original"
-                                                    :href="artwork.signed_urls.original"
+                                                    v-if="originalUrl"
+                                                    :href="originalUrl"
                                                     target="_blank"
+                                                    rel="noopener"
                                                     class="btn-link"
                                                 >
                                                     Open Original
@@ -156,7 +188,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="publish_status" class="form-label">Status</label>
+                            <label for="publish_status" class="form-label"
+                                >Status</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.publish_status"
@@ -170,7 +204,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="galleries" class="form-label">Galleries</label>
+                            <label for="galleries" class="form-label"
+                                >Galleries</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.galleries"
@@ -219,7 +255,11 @@ const handleFileUpload = (event: Event) => {
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label for="nsfw_flag" class="ml-2 block text-sm text-gray-900">NSFW</label>
+                                    <label
+                                        for="nsfw_flag"
+                                        class="ml-2 block text-sm text-gray-900"
+                                        >NSFW</label
+                                    >
                                 </div>
                                 <div class="flex items-center">
                                     <input
@@ -228,7 +268,11 @@ const handleFileUpload = (event: Event) => {
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label for="featured_flag" class="ml-2 block text-sm text-gray-900">Featured</label>
+                                    <label
+                                        for="featured_flag"
+                                        class="ml-2 block text-sm text-gray-900"
+                                        >Featured</label
+                                    >
                                 </div>
                             </div>
                         </div>
