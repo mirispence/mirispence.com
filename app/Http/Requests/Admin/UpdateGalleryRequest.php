@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Gallery;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateGalleryRequest extends FormRequest
 {
@@ -17,7 +20,7 @@ class UpdateGalleryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -26,7 +29,31 @@ class UpdateGalleryRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'sort_order' => ['nullable', 'integer'],
             'publish_status' => ['required', 'in:draft,published'],
-            'cover' => ['nullable', 'image', 'max:10240'],
+            'cover_artwork_id' => [
+                'nullable',
+                'integer',
+                // The cover must be one of this gallery's own member artworks.
+                Rule::exists('artwork_gallery', 'artwork_id')
+                    ->where('gallery_id', $this->gallery()->getKey()),
+            ],
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'cover_artwork_id.exists' => 'The cover must be one of this gallery\'s artworks.',
+        ];
+    }
+
+    private function gallery(): Gallery
+    {
+        /** @var Gallery $gallery */
+        $gallery = $this->route('gallery');
+
+        return $gallery;
     }
 }

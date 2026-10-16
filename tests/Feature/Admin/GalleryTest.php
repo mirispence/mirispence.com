@@ -2,15 +2,19 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Artwork;
 use App\Models\Gallery;
 use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia as Assert;
+use Spatie\MediaLibrary\HasMedia;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+    $this->seed(RolesAndPermissionsSeeder::class);
 });
 
 test('admin can view galleries index', function () {
@@ -80,4 +84,134 @@ test('admin can delete gallery', function () {
     $this->assertDatabaseMissing('galleries', [
         'id' => $gallery->id,
     ]);
+});
+
+test('admin can set a gallery cover to one of its member artworks', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $gallery = Gallery::factory()->create();
+    $artwork = Artwork::factory()->create();
+    $gallery->artworks()->attach($artwork->id, ['sort_order' => 5]);
+
+    $this->actingAs($user)
+        ->put(route('admin.galleries.update', $gallery), [
+            'name' => $gallery->name,
+            'publish_status' => 'published',
+            'cover_artwork_id' => $artwork->id,
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(route('admin.galleries.index'));
+
+    expect($gallery->fresh()->coverArtwork->is($artwork))->toBeTrue();
+    expect($gallery->artworks()->first()->pivot->sort_order)->toBe(5);
+});
+
+test('admin cannot set a gallery cover to an artwork outside the gallery', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $gallery = Gallery::factory()->create();
+    $otherGallery = Gallery::factory()->create();
+    $outsider = Artwork::factory()->create();
+    $otherGallery->artworks()->attach($outsider->id);
+
+    $this->actingAs($user)
+        ->put(route('admin.galleries.update', $gallery), [
+            'name' => $gallery->name,
+            'publish_status' => 'published',
+            'cover_artwork_id' => $outsider->id,
+        ])
+        ->assertSessionHasErrors('cover_artwork_id');
+
+    expect($gallery->fresh()->cover_artwork_id)->toBeNull();
+});
+
+test('admin can clear a gallery cover', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $gallery = Gallery::factory()->create();
+    $artwork = Artwork::factory()->create();
+    $gallery->artworks()->attach($artwork->id);
+    $gallery->update(['cover_artwork_id' => $artwork->id]);
+
+    $this->actingAs($user)
+        ->put(route('admin.galleries.update', $gallery), [
+            'name' => $gallery->name,
+            'publish_status' => 'published',
+            'cover_artwork_id' => null,
+        ])
+        ->assertSessionHasNoErrors();
+
+    expect($gallery->fresh()->cover_artwork_id)->toBeNull();
+});
+
+test('creating a gallery with a cover artwork is rejected because it has no members yet', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $artwork = Artwork::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('admin.galleries.store'), [
+            'name' => 'New Gallery',
+            'publish_status' => 'draft',
+            'cover_artwork_id' => $artwork->id,
+        ])
+        ->assertSessionHasErrors('cover_artwork_id');
+
+    $this->assertDatabaseMissing('galleries', ['name' => 'New Gallery']);
+});
+
+test('deleting the cover artwork clears the gallery cover', function () {
+    $gallery = Gallery::factory()->create();
+    $artwork = Artwork::factory()->create();
+    $gallery->artworks()->attach($artwork->id);
+    $gallery->update(['cover_artwork_id' => $artwork->id]);
+
+    $artwork->delete();
+
+    expect($gallery->fresh()->cover_artwork_id)->toBeNull();
+});
+
+test('edit page offers only the gallery own artworks as cover candidates', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $gallery = Gallery::factory()->create();
+    $member = Artwork::factory()->create(['title' => 'Member']);
+    Artwork::factory()->create(['title' => 'Outsider']);
+    $gallery->artworks()->attach($member->id);
+
+    $this->actingAs($user)
+        ->get(route('admin.galleries.edit', $gallery))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Admin/Galleries/Edit')
+            ->has('coverCandidates', 1)
+            ->where('coverCandidates.0.id', $member->id)
+            ->where('coverCandidates.0.title', 'Member')
+            ->missing('gallery.media_urls')
+            ->missing('gallery.thumb_url')
+            ->missing('gallery.image_url')
+            ->missing('gallery.media')
+        );
+});
+
+test('gallery no longer has its own media collection', function () {
+    expect(new Gallery)->not->toBeInstanceOf(HasMedia::class);
+    expect(Gallery::factory()->create()->toArray())
+        ->not->toHaveKeys(['media_urls', 'thumb_url', 'image_url', 'media']);
+});
+
+test('the old cover upload field is ignored', function () {
+    $user = User::factory()->create();
+    $user->assignRole('admin');
+    $gallery = Gallery::factory()->create();
+
+    $this->actingAs($user)
+        ->put(route('admin.galleries.update', $gallery), [
+            'name' => $gallery->name,
+            'publish_status' => 'published',
+            'cover' => UploadedFile::fake()->image('cover.jpg'),
+        ])
+        ->assertSessionHasNoErrors();
+
+    $this->assertDatabaseMissing('media', ['model_type' => Gallery::class]);
 });
