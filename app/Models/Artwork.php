@@ -56,11 +56,9 @@ class Artwork extends Model implements HasMedia
         return new MediaUrlBuilder($this, 'artwork');
     }
 
-    public function getThumbUrlAttribute(): ?string
+    public function getThumbUrlAttribute(): string
     {
-        $thumb = $this->mediaUrlBuilder()->admin()['thumb'] ?? '';
-
-        return is_string($thumb) ? $thumb : '';
+        return $this->mediaUrlBuilder()->thumb();
     }
 
     public function getDescriptionHtmlAttribute(): string

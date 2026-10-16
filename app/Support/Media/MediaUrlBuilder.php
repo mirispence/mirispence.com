@@ -28,6 +28,8 @@ final class MediaUrlBuilder
         private readonly string $collection,
     ) {}
 
+    // public()/admin() stay separate entry points (spec names both) so admin URLs can diverge without touching public callers.
+
     /**
      * URLs safe to serialize on public pages.
      *
@@ -50,6 +52,16 @@ final class MediaUrlBuilder
     }
 
     /**
+     * The admin thumbnail URL, or '' when there is no media.
+     */
+    public function thumb(): string
+    {
+        $thumb = $this->admin()['thumb'] ?? '';
+
+        return is_string($thumb) ? $thumb : '';
+    }
+
+    /**
      * @return array<string, string|array{src: string, srcset: string}>
      */
     private function build(): array
@@ -68,8 +80,8 @@ final class MediaUrlBuilder
             ->map(fn (Conversion $conversion) => $conversion->getName());
 
         foreach ($names as $name) {
-            if (preg_match('/^(.+)_(\d+)$/', $name, $m)) {
-                $sized[$m[1]][(int) $m[2]] = $media->getUrl($name);
+            if (preg_match('/^(?<prefix>.+)_(?<width>\d+)$/', $name, $sizedName)) {
+                $sized[$sizedName['prefix']][(int) $sizedName['width']] = $media->getUrl($name);
             } else {
                 $plain[$name] = $media->getUrl($name);
             }
