@@ -135,7 +135,7 @@ Book has no media of its own either (not `HasMedia`). It points at a Gallery (`B
 
 ## CI / Deploy
 
-- `ci.yml`: on PRs to `main`, runs `composer test`, `composer analyse` (PHPStan), `npx eslint .`
+- `ci.yml`: on PRs to `main`, runs `composer test`, `composer analyse` (PHPStan), `npx eslint .`, `npm run type-check`, `npm run format:check` (Prettier; generated Wayfinder dirs are in `.prettierignore`)
 - `deploy.yml`: push to `main` triggers SSH deploy directly — does not re-run the CI checks
 - Deploy script: clone → composer install → npm ci + build → migrate → cache → reload fpm + horizon
 - Rollback: re-symlinks previous timestamped release
