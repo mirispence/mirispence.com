@@ -13,6 +13,8 @@ export default defineConfigWithVueTs(
         rules: {
             'vue/multi-word-component-names': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
+            // Admin form components take the page's Inertia form as a prop and bind its fields.
+            'vue/no-mutating-props': ['error', { shallowOnly: true }],
         },
     },
     prettier,
