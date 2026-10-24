@@ -10,5 +10,9 @@
   "enabledMcpjsonServers": [
     "laravel-boost",
     "herd"
-  ]
+  ],
+  "skillOverrides": {
+    "archify": "off",
+    "archify-review": "off"
+  }
 }
