@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "./admin/forms.css";
-@import "./artwork.css";
+@import 'tailwindcss';
+@import './admin/forms.css';
+@import './artwork.css';
 
 @font-face {
     font-family: 'Fraunces';
@@ -12,7 +12,8 @@
 
 @font-face {
     font-family: 'Fraunces';
-    src: url('../fonts/Fraunces-Italic-Variable.woff2') format('woff2-variations');
+    src: url('../fonts/Fraunces-Italic-Variable.woff2')
+        format('woff2-variations');
     font-weight: 100 900;
     font-style: italic;
     font-display: swap;
@@ -28,12 +29,12 @@
 
 @font-face {
     font-family: 'Source Sans 3';
-    src: url('../fonts/SourceSans3-Italic-Variable.woff2') format('woff2-variations');
+    src: url('../fonts/SourceSans3-Italic-Variable.woff2')
+        format('woff2-variations');
     font-weight: 200 900;
     font-style: italic;
     font-display: swap;
 }
-
 
 @import 'tw-animate-css';
 
@@ -94,7 +95,6 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -105,7 +105,6 @@
 }
 
 @layer utilities {
-
     body,
     html {
         --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
@@ -114,12 +113,16 @@
 
     .bg-site-gradient {
         background:
-            radial-gradient(circle at 0% 0%,
+            radial-gradient(
+                circle at 0% 0%,
                 rgba(168, 85, 247, 0.05) 0%,
-                transparent 50%),
-            radial-gradient(circle at 100% 100%,
+                transparent 50%
+            ),
+            radial-gradient(
+                circle at 100% 100%,
                 rgba(219, 39, 119, 0.05) 0%,
-                transparent 50%),
+                transparent 50%
+            ),
             #f7f5ff;
     }
 

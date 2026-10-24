@@ -43,7 +43,9 @@ const submit = () => {
                                     id="book_id"
                                     class="control control-select"
                                 >
-                                    <option value="" disabled>Select a book</option>
+                                    <option value="" disabled>
+                                        Select a book
+                                    </option>
                                     <option
                                         v-for="book in books"
                                         :key="book.id"
@@ -74,7 +76,9 @@ const submit = () => {
                         </div>
 
                         <div class="form-row">
-                            <label for="summary" class="form-label">Summary</label>
+                            <label for="summary" class="form-label"
+                                >Summary</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.summary"
@@ -89,7 +93,9 @@ const submit = () => {
                         </div>
 
                         <div class="form-row">
-                            <label for="body_markdown" class="form-label">Body (Markdown)</label>
+                            <label for="body_markdown" class="form-label"
+                                >Body (Markdown)</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.body_markdown"
@@ -97,7 +103,10 @@ const submit = () => {
                                     rows="10"
                                     class="control control-textarea font-mono"
                                 ></textarea>
-                                <div v-if="form.errors.body_markdown" class="error">
+                                <div
+                                    v-if="form.errors.body_markdown"
+                                    class="error"
+                                >
                                     {{ form.errors.body_markdown }}
                                 </div>
                             </div>
@@ -128,7 +137,11 @@ const submit = () => {
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label for="is_sample" class="ml-2 block text-sm text-gray-900">Sample Chapter</label>
+                                    <label
+                                        for="is_sample"
+                                        class="ml-2 block text-sm text-gray-900"
+                                        >Sample Chapter</label
+                                    >
                                 </div>
                             </div>
                         </div>

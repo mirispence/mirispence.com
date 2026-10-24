@@ -9,29 +9,83 @@ const seoData = computed(() => (page.props as any).seo);
 <template>
     <Head>
         <title>{{ seoData?.title }}</title>
-        <meta v-if="seoData?.description" name="description" :content="seoData.description" />
-        <link v-if="seoData?.canonical" rel="canonical" :href="seoData.canonical" />
+        <meta
+            v-if="seoData?.description"
+            name="description"
+            :content="seoData.description"
+        />
+        <link
+            v-if="seoData?.canonical"
+            rel="canonical"
+            :href="seoData.canonical"
+        />
         <meta v-if="seoData?.robots" name="robots" :content="seoData.robots" />
 
         <!-- Open Graph -->
-        <meta v-if="seoData?.og?.type" property="og:type" :content="seoData.og.type" />
-        <meta v-if="seoData?.og?.title" property="og:title" :content="seoData.og.title" />
-        <meta v-if="seoData?.og?.description" property="og:description" :content="seoData.og.description" />
-        <meta v-if="seoData?.og?.url" property="og:url" :content="seoData.og.url" />
-        <meta v-if="seoData?.og?.image" property="og:image" :content="seoData.og.image" />
-        <meta v-if="seoData?.og?.['image:alt']" property="og:image:alt" :content="seoData.og['image:alt']" />
-        <meta v-if="seoData?.og?.site_name" property="og:site_name" :content="seoData.og.site_name" />
+        <meta
+            v-if="seoData?.og?.type"
+            property="og:type"
+            :content="seoData.og.type"
+        />
+        <meta
+            v-if="seoData?.og?.title"
+            property="og:title"
+            :content="seoData.og.title"
+        />
+        <meta
+            v-if="seoData?.og?.description"
+            property="og:description"
+            :content="seoData.og.description"
+        />
+        <meta
+            v-if="seoData?.og?.url"
+            property="og:url"
+            :content="seoData.og.url"
+        />
+        <meta
+            v-if="seoData?.og?.image"
+            property="og:image"
+            :content="seoData.og.image"
+        />
+        <meta
+            v-if="seoData?.og?.['image:alt']"
+            property="og:image:alt"
+            :content="seoData.og['image:alt']"
+        />
+        <meta
+            v-if="seoData?.og?.site_name"
+            property="og:site_name"
+            :content="seoData.og.site_name"
+        />
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta v-if="seoData?.title" name="twitter:title" :content="seoData.title" />
-        <meta v-if="seoData?.description" name="twitter:description" :content="seoData.description" />
-        <meta v-if="seoData?.og?.image" name="twitter:image" :content="seoData.og.image" />
+        <meta
+            v-if="seoData?.title"
+            name="twitter:title"
+            :content="seoData.title"
+        />
+        <meta
+            v-if="seoData?.description"
+            name="twitter:description"
+            :content="seoData.description"
+        />
+        <meta
+            v-if="seoData?.og?.image"
+            name="twitter:image"
+            :content="seoData.og.image"
+        />
 
         <!-- JSON-LD -->
-        <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -- :is is always the literal 'script' element -->
-        <component :is="'script'" v-if="seoData?.jsonld" type="application/ld+json" v-html="JSON.stringify(seoData.jsonld)">
+        <!-- eslint-disable vue/no-v-text-v-html-on-component -- :is is always the literal 'script' element -->
+        <component
+            :is="'script'"
+            v-if="seoData?.jsonld"
+            type="application/ld+json"
+            v-html="JSON.stringify(seoData.jsonld)"
+        >
         </component>
+        <!-- eslint-enable vue/no-v-text-v-html-on-component -->
     </Head>
     <div
         class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-accent/20 selection:text-accent"
@@ -156,7 +210,6 @@ const seoData = computed(() => (page.props as any).seo);
                     <p class="text-sm text-muted-foreground">
                         &copy; {{ new Date().getFullYear() }} Miri Spence. All
                         rights reserved.
-
                     </p>
                 </div>
             </div>

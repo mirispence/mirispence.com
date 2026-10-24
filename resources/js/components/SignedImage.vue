@@ -9,7 +9,7 @@ defineProps<{
     className?: string;
 }>();
 
-const defaultSizes = "(max-width: 768px) 100vw, 1200px";
+const defaultSizes = '(max-width: 768px) 100vw, 1200px';
 </script>
 
 <template>
@@ -27,7 +27,10 @@ const defaultSizes = "(max-width: 768px) 100vw, 1200px";
             class="transition-all duration-700"
         />
         <!-- Transparent overlay to deter direct right-click "Open image in new tab" -->
-        <div class="absolute inset-0 z-10 opacity-0 cursor-default" aria-hidden="true"></div>
+        <div
+            class="absolute inset-0 z-10 cursor-default opacity-0"
+            aria-hidden="true"
+        ></div>
     </div>
 </template>
 

@@ -32,7 +32,11 @@ const isRevealed = (id: number) => {
 
 const activeLightboxIndex = ref<number | null>(null);
 const isZoomed = ref(false);
-const activeArtwork = computed(() => activeLightboxIndex.value !== null ? props.artworks.data[activeLightboxIndex.value] : null);
+const activeArtwork = computed(() =>
+    activeLightboxIndex.value !== null
+        ? props.artworks.data[activeLightboxIndex.value]
+        : null,
+);
 
 // ArtCard only ever emits click-image once an artwork is already revealed, so the
 // lightbox never needs its own NSFW gate.
@@ -152,70 +156,120 @@ watch(selectedGallery, (value) => {
                 class="fixed inset-0 z-[100] flex flex-col items-center justify-center"
                 @click.self="closeLightbox"
             >
-                <div class="absolute inset-0 bg-panel/95 backdrop-blur-3xl" @click="closeLightbox"></div>
+                <div
+                    class="absolute inset-0 bg-panel/95 backdrop-blur-3xl"
+                    @click="closeLightbox"
+                ></div>
 
-                <div class="relative z-10 flex h-full w-full flex-col overflow-hidden">
+                <div
+                    class="relative z-10 flex h-full w-full flex-col overflow-hidden"
+                >
                     <!-- Nav Controls -->
                     <button
                         @click="prevImage"
-                        class="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 sm:left-10"
+                        class="absolute top-1/2 left-4 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 sm:left-10"
                         aria-label="Previous image"
                     >
-                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        <svg
+                            class="h-8 w-8"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            />
                         </svg>
                     </button>
 
                     <button
                         @click="nextImage"
-                        class="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 sm:right-10"
+                        class="absolute top-1/2 right-4 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 sm:right-10"
                         aria-label="Next image"
                     >
-                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        <svg
+                            class="h-8 w-8"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5l7 7-7 7"
+                            />
                         </svg>
                     </button>
 
                     <button
                         @click="closeLightbox"
-                        class="absolute right-4 top-4 z-20 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 sm:right-10 sm:top-10"
+                        class="absolute top-4 right-4 z-20 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 sm:top-10 sm:right-10"
                         aria-label="Close lightbox"
                     >
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                            class="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
                         </svg>
                     </button>
 
                     <!-- Image Display -->
                     <div
-                        class="relative flex-1 overflow-auto flex items-center justify-center p-4 sm:p-10"
+                        class="relative flex flex-1 items-center justify-center overflow-auto p-4 sm:p-10"
                         @click.self="closeLightbox"
                     >
                         <div
-                            class="relative inline-block transition-all duration-300 m-auto"
+                            class="relative m-auto inline-block transition-all duration-300"
                         >
                             <img
                                 v-if="activeArtwork.media_urls?.display"
                                 :src="activeArtwork.media_urls.display.src"
-                                :srcset="activeArtwork.media_urls.display.srcset"
-                                :alt="activeArtwork.alt_text || activeArtwork.title"
+                                :srcset="
+                                    activeArtwork.media_urls.display.srcset
+                                "
+                                :alt="
+                                    activeArtwork.alt_text ||
+                                    activeArtwork.title
+                                "
                                 :class="[
-                                    'shadow-2xl rounded-lg transition-all duration-500',
-                                    isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
+                                    'rounded-lg shadow-2xl transition-all duration-500',
+                                    isZoomed
+                                        ? 'max-w-none'
+                                        : 'max-h-[85vh] max-w-full object-contain',
                                 ]"
                             />
                             <!-- Invisible overlay to discourage casual image saving -->
                             <div
                                 class="absolute inset-0 z-10"
-                                :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
+                                :class="
+                                    isZoomed
+                                        ? 'cursor-zoom-out'
+                                        : 'cursor-zoom-in'
+                                "
                                 @click="toggleZoom"
                             ></div>
                         </div>
                     </div>
 
                     <!-- Caption -->
-                    <div class="relative z-20 pb-10 pt-4 text-center bg-panel/80 backdrop-blur-sm">
-                        <h2 class="font-heading text-2xl font-bold text-white">{{ activeArtwork.title }}</h2>
+                    <div
+                        class="relative z-20 bg-panel/80 pt-4 pb-10 text-center backdrop-blur-sm"
+                    >
+                        <h2 class="font-heading text-2xl font-bold text-white">
+                            {{ activeArtwork.title }}
+                        </h2>
                         <Link
                             :href="`/art/${activeArtwork.id}`"
                             class="mt-2 inline-block text-white/60 hover:text-white"

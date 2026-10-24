@@ -27,7 +27,7 @@ defineProps<{
                     :class="
                         link.active
                             ? 'bg-indigo-600 text-white shadow-md'
-                            : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                            : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                     "
                     v-html="link.label"
                 />

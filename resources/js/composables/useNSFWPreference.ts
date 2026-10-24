@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const ALWAYS_REVEAL_KEY = 'miri_art_nsfw_reveal';
 
@@ -19,6 +19,6 @@ export function useNSFWPreference() {
 
     return {
         nsfwAlwaysReveal,
-        setPreference
+        setPreference,
     };
 }

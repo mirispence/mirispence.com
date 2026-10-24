@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { index, update } from '@/actions/App/Http/Controllers/Admin/UserController';
+import {
+    index,
+    update,
+} from '@/actions/App/Http/Controllers/Admin/UserController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, useForm, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const props = defineProps<{
     user: any;
@@ -66,7 +69,9 @@ const submit = () => {
                         <div class="form-row">
                             <div class="form-label">
                                 <label for="password">Password</label>
-                                <p class="text-xs text-gray-500 font-normal">Leave blank to keep current password</p>
+                                <p class="text-xs font-normal text-gray-500">
+                                    Leave blank to keep current password
+                                </p>
                             </div>
                             <div class="form-field">
                                 <input
@@ -82,7 +87,11 @@ const submit = () => {
                         </div>
 
                         <div class="form-row">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <label
+                                for="password_confirmation"
+                                class="form-label"
+                                >Confirm Password</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.password_confirmation"
@@ -119,10 +128,7 @@ const submit = () => {
 
                 <div class="actions-bar">
                     <div class="actions-bar-inner">
-                        <Link
-                            :href="index.url()"
-                            class="btn-secondary"
-                        >
+                        <Link :href="index.url()" class="btn-secondary">
                             Cancel
                         </Link>
                         <button
@@ -130,7 +136,9 @@ const submit = () => {
                             class="btn-primary"
                             :disabled="form.processing"
                         >
-                            {{ form.processing ? 'Updating...' : 'Update User' }}
+                            {{
+                                form.processing ? 'Updating...' : 'Update User'
+                            }}
                         </button>
                     </div>
                 </div>
