@@ -27,7 +27,7 @@ watch(
     () => form.book_id,
     (value) => {
         if (value) {
-            router.get(index.url({ book_id: value }));
+            router.get(index.url({ query: { book_id: value } }));
         } else {
             router.get(index.url());
         }
@@ -55,7 +55,11 @@ const deleteChapter = (id: number) => {
             </div>
             <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                 <Link
-                    :href="create.url({ book_id: book ? book.id : null })"
+                    :href="
+                        create.url({
+                            query: { book_id: book ? book.id : null },
+                        })
+                    "
                     class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                     Add Chapter

@@ -38,6 +38,14 @@ const showVerificationStep = ref(false);
 const code = ref<number[]>([]);
 const codeValue = computed<string>(() => code.value.join(''));
 
+// Fortify returns this validation error in the `confirmTwoFactorAuthentication`
+// error bag, so the Form slot's flat `errors` record is nested at runtime.
+const confirmationCodeError = (errors: Record<string, unknown>) =>
+    (
+        errors.confirmTwoFactorAuthentication as
+            Record<string, string> | undefined
+    )?.code;
+
 const pinInputContainerRef = useTemplateRef('pinInputContainerRef');
 
 const modalConfig = computed<{
@@ -264,10 +272,7 @@ watch(
                                     </PinInputGroup>
                                 </PinInput>
                                 <InputError
-                                    :message="
-                                        errors?.confirmTwoFactorAuthentication
-                                            ?.code
-                                    "
+                                    :message="confirmationCodeError(errors)"
                                 />
                             </div>
 

@@ -57,3 +57,6 @@ jobs:
 
       - name: Run ESLint
         run: npx eslint .
+
+      - name: Type-check frontend
+        run: npm run type-check
