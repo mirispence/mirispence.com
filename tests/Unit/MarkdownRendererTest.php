@@ -3,9 +3,10 @@
 use App\Services\MarkdownRenderer;
 
 /*
- * Regression coverage for the league/commonmark XSS filter bypasses fixed in
- * 2.8.x–2.9.x (GHSA alerts #99, #130, #137): raw HTML must stay stripped and
- * unsafe link schemes must never reach an href/src, whatever bytes are mixed in.
+ * Output-level XSS guarantees for MarkdownRenderer: raw HTML must stay stripped
+ * and unsafe link schemes must never reach an href/src, whatever bytes are mixed
+ * in. Not CVE-specific coverage — the Attributes/Embed extensions behind the
+ * league/commonmark 2.8–2.9 filter-bypass advisories are not loaded here.
  */
 
 test('it renders safe markdown', function () {

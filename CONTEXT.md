@@ -69,6 +69,7 @@ tests/
   Unit/
     SeoBuilderTest.php
     MediaUrlBuilderTest.php
+    MarkdownRendererTest.php # Raw HTML / on* handlers stripped, unsafe link schemes neutralised
 
 config/
   filesystems.php       # Defines r2_private, r2_public, media_private disks
