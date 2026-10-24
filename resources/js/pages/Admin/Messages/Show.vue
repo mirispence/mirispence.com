@@ -32,7 +32,9 @@ const formatDate = (date: string) => {
             <div class="admin-card mt-8">
                 <div class="admin-card-header">
                     <h3 class="admin-card-title">Information</h3>
-                    <p class="admin-card-description">Details about the message or commission request.</p>
+                    <p class="admin-card-description">
+                        Details about the message or commission request.
+                    </p>
                 </div>
                 <div class="admin-card-body form-stack">
                     <div class="form-row">
@@ -72,64 +74,102 @@ const formatDate = (date: string) => {
 
                     <div class="form-row">
                         <dt class="form-label">Message</dt>
-                        <dd class="form-field text-gray-900 whitespace-pre-wrap">
+                        <dd
+                            class="form-field whitespace-pre-wrap text-gray-900"
+                        >
                             {{ message.message }}
                         </dd>
                     </div>
 
                     <template v-if="message.commission_request">
-                        <div class="form-row bg-gray-50/50 -mx-6 px-6 py-4">
+                        <div class="form-row -mx-6 bg-gray-50/50 px-6 py-4">
                             <h4 class="text-sm font-bold text-gray-900">
                                 Commission Request Details
                             </h4>
                         </div>
 
-                        <div v-if="message.commission_request.project_description" class="form-row">
+                        <div
+                            v-if="
+                                message.commission_request.project_description
+                            "
+                            class="form-row"
+                        >
                             <dt class="form-label">Project Description</dt>
-                            <dd class="form-field text-gray-900 whitespace-pre-wrap">
-                                {{ message.commission_request.project_description }}
+                            <dd
+                                class="form-field whitespace-pre-wrap text-gray-900"
+                            >
+                                {{
+                                    message.commission_request
+                                        .project_description
+                                }}
                             </dd>
                         </div>
 
-                        <div v-if="message.commission_request.budget_range" class="form-row">
+                        <div
+                            v-if="message.commission_request.budget_range"
+                            class="form-row"
+                        >
                             <dt class="form-label">Budget Range</dt>
                             <dd class="form-field text-gray-900">
                                 {{ message.commission_request.budget_range }}
                             </dd>
                         </div>
 
-                        <div v-if="message.commission_request.desired_due_date" class="form-row">
+                        <div
+                            v-if="message.commission_request.desired_due_date"
+                            class="form-row"
+                        >
                             <dt class="form-label">Desired Due Date</dt>
                             <dd class="form-field text-gray-900">
-                                {{ message.commission_request.desired_due_date }}
+                                {{
+                                    message.commission_request.desired_due_date
+                                }}
                             </dd>
                         </div>
 
                         <div class="form-row">
                             <dt class="form-label">Commission Status</dt>
                             <dd class="form-field">
-                                <span :class="[
-                                    'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize',
-                                    message.commission_request.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                    message.commission_request.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                                    'bg-blue-100 text-blue-800'
-                                ]">
+                                <span
+                                    :class="[
+                                        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize',
+                                        message.commission_request.status ===
+                                        'completed'
+                                            ? 'bg-green-100 text-green-800'
+                                            : message.commission_request
+                                                    .status === 'rejected'
+                                              ? 'bg-red-100 text-red-800'
+                                              : 'bg-blue-100 text-blue-800',
+                                    ]"
+                                >
                                     {{ message.commission_request.status }}
                                 </span>
                             </dd>
                         </div>
 
-                        <div v-if="message.commission_request.quote_amount" class="form-row">
+                        <div
+                            v-if="message.commission_request.quote_amount"
+                            class="form-row"
+                        >
                             <dt class="form-label">Quote Amount</dt>
                             <dd class="form-field text-gray-900">
                                 ${{ message.commission_request.quote_amount }}
                             </dd>
                         </div>
 
-                        <div v-if="message.commission_request.invoice_link" class="form-row">
+                        <div
+                            v-if="message.commission_request.invoice_link"
+                            class="form-row"
+                        >
                             <dt class="form-label">Invoice Link</dt>
                             <dd class="form-field">
-                                <a :href="message.commission_request.invoice_link" target="_blank" class="text-indigo-600 hover:text-indigo-900 font-medium">
+                                <a
+                                    :href="
+                                        message.commission_request.invoice_link
+                                    "
+                                    target="_blank"
+                                    class="font-medium text-indigo-600 hover:text-indigo-900"
+                                >
                                     View Invoice
                                 </a>
                             </dd>

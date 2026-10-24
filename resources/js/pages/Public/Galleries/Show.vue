@@ -28,7 +28,7 @@ defineProps<{
                         {{ gallery.name }}
                     </h1>
                     <div
-                        class="mt-4 text-xl text-muted-foreground prose dark:prose-invert"
+                        class="prose dark:prose-invert mt-4 text-xl text-muted-foreground"
                         v-if="gallery.description_html"
                         v-html="gallery.description_html"
                     ></div>

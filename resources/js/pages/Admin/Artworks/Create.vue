@@ -72,7 +72,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="description" class="form-label">Description (Markdown)</label>
+                            <label for="description" class="form-label"
+                                >Description (Markdown)</label
+                            >
                             <div class="form-field">
                                 <textarea
                                     v-model="form.description"
@@ -80,7 +82,10 @@ const handleFileUpload = (event: Event) => {
                                     rows="3"
                                     class="control control-textarea"
                                 ></textarea>
-                                <div v-if="form.errors.description" class="error">
+                                <div
+                                    v-if="form.errors.description"
+                                    class="error"
+                                >
                                     {{ form.errors.description }}
                                 </div>
                             </div>
@@ -102,7 +107,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="publish_status" class="form-label">Status</label>
+                            <label for="publish_status" class="form-label"
+                                >Status</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.publish_status"
@@ -116,7 +123,9 @@ const handleFileUpload = (event: Event) => {
                         </div>
 
                         <div class="form-row">
-                            <label for="galleries" class="form-label">Galleries</label>
+                            <label for="galleries" class="form-label"
+                                >Galleries</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.galleries"
@@ -165,7 +174,11 @@ const handleFileUpload = (event: Event) => {
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label for="nsfw_flag" class="ml-2 block text-sm text-gray-900">NSFW</label>
+                                    <label
+                                        for="nsfw_flag"
+                                        class="ml-2 block text-sm text-gray-900"
+                                        >NSFW</label
+                                    >
                                 </div>
                                 <div class="flex items-center">
                                     <input
@@ -174,7 +187,11 @@ const handleFileUpload = (event: Event) => {
                                         type="checkbox"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
-                                    <label for="featured_flag" class="ml-2 block text-sm text-gray-900">Featured</label>
+                                    <label
+                                        for="featured_flag"
+                                        class="ml-2 block text-sm text-gray-900"
+                                        >Featured</label
+                                    >
                                 </div>
                             </div>
                         </div>

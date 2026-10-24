@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { create, edit, destroy } from '@/actions/App/Http/Controllers/Admin/UserController';
+import {
+    create,
+    destroy,
+    edit,
+} from '@/actions/App/Http/Controllers/Admin/UserController';
 import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -75,28 +79,28 @@ const deleteUser = (id: number) => {
                         <tbody class="divide-y divide-gray-200">
                             <tr v-for="user in users.data" :key="user.id">
                                 <td
-                                    class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:pl-0"
+                                    class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
                                 >
                                     {{ user.name }}
                                 </td>
                                 <td
-                                    class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                                    class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
                                 >
                                     {{ user.email }}
                                 </td>
                                 <td
-                                    class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                                    class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
                                 >
                                     <span
                                         v-for="role in user.roles"
                                         :key="role.id"
-                                        class="mr-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+                                        class="mr-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
                                     >
                                         {{ role.name }}
                                     </span>
                                 </td>
                                 <td
-                                    class="relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-0"
+                                    class="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0"
                                 >
                                     <Link
                                         :href="edit.url(user.id)"

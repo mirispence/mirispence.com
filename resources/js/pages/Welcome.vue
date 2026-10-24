@@ -35,7 +35,6 @@ withDefaults(
                     >
                         Log in
                     </Link>
-
                 </template>
             </nav>
         </header>

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { index, store } from '@/actions/App/Http/Controllers/Admin/UserController';
+import {
+    index,
+    store,
+} from '@/actions/App/Http/Controllers/Admin/UserController';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -63,7 +66,9 @@ const submit = () => {
                         </div>
 
                         <div class="form-row">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label"
+                                >Password</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.password"
@@ -78,7 +83,11 @@ const submit = () => {
                         </div>
 
                         <div class="form-row">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <label
+                                for="password_confirmation"
+                                class="form-label"
+                                >Confirm Password</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.password_confirmation"
@@ -115,10 +124,7 @@ const submit = () => {
 
                 <div class="actions-bar">
                     <div class="actions-bar-inner">
-                        <Link
-                            :href="index.url()"
-                            class="btn-secondary"
-                        >
+                        <Link :href="index.url()" class="btn-secondary">
                             Cancel
                         </Link>
                         <button
@@ -126,7 +132,9 @@ const submit = () => {
                             class="btn-primary"
                             :disabled="form.processing"
                         >
-                            {{ form.processing ? 'Creating...' : 'Create User' }}
+                            {{
+                                form.processing ? 'Creating...' : 'Create User'
+                            }}
                         </button>
                     </div>
                 </div>

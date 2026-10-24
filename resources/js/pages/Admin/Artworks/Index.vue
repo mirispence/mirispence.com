@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
+    bulkRegenerate as bulkRegenerateAction,
     create,
     destroy,
     edit,
     regenerate as regenerateAction,
-    bulkRegenerate as bulkRegenerateAction,
 } from '@/actions/App/Http/Controllers/Admin/ArtworkController';
 import Pagination from '@/components/Pagination.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -28,19 +28,27 @@ const selectedArtworks = ref<number[]>([]);
 
 const toggleSelection = (id: number) => {
     if (selectedArtworks.value.includes(id)) {
-        selectedArtworks.value = selectedArtworks.value.filter(i => i !== id);
+        selectedArtworks.value = selectedArtworks.value.filter((i) => i !== id);
     } else {
         selectedArtworks.value.push(id);
     }
 };
 
 const bulkRegenerate = () => {
-    if (confirm(`Regenerate images for ${selectedArtworks.value.length} artworks?`)) {
-        router.post(bulkRegenerateAction.url(), {
-            ids: selectedArtworks.value
-        }, {
-            onSuccess: () => selectedArtworks.value = []
-        });
+    if (
+        confirm(
+            `Regenerate images for ${selectedArtworks.value.length} artworks?`,
+        )
+    ) {
+        router.post(
+            bulkRegenerateAction.url(),
+            {
+                ids: selectedArtworks.value,
+            },
+            {
+                onSuccess: () => (selectedArtworks.value = []),
+            },
+        );
     }
 };
 
@@ -60,11 +68,11 @@ const regenerate = (id: number) => {
                     A list of all artworks in your portfolio.
                 </p>
             </div>
-            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex sm:gap-3 sm:flex-none">
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex sm:flex-none sm:gap-3">
                 <button
                     v-if="selectedArtworks.length > 0"
                     @click="bulkRegenerate"
-                    class="block rounded-md bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    class="block rounded-md bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
                 >
                     Regenerate Selected ({{ selectedArtworks.length }})
                 </button>
@@ -90,8 +98,15 @@ const regenerate = (id: number) => {
                                 >
                                     <input
                                         type="checkbox"
-                                        @change="selectedArtworks = artworks.data.map(a => a.id)"
-                                        :checked="selectedArtworks.length === artworks.data.length && artworks.data.length > 0"
+                                        @change="
+                                            selectedArtworks =
+                                                artworks.data.map((a) => a.id)
+                                        "
+                                        :checked="
+                                            selectedArtworks.length ===
+                                                artworks.data.length &&
+                                            artworks.data.length > 0
+                                        "
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
                                 </th>
@@ -143,7 +158,11 @@ const regenerate = (id: number) => {
                                 >
                                     <input
                                         type="checkbox"
-                                        :checked="selectedArtworks.includes(artwork.id)"
+                                        :checked="
+                                            selectedArtworks.includes(
+                                                artwork.id,
+                                            )
+                                        "
                                         @change="toggleSelection(artwork.id)"
                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
@@ -173,11 +192,17 @@ const regenerate = (id: number) => {
                                 >
                                     <span
                                         :class="[
-                                            artwork.publish_status === 'published' ? 'text-green-600' :
-                                            artwork.publish_status === 'draft' ? 'text-blue-600' :
-                                            artwork.publish_status === 'archived' ? 'text-red-600' :
-                                            'text-gray-400',
-                                            'inline-flex items-center text-xs font-semibold'
+                                            artwork.publish_status ===
+                                            'published'
+                                                ? 'text-green-600'
+                                                : artwork.publish_status ===
+                                                    'draft'
+                                                  ? 'text-blue-600'
+                                                  : artwork.publish_status ===
+                                                      'archived'
+                                                    ? 'text-red-600'
+                                                    : 'text-gray-400',
+                                            'inline-flex items-center text-xs font-semibold',
                                         ]"
                                     >
                                         {{ artwork.publish_status_label }}
@@ -188,11 +213,16 @@ const regenerate = (id: number) => {
                                 >
                                     <span
                                         :class="[
-                                            artwork.image_status === 'ready' ? 'text-green-600' :
-                                            artwork.image_status === 'processing' ? 'text-blue-600' :
-                                            artwork.image_status === 'failed' ? 'text-red-600' :
-                                            'text-gray-400',
-                                            'inline-flex items-center text-xs font-semibold'
+                                            artwork.image_status === 'ready'
+                                                ? 'text-green-600'
+                                                : artwork.image_status ===
+                                                    'processing'
+                                                  ? 'text-blue-600'
+                                                  : artwork.image_status ===
+                                                      'failed'
+                                                    ? 'text-red-600'
+                                                    : 'text-gray-400',
+                                            'inline-flex items-center text-xs font-semibold',
                                         ]"
                                     >
                                         {{ artwork.image_status_label }}

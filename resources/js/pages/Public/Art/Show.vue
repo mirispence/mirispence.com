@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import NsfwGate from '@/components/NsfwGate.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -39,7 +39,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
 });
-
 </script>
 
 <template>
@@ -52,14 +51,21 @@ onUnmounted(() => {
                         class="group relative w-full overflow-hidden rounded-[2.5rem] border-none p-0 shadow-premium"
                     >
                         <div class="aspect-square bg-white">
-                            <NsfwGate :nsfw="artwork.nsfw_flag" variant="detail" v-slot="{ revealed }">
+                            <NsfwGate
+                                :nsfw="artwork.nsfw_flag"
+                                variant="detail"
+                                v-slot="{ revealed }"
+                            >
                                 <img
                                     v-if="artwork.media_urls?.display"
                                     :src="artwork.media_urls.display.src"
                                     :srcset="artwork.media_urls.display.srcset"
                                     :alt="artwork.alt_text || artwork.title"
                                     class="h-full w-full object-contain transition-all duration-700"
-                                    :class="{ 'scale-110 opacity-40 blur-3xl grayscale': !revealed }"
+                                    :class="{
+                                        'scale-110 opacity-40 blur-3xl grayscale':
+                                            !revealed,
+                                    }"
                                     sizes="(max-width: 1024px) 100vw, 800px"
                                     loading="eager"
                                     fetchpriority="high"
@@ -74,7 +80,9 @@ onUnmounted(() => {
 
                                 <!-- Invisible overlay to discourage casual image saving -->
                                 <div
-                                    v-if="revealed && artwork.media_urls?.display"
+                                    v-if="
+                                        revealed && artwork.media_urls?.display
+                                    "
                                     class="absolute inset-0 z-10 cursor-pointer"
                                     @click="openLightbox"
                                 ></div>
@@ -109,7 +117,10 @@ onUnmounted(() => {
                     <div
                         class="prose prose-lg prose-slate mb-12 max-w-none leading-relaxed text-muted-foreground"
                     >
-                        <div class="artwork-prose" v-html="artwork.description_html" />
+                        <div
+                            class="artwork-prose"
+                            v-html="artwork.description_html"
+                        />
                     </div>
 
                     <div class="space-y-12">
@@ -207,24 +218,34 @@ onUnmounted(() => {
         >
             <div
                 v-if="showLightbox"
-                class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 overflow-hidden"
+                class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-black/95"
                 @click.self="closeLightbox"
             >
                 <button
-                    class="absolute top-8 right-8 z-[110] text-white/70 hover:text-white transition-colors"
+                    class="absolute top-8 right-8 z-[110] text-white/70 transition-colors hover:text-white"
                     @click="closeLightbox"
                 >
-                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                        class="h-10 w-10"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
                     </svg>
                 </button>
 
                 <div
-                    class="relative h-full w-full flex-1 overflow-auto flex items-center justify-center p-4 sm:p-8"
+                    class="relative flex h-full w-full flex-1 items-center justify-center overflow-auto p-4 sm:p-8"
                     @click.self="closeLightbox"
                 >
                     <div
-                        class="relative inline-block transition-all duration-300 m-auto"
+                        class="relative m-auto inline-block transition-all duration-300"
                     >
                         <img
                             v-if="artwork.media_urls?.display"
@@ -232,22 +253,30 @@ onUnmounted(() => {
                             :srcset="artwork.media_urls.display.srcset"
                             :alt="artwork.alt_text || artwork.title"
                             :class="[
-                                'shadow-2xl transition-all duration-500 rounded-lg',
-                                isZoomed ? 'max-w-none' : 'max-h-[85vh] max-w-full object-contain'
+                                'rounded-lg shadow-2xl transition-all duration-500',
+                                isZoomed
+                                    ? 'max-w-none'
+                                    : 'max-h-[85vh] max-w-full object-contain',
                             ]"
                             sizes="100vw"
                         />
                         <!-- Invisible overlay to discourage casual image saving -->
                         <div
                             class="absolute inset-0 z-10"
-                            :class="isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
+                            :class="
+                                isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
+                            "
                             @click="toggleZoom"
                         ></div>
                     </div>
                 </div>
 
-                <div class="relative z-20 pb-10 pt-4 text-center bg-black/40 backdrop-blur-sm w-full">
-                    <h2 class="font-heading text-2xl font-bold text-white">{{ artwork.title }}</h2>
+                <div
+                    class="relative z-20 w-full bg-black/40 pt-4 pb-10 text-center backdrop-blur-sm"
+                >
+                    <h2 class="font-heading text-2xl font-bold text-white">
+                        {{ artwork.title }}
+                    </h2>
                 </div>
             </div>
         </Transition>

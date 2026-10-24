@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import NsfwGate from '@/components/NsfwGate.vue';
 import { Link } from '@inertiajs/vue3';
 
 defineProps<{
@@ -37,10 +37,16 @@ defineEmits<{
                 <img
                     v-if="artwork.media_urls?.grid"
                     :src="artwork.media_urls.grid.src"
-                    :srcset="revealed ? artwork.media_urls.grid.srcset : undefined"
+                    :srcset="
+                        revealed ? artwork.media_urls.grid.srcset : undefined
+                    "
                     :alt="artwork.alt_text || artwork.title"
                     class="h-full w-full object-cover transition-all duration-700"
-                    :class="revealed ? 'group-hover:scale-110' : 'scale-110 blur-2xl grayscale'"
+                    :class="
+                        revealed
+                            ? 'group-hover:scale-110'
+                            : 'scale-110 blur-2xl grayscale'
+                    "
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <div

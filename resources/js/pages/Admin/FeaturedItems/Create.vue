@@ -43,7 +43,9 @@ const submit = () => {
                 <div class="admin-card">
                     <div class="admin-card-body form-stack">
                         <div class="form-row">
-                            <label for="item_type" class="form-label">Item Type</label>
+                            <label for="item_type" class="form-label"
+                                >Item Type</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.item_type"
@@ -67,7 +69,9 @@ const submit = () => {
                                     id="item_id"
                                     class="control control-select"
                                 >
-                                    <option value="" disabled>Select an item</option>
+                                    <option value="" disabled>
+                                        Select an item
+                                    </option>
                                     <option
                                         v-for="item in items"
                                         :key="item.id"
@@ -83,7 +87,9 @@ const submit = () => {
                         </div>
 
                         <div class="form-row">
-                            <label for="display_context" class="form-label">Context</label>
+                            <label for="display_context" class="form-label"
+                                >Context</label
+                            >
                             <div class="form-field">
                                 <select
                                     v-model="form.display_context"
@@ -94,14 +100,19 @@ const submit = () => {
                                     <option value="sidebar">Sidebar</option>
                                     <option value="footer">Footer</option>
                                 </select>
-                                <div v-if="form.errors.display_context" class="error">
+                                <div
+                                    v-if="form.errors.display_context"
+                                    class="error"
+                                >
                                     {{ form.errors.display_context }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <label for="display_order" class="form-label">Order</label>
+                            <label for="display_order" class="form-label"
+                                >Order</label
+                            >
                             <div class="form-field">
                                 <input
                                     v-model="form.display_order"
@@ -109,7 +120,10 @@ const submit = () => {
                                     id="display_order"
                                     class="control"
                                 />
-                                <div v-if="form.errors.display_order" class="error">
+                                <div
+                                    v-if="form.errors.display_order"
+                                    class="error"
+                                >
                                     {{ form.errors.display_order }}
                                 </div>
                             </div>
