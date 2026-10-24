@@ -181,7 +181,6 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 ## Frontend conventions
 
 - Use Wayfinder typed actions (`resources/js/actions/`) instead of hardcoded URL strings
-- `SignedImage.vue` component for serving protected/private images
 - `components/ui/` for shared primitives (Button, Card, Badge, etc.)
 - Tailwind v4: all config is in CSS files, not a JS config file
 

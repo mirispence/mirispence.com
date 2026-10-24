@@ -37,7 +37,7 @@ app/
 resources/js/
   pages/                # Vue page components (Inertia pages)
   Layouts/              # PublicLayout, AdminLayout, AppLayout, AuthLayout, settings/Layout
-  components/           # Shared Vue components (ui/*, ArtCard, SignedImage, etc.)
+  components/           # Shared Vue components (ui/*, ArtCard, etc.)
   actions/              # Auto-generated Wayfinder TypeScript actions (do not edit manually)
   composables/          # Vue composables
   app.ts                # Public + auth entry point
