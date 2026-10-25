@@ -64,7 +64,7 @@ tests/
     PublicOriginalMediaLeakTest.php # No `original` key / original URL in public props or seo
     ArtworkMediaUrlsTest.php # Artwork media_urls/thumb_url never expose the original
     SecurityFixesTest.php # XSS, admin gate, media permission, presigned original URL tests
-    DashboardTest.php
+    AdminLandingTest.php # Post-auth landing is /admin; /dashboard gone; non-admins 403
   Pest.php               # assertNoOriginalMedia() recursive leak helper
   Unit/
     SeoBuilderTest.php
