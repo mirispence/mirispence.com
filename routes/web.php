@@ -5,6 +5,7 @@ use App\Http\Controllers\Public\BookController;
 use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\MatureConsentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -16,6 +17,9 @@ Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/mature-consent', [MatureConsentController::class, 'store'])
+    ->middleware('throttle:30,1')
+    ->name('mature-consent.store');
 
 require __DIR__.'/settings.php';
 

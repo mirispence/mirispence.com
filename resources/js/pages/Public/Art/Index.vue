@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ArtCard from '@/components/ArtCard.vue';
 import FormSelect from '@/components/FormSelect.vue';
+import NsfwGate from '@/components/NsfwGate.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
@@ -20,15 +21,6 @@ const props = defineProps<{
 }>();
 
 const selectedGallery = ref(props.filters.gallery || '');
-const revealedImages = ref(new Set<number>());
-
-const revealNSFW = (id: number) => {
-    revealedImages.value.add(id);
-};
-
-const isRevealed = (id: number) => {
-    return revealedImages.value.has(id);
-};
 
 const activeLightboxIndex = ref<number | null>(null);
 const isZoomed = ref(false);
@@ -38,8 +30,9 @@ const activeArtwork = computed(() =>
         : null,
 );
 
-// ArtCard only ever emits click-image once an artwork is already revealed, so the
-// lightbox never needs its own NSFW gate.
+// ArtCard only emits click-image for a revealed artwork, but prev/next can land on
+// one the server still withholds (media_withheld), so the lightbox renders the gate
+// in place for those. Revealing reloads `artworks`; preserveState keeps the index.
 const openLightbox = (index: number) => {
     activeLightboxIndex.value = index;
 };
@@ -140,8 +133,7 @@ watch(selectedGallery, (value) => {
                     v-for="(artwork, index) in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
-                    :is-revealed="isRevealed(artwork.id)"
-                    @reveal="revealNSFW(artwork.id)"
+                    :reload-only="['artworks']"
                     @click-image="openLightbox(index)"
                 />
             </div>
@@ -231,6 +223,18 @@ watch(selectedGallery, (value) => {
                         @click.self="closeLightbox"
                     >
                         <div
+                            v-if="activeArtwork.media_withheld"
+                            class="relative m-auto h-[60vh] w-full max-w-md"
+                        >
+                            <NsfwGate
+                                withheld
+                                :artwork-id="activeArtwork.id"
+                                :reload-only="['artworks']"
+                                variant="detail"
+                            />
+                        </div>
+                        <div
+                            v-else
                             class="relative m-auto inline-block transition-all duration-300"
                         >
                             <img

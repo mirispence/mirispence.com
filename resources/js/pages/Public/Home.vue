@@ -6,6 +6,7 @@ import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
 defineProps<{
+    heroArtworks: Array<any>;
     featuredArtworks: Array<any>;
     featuredBooks: Array<any>;
 }>();
@@ -53,26 +54,23 @@ defineProps<{
                             class="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/10 to-accent/10 blur-3xl"
                         />
                         <div class="relative grid grid-cols-2 gap-4">
-                            <div v-if="featuredArtworks[0]" class="space-y-4">
+                            <div v-if="heroArtworks[0]" class="space-y-4">
                                 <div
                                     class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
                                     <img
                                         fetchpriority="high"
-                                        v-if="
-                                            featuredArtworks[0].media_urls?.grid
-                                        "
+                                        v-if="heroArtworks[0].media_urls?.grid"
                                         :src="
-                                            featuredArtworks[0].media_urls.grid
-                                                .src
+                                            heroArtworks[0].media_urls.grid.src
                                         "
                                         :srcset="
-                                            featuredArtworks[0].media_urls.grid
+                                            heroArtworks[0].media_urls.grid
                                                 .srcset
                                         "
                                         :alt="
-                                            featuredArtworks[0].alt_text ||
-                                            featuredArtworks[0].title
+                                            heroArtworks[0].alt_text ||
+                                            heroArtworks[0].title
                                         "
                                         class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
@@ -84,29 +82,23 @@ defineProps<{
                                     ></div>
                                 </div>
                             </div>
-                            <div
-                                v-if="featuredArtworks[1]"
-                                class="space-y-4 pt-12"
-                            >
+                            <div v-if="heroArtworks[1]" class="space-y-4 pt-12">
                                 <div
                                     class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
                                 >
                                     <img
                                         fetchpriority="high"
-                                        v-if="
-                                            featuredArtworks[1].media_urls?.grid
-                                        "
+                                        v-if="heroArtworks[1].media_urls?.grid"
                                         :src="
-                                            featuredArtworks[1].media_urls.grid
-                                                .src
+                                            heroArtworks[1].media_urls.grid.src
                                         "
                                         :srcset="
-                                            featuredArtworks[1].media_urls.grid
+                                            heroArtworks[1].media_urls.grid
                                                 .srcset
                                         "
                                         :alt="
-                                            featuredArtworks[1].alt_text ||
-                                            featuredArtworks[1].title
+                                            heroArtworks[1].alt_text ||
+                                            heroArtworks[1].title
                                         "
                                         class="h-full w-full object-cover"
                                         sizes="(max-width: 1024px) 50vw, 400px"
@@ -151,7 +143,7 @@ defineProps<{
                         v-for="artwork in featuredArtworks.slice(0, 6)"
                         :key="artwork.id"
                         :artwork="artwork"
-                        :is-revealed="false"
+                        :reload-only="['featuredArtworks']"
                     />
                 </div>
             </div>

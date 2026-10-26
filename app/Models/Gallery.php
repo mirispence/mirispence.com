@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\MarkdownRenderer;
+use App\Support\MatureConsent;
 use App\Traits\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -59,7 +60,8 @@ class Gallery extends Model
     /**
      * Public-safe media URLs of the cover Artwork (never contains `original`).
      * Empty when there is no cover or the cover Artwork is not published,
-     * so a draft artwork never surfaces through its gallery.
+     * so a draft artwork never surfaces through its gallery. Also empty for a
+     * mature (nsfw_flag) cover the session has not consented to.
      * Eager-load `coverArtwork.media` when listing galleries to avoid N+1.
      *
      * @return array<string, mixed>
@@ -69,6 +71,11 @@ class Gallery extends Model
         $cover = $this->coverArtwork;
 
         if ($cover === null || $cover->publish_status !== 'published' || ! $this->coverIsMember()) {
+            return [];
+        }
+
+        // A mature cover stays withheld until the session consents (ADR-0004).
+        if (! app(MatureConsent::class)->allows($cover)) {
             return [];
         }
 

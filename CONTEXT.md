@@ -28,7 +28,7 @@ app/
   Providers/            # AppServiceProvider (Gate defs), FortifyServiceProvider,
                         #   HorizonServiceProvider
   Services/             # MarkdownRenderer
-  Support/
+  Support/              # MatureConsent (session consent for nsfw_flag artwork, ADR-0004)
     Media/              # MediaUrlBuilder (single source of media URL sets)
     MediaLibrary/       # CustomPathGenerator
     Seo/                # SeoBuilder, SeoPayload
@@ -62,10 +62,11 @@ tests/
     Settings/            # Profile, password, 2FA settings tests
     PublicSiteTest.php   # All public routes, gallery/book covers, withPublicCover query count
     PublicOriginalMediaLeakTest.php # No `original` key / original URL in public props or seo
+    MatureContentGateTest.php # Flagged artwork: no URLs before consent, consent endpoint, SEO/hero exclusion
     ArtworkMediaUrlsTest.php # Artwork media_urls/thumb_url never expose the original
     SecurityFixesTest.php # XSS, admin gate, media permission, presigned original URL tests
     AdminLandingTest.php # Post-auth landing is /admin; /dashboard gone; non-admins 403
-  Pest.php               # assertNoOriginalMedia() recursive leak helper
+  Pest.php               # assertNoOriginalMedia() / assertNoMediaUrlsFor() recursive leak helpers
   Unit/
     SeoBuilderTest.php
     MediaUrlBuilderTest.php
@@ -112,6 +113,8 @@ User (has roles/permissions via Spatie)
 Artwork appends (computed attributes on every load): `media_urls`, `thumb_url`, `image_status_label`, `publish_status_label`, `description_html`
 
 Media URL sets (`media_urls`, `thumb_url`, `PublicArtworkResource`) are built only by `App\Support\Media\MediaUrlBuilder` (`public()` / `admin()`), which never exposes an `original` key. The raw `media` relation is hidden from Artwork serialization (Spatie's `Media::toArray()` includes `original_url`). Originals are reachable only via the gated `admin.media.original` route.
+
+Mature content (ADR-0004): an Artwork with `nsfw_flag` gets **no media URLs** on public pages until the session consents. `App\Support\MatureConsent` keeps the consent in the Laravel session (revealed Artwork IDs + a "show all" flag, normal session lifetime) and is checked by `PublicArtworkResource` (emits `media_withheld: true` and `media_urls: []`) and `Gallery::cover_urls` (empty for a withheld cover, which also blanks the Book cover built from it). `POST /mature-consent` (`mature-consent.store`, `throttle:30,1`, CSRF via the web group) takes `artwork_id` or `all=1`; IDs that are missing, unpublished or unflagged are ignored. The Vue side (`NsfwGate.vue` + `useMatureConsent.ts`) posts consent and partially reloads the affected props; there is no client-side preference. Flagged artwork never feeds SEO images (`SeoBuilder` falls back, regardless of consent; the site fallback image skips flagged artwork) or the home hero (`heroArtworks` prop excludes it; `featuredArtworks` uses the gated card). Any new public serialization of Artwork must go through `PublicArtworkResource` or apply `MatureConsent`. The `ArtworkFactory` default is `nsfw_flag = false`; use `->mature()` for flagged artwork.
 
 Gallery has no media of its own (not `HasMedia`). Its cover is an explicit pick of one of its own member Artworks (`Gallery::coverArtwork()`, column `cover_artwork_id`), independent of the pivot `sort_order`. `cover_urls` (= cover Artwork's `MediaUrlBuilder::public()`, `[]` if no cover, the cover isn't published, or it is no longer a member) is not auto-appended: query with the `withPublicCover()` scope (eager-loads the cover chain + membership flag and appends it). The cover is chosen on gallery edit (validated as a member); create cannot set one because a new gallery has no members. `Artwork::syncGalleries()` clears the cover of any gallery the artwork leaves. See ADR-0003.
 
