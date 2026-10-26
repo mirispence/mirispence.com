@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
+import ArtLightbox from '@/components/ArtLightbox.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps<{
     gallery: any;
@@ -14,6 +16,8 @@ defineProps<{
         meta: any;
     };
 }>();
+
+const lightboxIndex = ref<number | null>(null);
 </script>
 
 <template>
@@ -62,10 +66,11 @@ defineProps<{
 
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 <ArtCard
-                    v-for="artwork in artworks.data"
+                    v-for="(artwork, index) in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
                     :reload-only="['artworks']"
+                    @click-image="lightboxIndex = index"
                 />
             </div>
 
@@ -101,5 +106,11 @@ defineProps<{
 
             <PublicPagination :links="artworks.meta.links" />
         </div>
+
+        <ArtLightbox
+            v-model:index="lightboxIndex"
+            :artworks="artworks.data"
+            :reload-only="['artworks']"
+        />
     </PublicLayout>
 </template>
