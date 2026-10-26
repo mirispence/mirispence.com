@@ -1,46 +1,20 @@
 <script setup lang="ts">
 import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
+import ArtLightbox from '@/components/ArtLightbox.vue';
 import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 
 defineProps<{
     artwork: any;
 }>();
 
-const showLightbox = ref(false);
-const isZoomed = ref(false);
-
-const openLightbox = () => {
-    showLightbox.value = true;
-};
-
-const closeLightbox = () => {
-    showLightbox.value = false;
-    isZoomed.value = false;
-};
-
-const toggleZoom = () => {
-    isZoomed.value = !isZoomed.value;
-};
-
-const handleKeydown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && showLightbox.value) {
-        closeLightbox();
-    }
-};
-
-onMounted(() => {
-    window.addEventListener('keydown', handleKeydown);
-});
-
-onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeydown);
-});
+/** 0 while the lightbox shows this artwork, null when closed. */
+const lightboxIndex = ref<number | null>(null);
 </script>
 
 <template>
@@ -78,14 +52,22 @@ onUnmounted(() => {
                                     No Image available
                                 </div>
 
-                                <!-- Invisible overlay to discourage casual image saving -->
-                                <div
+                                <!-- Covers the image to discourage casual saving; opens the lightbox -->
+                                <button
                                     v-if="
                                         revealed && artwork.media_urls?.display
                                     "
-                                    class="absolute inset-0 z-10 cursor-pointer"
-                                    @click="openLightbox"
-                                ></div>
+                                    type="button"
+                                    class="absolute inset-0 z-10 cursor-zoom-in focus-visible:-outline-offset-4"
+                                    :aria-label="`Enlarge ${artwork.title}`"
+                                    aria-haspopup="dialog"
+                                    @click="
+                                        (
+                                            $event.currentTarget as HTMLElement
+                                        ).focus();
+                                        lightboxIndex = 0;
+                                    "
+                                ></button>
                             </NsfwGate>
                         </div>
                     </Card>
@@ -234,80 +216,12 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <!-- Lightbox -->
-        <Transition
-            enter-active-class="transition duration-300 ease-out"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition duration-200 ease-in"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-        >
-            <div
-                v-if="showLightbox"
-                class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-scrim"
-                @click.self="closeLightbox"
-            >
-                <button
-                    class="absolute top-8 right-8 z-[110] text-stone-300 transition-colors hover:text-white focus-visible:outline-white"
-                    @click="closeLightbox"
-                >
-                    <svg
-                        class="h-10 w-10"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
-
-                <div
-                    class="relative flex h-full w-full flex-1 items-center justify-center overflow-auto p-4 sm:p-8"
-                    @click.self="closeLightbox"
-                >
-                    <div
-                        class="relative m-auto inline-block transition-all duration-300"
-                    >
-                        <img
-                            v-if="artwork.media_urls?.display"
-                            :src="artwork.media_urls.display.src"
-                            :srcset="artwork.media_urls.display.srcset"
-                            :alt="artwork.alt_text || artwork.title"
-                            :class="[
-                                'rounded-sm transition-all duration-500',
-                                isZoomed
-                                    ? 'max-w-none'
-                                    : 'max-h-[85vh] max-w-full object-contain',
-                            ]"
-                            sizes="100vw"
-                        />
-                        <!-- Invisible overlay to discourage casual image saving -->
-                        <div
-                            class="absolute inset-0 z-10"
-                            :class="
-                                isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
-                            "
-                            @click="toggleZoom"
-                        ></div>
-                    </div>
-                </div>
-
-                <div
-                    class="relative z-20 w-full bg-scrim pt-4 pb-10 text-center backdrop-blur-sm"
-                >
-                    <h2
-                        class="font-display text-2xl wrap-break-word text-white"
-                    >
-                        {{ artwork.title }}
-                    </h2>
-                </div>
-            </div>
-        </Transition>
+        <ArtLightbox
+            v-model:index="lightboxIndex"
+            :artworks="[artwork]"
+            :reload-only="['artwork']"
+            :navigation="false"
+            :details-link="false"
+        />
     </PublicLayout>
 </template>

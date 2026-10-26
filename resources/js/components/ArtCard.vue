@@ -19,10 +19,12 @@ defineProps<{
     };
     /** Page props to reload after the visitor reveals this artwork. */
     reloadOnly?: string[];
-}>();
-
-defineEmits<{
-    (e: 'click-image'): void;
+    /**
+     * `@click-image`: the image opens the lightbox. Declared as a prop (not an
+     * emit) so the card renders the image button only when a page listens;
+     * otherwise it would be a tab stop that does nothing.
+     */
+    onClickImage?: () => void;
 }>();
 </script>
 
@@ -52,11 +54,20 @@ defineEmits<{
                 </div>
 
                 <template v-if="revealed">
-                    <!-- Invisible overlay to discourage casual image saving -->
-                    <div
-                        class="absolute inset-0 z-[5] cursor-pointer"
-                        @click="$emit('click-image')"
-                    ></div>
+                    <!-- Covers the image to discourage casual saving; opens the lightbox.
+                         Focus it on click (Safari doesn't) so the lightbox can return focus here. -->
+                    <button
+                        v-if="onClickImage"
+                        type="button"
+                        class="absolute inset-0 z-[5] cursor-zoom-in focus-visible:-outline-offset-4"
+                        :aria-label="`Enlarge ${artwork.title}`"
+                        aria-haspopup="dialog"
+                        @click="
+                            ($event.currentTarget as HTMLElement).focus();
+                            onClickImage();
+                        "
+                    ></button>
+                    <div v-else class="absolute inset-0 z-[5]"></div>
                     <div
                         class="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-gradient-to-t from-black/60 to-transparent p-6 transition-transform duration-300 group-hover:translate-y-0 focus-within:translate-y-0"
                     >
