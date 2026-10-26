@@ -230,8 +230,8 @@ test('the home hero never selects flagged artwork while the featured grid still 
 
     $props = gateProps($this->get(route('home')));
 
-    expect(collect($props['heroArtworks'])->pluck('id')->all())->toBe([$safe->id]);
-    expect(collect($props['featuredArtworks'])->pluck('id')->all())->toBe([$flagged->id, $safe->id]);
+    expect($props['heroArtwork']['id'])->toBe($safe->id);
+    expect(collect($props['featuredArtworks'])->pluck('id')->all())->toBe([$flagged->id]);
     expect(gateFind($props['featuredArtworks'], $flagged->id))->media_withheld->toBeTrue();
 });
 

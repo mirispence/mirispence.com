@@ -69,13 +69,15 @@ test('gallery show props and seo never expose the original', function () {
     assertNoOriginalMedia($props['seo'], [$originalUrl]);
 });
 
-test('home featured artworks and seo og:image never expose the original', function () {
-    [, $originalUrl] = publishedArtworkWithImage();
+test('home hero, featured artworks and seo og:image never expose the original', function () {
+    [$artwork, $originalUrl] = publishedArtworkWithImage();
 
     $props = inertiaProps($this->get(route('home'))->assertOk());
 
-    expect($props['featuredArtworks'])->toHaveCount(1);
-    assertNoOriginalMedia($props['featuredArtworks'], [$originalUrl]);
+    // A lone featured artwork is the hero, so the grid holds no duplicate of it.
+    expect($props['heroArtwork']['id'])->toBe($artwork->id);
+    expect($props['featuredArtworks'])->toHaveCount(0);
+    assertNoOriginalMedia($props['heroArtwork'], [$originalUrl]);
     assertNoOriginalMedia($props['seo'], [$originalUrl]);
 });
 

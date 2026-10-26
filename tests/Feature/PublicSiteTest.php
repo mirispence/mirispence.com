@@ -14,13 +14,14 @@ use Inertia\Testing\AssertableInertia as Assert;
 uses(RefreshDatabase::class);
 
 test('home page renders with featured items', function () {
-    Artwork::factory()->create(['featured_flag' => true, 'publish_status' => 'published']);
+    Artwork::factory()->count(2)->create(['featured_flag' => true, 'publish_status' => 'published', 'nsfw_flag' => false]);
     Book::factory()->create(['featured_flag' => true, 'publish_status' => 'published']);
 
     $this->get(route('home'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Home')
+            ->has('heroArtwork.id')
             ->has('featuredArtworks', 1)
             ->has('featuredBooks', 1)
         );
