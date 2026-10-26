@@ -5,10 +5,10 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+import { pageTitle } from '@/lib/pageTitle';
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: pageTitle,
     resolve: (name) =>
         resolvePageComponent(
             `./pages/${name}.vue`,
