@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { show as artworkShow } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import NsfwGate from '@/components/NsfwGate.vue';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Link } from '@inertiajs/vue3';
 
 defineProps<{
@@ -27,8 +25,8 @@ defineEmits<{
 </script>
 
 <template>
-    <Card class="group overflow-hidden border-none bg-card">
-        <div class="relative aspect-[4/5] overflow-hidden">
+    <article class="group">
+        <div class="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
             <NsfwGate
                 :withheld="artwork.media_withheld"
                 :artwork-id="artwork.id"
@@ -41,48 +39,39 @@ defineEmits<{
                     :src="artwork.media_urls.grid.src"
                     :srcset="artwork.media_urls.grid.srcset"
                     :alt="artwork.alt_text || artwork.title"
-                    class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+                    class="h-full w-full object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <div
                     v-else-if="!artwork.media_withheld"
-                    class="flex h-full items-center justify-center bg-muted text-muted-foreground italic"
+                    class="flex h-full items-center justify-center text-muted-foreground italic"
                 >
                     No Image available
                 </div>
 
-                <template v-if="revealed">
-                    <!-- Invisible overlay to discourage casual image saving -->
-                    <div
-                        class="absolute inset-0 z-[5] cursor-pointer"
-                        @click="$emit('click-image')"
-                    ></div>
-                    <div
-                        class="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-gradient-to-t from-black/60 to-transparent p-6 transition-transform duration-300 group-hover:translate-y-0 focus-within:translate-y-0"
-                    >
-                        <Link :href="artworkShow.url(artwork.slug)">
-                            <Button size="sm" class="w-full">
-                                View Details
-                            </Button>
-                        </Link>
-                    </div>
-                </template>
+                <!-- Transparent button over the image: opens the lightbox and discourages casual image saving -->
+                <button
+                    v-if="revealed"
+                    type="button"
+                    class="absolute inset-0 z-[5] cursor-zoom-in"
+                    :aria-label="`View ${artwork.title} larger`"
+                    @click="$emit('click-image')"
+                ></button>
             </NsfwGate>
         </div>
-        <div class="p-6">
-            <h3
-                class="line-clamp-1 text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
+        <h3 class="mt-3 line-clamp-1 text-lg font-semibold text-foreground">
+            <Link
+                :href="artworkShow.url(artwork.slug)"
+                class="underline-offset-4 hover:text-primary hover:underline"
             >
-                <Link :href="artworkShow.url(artwork.slug)">
-                    {{ artwork.title }}
-                </Link>
-            </h3>
-            <p
-                v-if="artwork.created_on"
-                class="mt-1 text-sm text-muted-foreground"
-            >
-                {{ artwork.created_on }}
-            </p>
-        </div>
-    </Card>
+                {{ artwork.title }}
+            </Link>
+        </h3>
+        <p
+            v-if="artwork.created_on"
+            class="mt-0.5 text-sm text-muted-foreground"
+        >
+            {{ artwork.created_on }}
+        </p>
+    </article>
 </template>

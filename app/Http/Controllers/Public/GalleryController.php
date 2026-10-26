@@ -18,6 +18,7 @@ class GalleryController extends Controller
         return Inertia::render('Public/Galleries/Index', [
             'galleries' => Gallery::published()
                 ->withPublicCover()
+                ->withCount(['artworks as published_artworks_count' => fn ($query) => $query->published()])
                 ->orderBy('sort_order')
                 ->paginate(6),
         ]);
