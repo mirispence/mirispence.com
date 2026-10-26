@@ -51,7 +51,7 @@ const submit = () => {
 
                 <div
                     v-if="$page.props.flash.success"
-                    class="mb-10 animate-in rounded-2xl border border-green-100 bg-green-50 p-6 shadow-sm duration-500 fade-in slide-in-from-top-4"
+                    class="mb-10 animate-in rounded-lg border border-green-100 bg-green-50 p-6 shadow-sm duration-500 fade-in slide-in-from-top-4"
                 >
                     <div class="flex items-center gap-4">
                         <div
@@ -76,7 +76,7 @@ const submit = () => {
                 </div>
 
                 <div
-                    class="rounded-[2.5rem] border border-white/60 bg-white/40 p-8 shadow-premium backdrop-blur-xl sm:p-12"
+                    class="rounded-lg border border-border bg-card p-8 shadow-card sm:p-12"
                 >
                     <form @submit.prevent="submit" class="space-y-8">
                         <!-- Honeypot -->
@@ -120,7 +120,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.name"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
                                 >
                                     {{ form.errors.name }}
                                 </div>
@@ -140,7 +140,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.email"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
                                 >
                                     {{ form.errors.email }}
                                 </div>
@@ -160,7 +160,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.subject"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
                                 >
                                     {{ form.errors.subject }}
                                 </div>
@@ -179,7 +179,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.message"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
                                 >
                                     {{ form.errors.message }}
                                 </div>
@@ -200,7 +200,7 @@ const submit = () => {
                                     />
                                     <div
                                         v-if="form.errors.budget_range"
-                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
                                     >
                                         {{ form.errors.budget_range }}
                                     </div>
@@ -219,7 +219,7 @@ const submit = () => {
                                     />
                                     <div
                                         v-if="form.errors.desired_due_date"
-                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
                                     >
                                         {{ form.errors.desired_due_date }}
                                     </div>
@@ -231,7 +231,7 @@ const submit = () => {
                             <Button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="h-14 w-full rounded-full bg-primary text-lg font-bold shadow-premium"
+                                class="h-14 w-full bg-primary text-lg font-bold"
                             >
                                 {{
                                     form.processing

@@ -42,9 +42,9 @@ defineProps<{
                         :aria-label="`View the ${book.cover.gallery.name} gallery`"
                     >
                         <Card
-                            class="w-full overflow-hidden rounded-[2rem] border-none p-0 shadow-2xl"
+                            class="w-full overflow-hidden rounded-sm border-none p-0 shadow-none hover:translate-y-0 hover:shadow-none"
                         >
-                            <div class="aspect-[2/3] bg-panel">
+                            <div class="aspect-[2/3] bg-muted">
                                 <img
                                     :src="book.cover.urls.display.src"
                                     :srcset="book.cover.urls.display.srcset"
@@ -70,7 +70,7 @@ defineProps<{
                             class="flex items-center gap-2"
                         >
                             <span
-                                class="text-xs font-black tracking-[0.2em] text-accent uppercase"
+                                class="text-xs font-black tracking-[0.2em] text-primary uppercase"
                                 >Released</span
                             >
                             <span
@@ -95,12 +95,12 @@ defineProps<{
                                 Chapters
                             </h2>
                             <div
-                                class="divide-y divide-border/40 overflow-hidden rounded-3xl border border-white/60 bg-white/40 backdrop-blur-xl"
+                                class="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card shadow-card"
                             >
                                 <div
                                     v-for="chapter in book.chapters"
                                     :key="chapter.id"
-                                    class="flex flex-col gap-2 p-6 transition-colors hover:bg-white/60"
+                                    class="flex flex-col gap-2 p-6 transition-colors hover:bg-muted"
                                 >
                                     <div
                                         class="flex items-center justify-between"
@@ -146,7 +146,7 @@ defineProps<{
                                 >
                                     <Button
                                         variant="outline"
-                                        class="group h-12 rounded-full px-8 font-bold"
+                                        class="group h-12 px-8 font-bold"
                                     >
                                         {{ label }}
                                         <svg
@@ -168,11 +168,11 @@ defineProps<{
                         </div>
                     </div>
 
-                    <div class="mt-16 border-t border-border/60 pt-12">
+                    <div class="mt-16 border-t border-border pt-12">
                         <Link href="/books">
                             <Button
                                 variant="ghost"
-                                class="rounded-full text-muted-foreground hover:text-primary"
+                                class="text-muted-foreground hover:text-primary"
                             >
                                 <svg
                                     class="mr-2 h-4 w-4"

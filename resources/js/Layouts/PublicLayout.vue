@@ -88,7 +88,7 @@ const seoData = computed(() => (page.props as any).seo);
         <!-- eslint-enable vue/no-v-text-v-html-on-component -->
     </Head>
     <div
-        class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-accent/20 selection:text-accent"
+        class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-primary selection:text-primary-foreground"
     >
         <header class="glass-header">
             <div
@@ -143,7 +143,7 @@ const seoData = computed(() => (page.props as any).seo);
                 <div class="flex items-center gap-4">
                     <Link
                         href="/contact?type=commission"
-                        class="hidden items-center justify-center rounded-full bg-accent px-4 py-1.5 text-xs font-bold tracking-widest text-white uppercase transition-all hover:scale-105 hover:bg-accent/90 active:scale-95 sm:inline-flex"
+                        class="hidden items-center justify-center rounded-lg bg-accent px-4 py-1.5 text-xs font-bold tracking-widest text-accent-foreground uppercase transition-all hover:scale-105 hover:bg-accent/90 active:scale-95 sm:inline-flex"
                     >
                         Hire Me
                     </Link>
@@ -155,9 +155,7 @@ const seoData = computed(() => (page.props as any).seo);
             <slot />
         </main>
 
-        <footer
-            class="mt-20 border-t border-border bg-white/50 py-12 backdrop-blur-sm"
-        >
+        <footer class="mt-20 border-t border-border bg-card py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
                     class="flex flex-col items-center justify-between gap-6 md:flex-row"
@@ -171,7 +169,7 @@ const seoData = computed(() => (page.props as any).seo);
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Follow me on Bluesky"
-                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                            class="group rounded-full bg-muted p-2.5 transition-all hover:bg-primary/10"
                         >
                             <img
                                 src="/build/icons/bluesky.svg"
@@ -184,7 +182,7 @@ const seoData = computed(() => (page.props as any).seo);
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Follow me on Cara"
-                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                            class="group rounded-full bg-muted p-2.5 transition-all hover:bg-primary/10"
                         >
                             <img
                                 src="/build/icons/cara.svg"
@@ -197,7 +195,7 @@ const seoData = computed(() => (page.props as any).seo);
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Follow me on Instagram"
-                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                            class="group rounded-full bg-muted p-2.5 transition-all hover:bg-primary/10"
                         >
                             <img
                                 src="/build/icons/instagram.svg"

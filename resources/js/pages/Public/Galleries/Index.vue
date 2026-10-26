@@ -32,9 +32,9 @@ defineProps<{
                 <Card
                     v-for="gallery in galleries.data"
                     :key="gallery.id"
-                    class="group flex flex-col overflow-hidden border-none bg-white p-0"
+                    class="group flex flex-col overflow-hidden border-none bg-card p-0"
                 >
-                    <div class="relative aspect-[4/5] overflow-hidden bg-panel">
+                    <div class="relative aspect-[4/5] overflow-hidden bg-muted">
                         <img
                             v-if="gallery.cover_urls?.grid?.src"
                             :src="gallery.cover_urls.grid.src"
@@ -51,15 +51,13 @@ defineProps<{
                             {{ gallery.name }}
                         </div>
                         <div
-                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100"
                         >
                             <Link
                                 :href="`/galleries/${gallery.slug}`"
                                 class="w-full"
                             >
-                                <Button
-                                    variant="accent"
-                                    class="w-full rounded-full"
+                                <Button class="w-full"
                                     >Explore Collection</Button
                                 >
                             </Link>
