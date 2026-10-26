@@ -1,10 +1,70 @@
 <script setup lang="ts">
+import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import { index as booksIndex } from '@/actions/App/Http/Controllers/Public/BookController';
+import { create as contactCreate } from '@/actions/App/Http/Controllers/Public/ContactController';
 import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { index as homeIndex } from '@/actions/App/Http/Controllers/Public/HomeController';
+import CommissionCta from '@/components/CommissionCta.vue';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { Menu } from 'lucide-vue-next';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const page = usePage();
 const seoData = computed(() => (page.props as any).seo);
+
+// TODO(#45): replace with the shared `books` feature flag once #45 lands.
+const showBooks = true;
+
+type NavItem = { label: string; href: string; prefixes: string[] };
+
+const navItems = computed<NavItem[]>(() =>
+    [
+        {
+            label: 'Art',
+            href: galleriesIndex.url(),
+            prefixes: [galleriesIndex.url(), artworkIndex.url()],
+        },
+        showBooks
+            ? {
+                  label: 'Books',
+                  href: booksIndex.url(),
+                  prefixes: [booksIndex.url()],
+              }
+            : null,
+        {
+            label: 'Contact',
+            href: contactCreate.url(),
+            prefixes: [contactCreate.url()],
+        },
+    ].filter((item): item is NavItem => item !== null),
+);
+
+const matchesPrefix = (url: string, prefix: string) =>
+    url === prefix ||
+    url.startsWith(`${prefix}/`) ||
+    url.startsWith(`${prefix}?`);
+
+const isActive = (item: NavItem) =>
+    item.prefixes.some((prefix) => matchesPrefix(page.url, prefix));
+
+const menuOpen = ref(false);
+
+// Close the mobile menu on any navigation, including links to the current page.
+let removeStartListener: (() => void) | undefined;
+onMounted(() => {
+    removeStartListener = router.on('start', () => {
+        menuOpen.value = false;
+    });
+});
+onUnmounted(() => removeStartListener?.());
 </script>
 
 <template>
@@ -96,7 +156,10 @@ const seoData = computed(() => (page.props as any).seo);
                 class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
             >
                 <div class="flex items-center gap-12">
-                    <Link href="/" class="group flex items-center gap-2">
+                    <Link
+                        :href="homeIndex.url()"
+                        class="group flex items-center gap-2"
+                    >
                         <span
                             class="font-display text-2xl tracking-tight text-foreground transition-all duration-300 group-hover:text-primary"
                         >
@@ -104,50 +167,70 @@ const seoData = computed(() => (page.props as any).seo);
                         </span>
                     </Link>
 
-                    <nav class="hidden items-center gap-8 md:flex">
+                    <nav
+                        aria-label="Main"
+                        class="hidden items-center gap-8 md:flex"
+                    >
                         <Link
-                            :href="galleriesIndex.url()"
+                            v-for="item in navItems"
+                            :key="item.label"
+                            :href="item.href"
                             class="text-sm font-medium transition-colors hover:text-primary"
                             :class="
-                                $page.url.startsWith(galleriesIndex.url())
+                                isActive(item)
                                     ? 'text-primary'
                                     : 'text-muted-foreground'
                             "
+                            :aria-current="isActive(item) ? 'page' : undefined"
                         >
-                            Art
-                        </Link>
-                        <Link
-                            href="/books"
-                            class="text-sm font-medium transition-colors hover:text-primary"
-                            :class="
-                                $page.url.startsWith('/books')
-                                    ? 'text-primary'
-                                    : 'text-muted-foreground'
-                            "
-                        >
-                            Books
-                        </Link>
-                        <Link
-                            href="/contact"
-                            class="text-sm font-medium transition-colors hover:text-primary"
-                            :class="
-                                $page.url.startsWith('/contact')
-                                    ? 'text-primary'
-                                    : 'text-muted-foreground'
-                            "
-                        >
-                            Contact
+                            {{ item.label }}
                         </Link>
                     </nav>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <Link
-                        href="/contact?type=commission"
-                        class="hidden items-center justify-center rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground transition-all hover:scale-105 hover:bg-accent/90 active:scale-95 sm:inline-flex"
-                    >
-                        Hire Me
-                    </Link>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <CommissionCta
+                        size="compact"
+                        class="hidden sm:inline-flex"
+                    />
+
+                    <Sheet v-model:open="menuOpen">
+                        <SheetTrigger
+                            class="inline-flex size-10 items-center justify-center rounded-lg text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
+                            aria-label="Open menu"
+                        >
+                            <Menu class="size-6" aria-hidden="true" />
+                        </SheetTrigger>
+                        <SheetContent side="right" class="px-6 py-6">
+                            <SheetHeader class="p-0">
+                                <SheetTitle class="font-display text-xl">
+                                    Menu
+                                </SheetTitle>
+                                <SheetDescription class="sr-only">
+                                    Site navigation
+                                </SheetDescription>
+                            </SheetHeader>
+                            <nav aria-label="Main" class="flex flex-col gap-1">
+                                <Link
+                                    v-for="item in navItems"
+                                    :key="item.label"
+                                    :href="item.href"
+                                    class="rounded-lg px-3 py-3 text-base font-medium transition-colors hover:bg-muted hover:text-primary"
+                                    :class="
+                                        isActive(item)
+                                            ? 'text-primary'
+                                            : 'text-foreground'
+                                    "
+                                    :aria-current="
+                                        isActive(item) ? 'page' : undefined
+                                    "
+                                >
+                                    {{ item.label }}
+                                </Link>
+                            </nav>
+                            <CommissionCta class="mt-4 w-full" />
+                        </SheetContent>
+                    </Sheet>
                 </div>
             </div>
         </header>

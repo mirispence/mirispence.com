@@ -2,6 +2,7 @@
 import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
+import CommissionCta from '@/components/CommissionCta.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
@@ -39,11 +40,7 @@ defineProps<{
                                     >View Galleries</Button
                                 >
                             </Link>
-                            <Link href="/contact?type=commission">
-                                <Button variant="outline" size="lg" class="px-8"
-                                    >Commissions</Button
-                                >
-                            </Link>
+                            <CommissionCta />
                         </div>
                     </div>
                     <div class="relative mt-16 lg:mt-0">
@@ -160,11 +157,7 @@ defineProps<{
                         life.
                     </p>
                     <div class="mt-10">
-                        <Link href="/contact?type=commission">
-                            <Button size="lg" variant="accent" class="px-12">
-                                Start a Commission
-                            </Button>
-                        </Link>
+                        <CommissionCta />
                     </div>
                 </div>
             </section>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
+import CommissionCta from '@/components/CommissionCta.vue';
 import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -177,27 +178,7 @@ onUnmounted(() => {
 
                         <!-- CTA -->
                         <div class="border-t border-border pt-8">
-                            <Link href="/contact?type=commission" class="block">
-                                <Button
-                                    size="lg"
-                                    class="group h-16 w-full bg-primary text-xl font-semibold"
-                                >
-                                    Request a Commission
-                                    <svg
-                                        class="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M14 5l7 7m0 0l-7 7m7-7H3"
-                                        />
-                                    </svg>
-                                </Button>
-                            </Link>
+                            <CommissionCta class="w-full" />
                             <p
                                 class="mt-4 text-center text-sm font-medium text-muted-foreground italic"
                             >
