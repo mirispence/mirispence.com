@@ -81,9 +81,10 @@
     --color-input: var(--input);
     --color-ring: var(--ring);
 
-    --color-panel: #f1eeff;
+    --color-placeholder: var(--placeholder);
+    --color-scrim: var(--scrim);
 
-    --shadow-premium: 0 12px 30px rgba(20, 22, 43, 0.1);
+    --shadow-card: 0 1px 3px rgba(28, 25, 23, 0.08);
 }
 
 /*
@@ -112,47 +113,43 @@
     }
 
     .bg-site-gradient {
-        background:
-            radial-gradient(
-                circle at 0% 0%,
-                rgba(168, 85, 247, 0.05) 0%,
-                transparent 50%
-            ),
-            radial-gradient(
-                circle at 100% 100%,
-                rgba(219, 39, 119, 0.05) 0%,
-                transparent 50%
-            ),
-            #f7f5ff;
+        background: var(--background);
     }
 
     .glass-header {
-        @apply sticky top-0 z-50 border-b border-border bg-white/70 backdrop-blur-md;
+        @apply sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md;
     }
 }
 
 :root {
-    --background: #f7f5ff;
-    --foreground: #14162b;
+    /* Light theme. Contrast ratios for each pair are recorded in the #49 notes. */
+    --background: #faf9f7;
+    --foreground: #1c1917;
     --card: #ffffff;
-    --card-foreground: #14162b;
+    --card-foreground: #1c1917;
     --popover: #ffffff;
-    --popover-foreground: #14162b;
+    --popover-foreground: #1c1917;
     --primary: #5b21b6;
     --primary-foreground: #ffffff;
     --secondary: #3730a3;
     --secondary-foreground: #ffffff;
-    --muted: #f1eeff;
-    --muted-foreground: #5b5f7a;
-    --accent: #db2777;
+    --muted: #f2efeb;
+    --muted-foreground: #57534e;
+    --placeholder: #78716c;
+    /* Reserved for the Commissions CTA. */
+    --accent: #be185d;
     --accent-foreground: #ffffff;
-    --accent-2: #a855f7;
-    --destructive: hsl(0 84.2% 60.2%);
-    --destructive-foreground: hsl(0 0% 98%);
-    --border: rgba(20, 22, 43, 0.1);
-    --input: #f1eeff;
+    --accent-2: #7e22ce;
+    --destructive: #b91c1c;
+    --destructive-foreground: #ffffff;
+    /* Decorative dividers only; not a component boundary. */
+    --border: #e7e5e4;
+    /* Form field border (boundary, >= 3:1 on card and background). */
+    --input: #8a837b;
     --ring: #5b21b6;
-    --radius: 0.75rem;
+    /* Lightbox backdrop. */
+    --scrim: rgba(28, 25, 23, 0.95);
+    --radius: 0.5rem;
 }
 
 .dark {
@@ -180,7 +177,12 @@
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-border outline-ring;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-ring);
+        outline-offset: 2px;
     }
 
     body {

@@ -20,15 +20,15 @@ defineProps<{
                     class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
                     :class="
                         link.active
-                            ? 'bg-primary text-white shadow-lg'
-                            : 'bg-white text-muted-foreground hover:bg-panel hover:text-primary'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'border border-border bg-card text-muted-foreground hover:bg-muted hover:text-primary'
                     "
                 >
                     <span v-html="link.label"></span>
                 </Link>
                 <span
                     v-else
-                    class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-muted-foreground/40"
+                    class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-medium text-placeholder"
                     v-html="link.label"
                 ></span>
             </template>

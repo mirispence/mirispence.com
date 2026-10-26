@@ -25,7 +25,7 @@ defineEmits<{
 </script>
 
 <template>
-    <Card class="group overflow-hidden border-none bg-white">
+    <Card class="group overflow-hidden border-none bg-card">
         <div class="relative aspect-[4/5] overflow-hidden">
             <NsfwGate
                 :nsfw="artwork.nsfw_flag"
@@ -51,7 +51,7 @@ defineEmits<{
                 />
                 <div
                     v-else
-                    class="flex h-full items-center justify-center bg-panel font-heading text-muted-foreground italic"
+                    class="flex h-full items-center justify-center bg-muted font-heading text-muted-foreground italic"
                 >
                     No Image available
                 </div>
@@ -63,14 +63,10 @@ defineEmits<{
                         @click="$emit('click-image')"
                     ></div>
                     <div
-                        class="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-gradient-to-t from-black/60 to-transparent p-6 transition-transform duration-300 group-hover:translate-y-0"
+                        class="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-gradient-to-t from-black/60 to-transparent p-6 transition-transform duration-300 group-hover:translate-y-0 focus-within:translate-y-0"
                     >
                         <Link :href="`/art/${artwork.slug}`">
-                            <Button
-                                variant="accent"
-                                size="sm"
-                                class="w-full rounded-full"
-                            >
+                            <Button size="sm" class="w-full">
                                 View Details
                             </Button>
                         </Link>

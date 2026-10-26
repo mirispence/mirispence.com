@@ -27,9 +27,9 @@ defineProps<{
                 <Card
                     v-for="book in books"
                     :key="book.id"
-                    class="group flex flex-col overflow-hidden border-none bg-white p-0"
+                    class="group flex flex-col overflow-hidden border-none bg-card p-0"
                 >
-                    <div class="relative aspect-[2/3] overflow-hidden bg-panel">
+                    <div class="relative aspect-[2/3] overflow-hidden bg-muted">
                         <img
                             v-if="book.cover?.urls?.thumb"
                             :src="book.cover.urls.thumb"
@@ -44,14 +44,10 @@ defineProps<{
                             No Cover available
                         </div>
                         <div
-                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100"
                         >
                             <Link :href="`/books/${book.slug}`" class="w-full">
-                                <Button
-                                    variant="accent"
-                                    class="w-full rounded-full"
-                                    >Read More</Button
-                                >
+                                <Button class="w-full">Read More</Button>
                             </Link>
                         </div>
                     </div>
@@ -65,7 +61,7 @@ defineProps<{
                                 </Link>
                             </h3>
                             <p
-                                class="text-xs font-black tracking-[0.2em] text-accent/80 uppercase"
+                                class="text-xs font-black tracking-[0.2em] text-primary uppercase"
                                 v-if="book.release_date"
                             >
                                 {{ book.release_date }}
@@ -89,10 +85,11 @@ defineProps<{
                     class="group flex cursor-default flex-col items-center justify-center overflow-hidden border-2 border-dashed border-border bg-transparent p-12 text-center shadow-none hover:translate-y-0 hover:shadow-none"
                 >
                     <div
-                        class="mb-6 rounded-full bg-panel p-6 transition-transform duration-500 group-hover:scale-110"
+                        class="mb-6 rounded-full bg-muted p-6 transition-transform duration-500 group-hover:scale-110"
                     >
                         <svg
-                            class="h-10 w-10 text-primary/40"
+                            aria-hidden="true"
+                            class="h-10 w-10 text-muted-foreground"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -106,11 +103,11 @@ defineProps<{
                         </svg>
                     </div>
                     <h3
-                        class="font-heading text-2xl font-bold text-foreground/60"
+                        class="font-heading text-2xl font-bold text-muted-foreground"
                     >
                         More coming soon
                     </h3>
-                    <p class="mt-3 max-w-[200px] text-muted-foreground/60">
+                    <p class="mt-3 max-w-[200px] text-muted-foreground">
                         New stories and illustrations are always in development.
                     </p>
                 </Card>
