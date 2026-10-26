@@ -17,10 +17,12 @@ defineProps<{
     };
     /** Page props to reload after the visitor reveals this artwork. */
     reloadOnly?: string[];
-}>();
-
-defineEmits<{
-    (e: 'click-image'): void;
+    /**
+     * `@click-image`: the image opens the lightbox. Declared as a prop (not an
+     * emit) so the card renders the image button only when a page listens;
+     * otherwise it would be a tab stop that does nothing.
+     */
+    onClickImage?: () => void;
 }>();
 </script>
 
@@ -49,14 +51,20 @@ defineEmits<{
                     No Image available
                 </div>
 
-                <!-- Transparent button over the image: opens the lightbox and discourages casual image saving -->
+                <!-- Transparent button over the image: opens the lightbox and discourages casual image saving.
+                     Focus it on click (Safari doesn't) so the lightbox can return focus here. -->
                 <button
-                    v-if="revealed"
+                    v-if="revealed && onClickImage"
                     type="button"
-                    class="absolute inset-0 z-[5] cursor-zoom-in"
+                    class="absolute inset-0 z-[5] cursor-zoom-in focus-visible:-outline-offset-4"
                     :aria-label="`View ${artwork.title} larger`"
-                    @click="$emit('click-image')"
+                    aria-haspopup="dialog"
+                    @click="
+                        ($event.currentTarget as HTMLElement).focus();
+                        onClickImage();
+                    "
                 ></button>
+                <div v-else-if="revealed" class="absolute inset-0 z-[5]"></div>
             </NsfwGate>
         </div>
         <h3 class="mt-3 line-clamp-1 text-lg font-semibold text-foreground">
