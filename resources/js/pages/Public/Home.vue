@@ -33,30 +33,22 @@ defineProps<{
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
                             <Link href="/art">
-                                <Button
-                                    size="lg"
-                                    class="rounded-full bg-primary px-8"
+                                <Button size="lg" class="bg-primary px-8"
                                     >View Gallery</Button
                                 >
                             </Link>
                             <Link href="/contact?type=commission">
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    class="rounded-full px-8"
+                                <Button variant="outline" size="lg" class="px-8"
                                     >Commissions</Button
                                 >
                             </Link>
                         </div>
                     </div>
                     <div class="relative mt-16 lg:mt-0">
-                        <div
-                            class="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/10 to-accent/10 blur-3xl"
-                        />
                         <div class="relative grid grid-cols-2 gap-4">
                             <div v-if="heroArtworks[0]" class="space-y-4">
                                 <div
-                                    class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
+                                    class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-sm transition-transform hover:rotate-0"
                                 >
                                     <img
                                         fetchpriority="high"
@@ -84,7 +76,7 @@ defineProps<{
                             </div>
                             <div v-if="heroArtworks[1]" class="space-y-4 pt-12">
                                 <div
-                                    class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
+                                    class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-sm transition-transform hover:rotate-0"
                                 >
                                     <img
                                         fetchpriority="high"
@@ -130,7 +122,7 @@ defineProps<{
                     </div>
                     <Link
                         href="/art"
-                        class="text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-primary/80"
+                        class="text-sm font-bold tracking-widest text-primary uppercase underline-offset-4 transition-colors hover:underline"
                     >
                         Explore Gallery →
                     </Link>
@@ -150,15 +142,8 @@ defineProps<{
 
             <!-- Commission Callout -->
             <section
-                class="relative mt-32 overflow-hidden rounded-[3rem] bg-panel p-12 text-center sm:p-20"
+                class="relative mt-32 overflow-hidden rounded-lg border border-border bg-muted p-12 text-center sm:p-20"
             >
-                <div
-                    class="absolute top-0 right-0 h-96 w-96 translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-3xl"
-                />
-                <div
-                    class="absolute bottom-0 left-0 h-96 w-96 -translate-x-1/2 translate-y-1/2 rounded-full bg-primary/10 blur-3xl"
-                />
-
                 <div class="relative mx-auto max-w-2xl">
                     <h2 class="font-heading text-4xl font-bold text-foreground">
                         Have a vision in mind?
@@ -172,10 +157,7 @@ defineProps<{
                     </p>
                     <div class="mt-10">
                         <Link href="/contact?type=commission">
-                            <Button
-                                size="lg"
-                                class="rounded-full bg-accent px-12 shadow-premium hover:bg-accent/90"
-                            >
+                            <Button size="lg" variant="accent" class="px-12">
                                 Start a Commission
                             </Button>
                         </Link>
@@ -195,7 +177,7 @@ defineProps<{
                     </div>
                     <Link
                         href="/books"
-                        class="text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-primary/80"
+                        class="text-sm font-bold tracking-widest text-primary uppercase underline-offset-4 transition-colors hover:underline"
                     >
                         View All Books →
                     </Link>
@@ -207,7 +189,7 @@ defineProps<{
                     <Card
                         v-for="book in featuredBooks"
                         :key="book.id"
-                        class="group overflow-hidden border-none bg-white p-0"
+                        class="group overflow-hidden border-none bg-card p-0"
                     >
                         <div class="aspect-[2/3] overflow-hidden">
                             <img
@@ -218,7 +200,7 @@ defineProps<{
                             />
                             <div
                                 v-else
-                                class="flex h-full items-center justify-center bg-panel font-heading text-muted-foreground italic"
+                                class="flex h-full items-center justify-center bg-muted font-heading text-muted-foreground italic"
                             >
                                 No Cover
                             </div>

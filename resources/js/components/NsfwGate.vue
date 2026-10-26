@@ -31,19 +31,19 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
         <div
             v-if="!revealed"
             class="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center text-center backdrop-blur-md"
-            :class="variant === 'card' ? 'bg-panel/60 p-6' : 'bg-panel/20 p-8'"
+            :class="variant === 'card' ? 'bg-muted/90 p-6' : 'bg-muted/40 p-8'"
             @click.stop="reveal"
         >
             <div
                 :class="
                     variant === 'detail'
-                        ? 'max-w-[280px] rounded-[2rem] bg-white/80 p-8 shadow-2xl'
+                        ? 'max-w-[280px] rounded-lg border border-border bg-card p-8 shadow-card'
                         : ''
                 "
             >
                 <span
                     v-if="variant === 'card'"
-                    class="mb-4 inline-block rounded-full bg-accent px-4 py-1 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-lg"
+                    class="mb-4 inline-block rounded-full bg-foreground px-4 py-1 text-[10px] font-black tracking-[0.2em] text-background uppercase"
                 >
                     Sensitive Content
                 </span>
@@ -66,9 +66,8 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
                 </p>
 
                 <Button
-                    variant="accent"
                     :size="variant === 'card' ? 'sm' : 'lg'"
-                    class="rounded-full px-6 font-bold"
+                    class="px-6 font-bold"
                     @click.stop="reveal"
                 >
                     Reveal Artwork
@@ -81,7 +80,7 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
                     <input
                         :id="checkboxId"
                         type="checkbox"
-                        class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                        class="h-4 w-4 rounded border-input accent-primary"
                         @change="
                             ($event.target as HTMLInputElement).checked &&
                             revealAll()

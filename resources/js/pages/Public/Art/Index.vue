@@ -149,7 +149,7 @@ watch(selectedGallery, (value) => {
                 @click.self="closeLightbox"
             >
                 <div
-                    class="absolute inset-0 bg-panel/95 backdrop-blur-3xl"
+                    class="absolute inset-0 bg-scrim backdrop-blur-3xl"
                     @click="closeLightbox"
                 ></div>
 
@@ -159,7 +159,7 @@ watch(selectedGallery, (value) => {
                     <!-- Nav Controls -->
                     <button
                         @click="prevImage"
-                        class="absolute top-1/2 left-4 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 sm:left-10"
+                        class="absolute top-1/2 left-4 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 focus-visible:outline-white sm:left-10"
                         aria-label="Previous image"
                     >
                         <svg
@@ -179,7 +179,7 @@ watch(selectedGallery, (value) => {
 
                     <button
                         @click="nextImage"
-                        class="absolute top-1/2 right-4 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 sm:right-10"
+                        class="absolute top-1/2 right-4 z-20 -translate-y-1/2 rounded-full bg-white/10 p-4 text-white hover:bg-white/20 focus-visible:outline-white sm:right-10"
                         aria-label="Next image"
                     >
                         <svg
@@ -199,7 +199,7 @@ watch(selectedGallery, (value) => {
 
                     <button
                         @click="closeLightbox"
-                        class="absolute top-4 right-4 z-20 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 sm:top-10 sm:right-10"
+                        class="absolute top-4 right-4 z-20 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 focus-visible:outline-white sm:top-10 sm:right-10"
                         aria-label="Close lightbox"
                     >
                         <svg
@@ -248,7 +248,7 @@ watch(selectedGallery, (value) => {
                                     activeArtwork.title
                                 "
                                 :class="[
-                                    'rounded-lg shadow-2xl transition-all duration-500',
+                                    'rounded-sm transition-all duration-500',
                                     isZoomed
                                         ? 'max-w-none'
                                         : 'max-h-[85vh] max-w-full object-contain',
@@ -269,14 +269,14 @@ watch(selectedGallery, (value) => {
 
                     <!-- Caption -->
                     <div
-                        class="relative z-20 bg-panel/80 pt-4 pb-10 text-center backdrop-blur-sm"
+                        class="relative z-20 bg-scrim pt-4 pb-10 text-center backdrop-blur-sm"
                     >
                         <h2 class="font-heading text-2xl font-bold text-white">
                             {{ activeArtwork.title }}
                         </h2>
                         <Link
                             :href="`/art/${activeArtwork.id}`"
-                            class="mt-2 inline-block text-white/60 hover:text-white"
+                            class="mt-2 inline-block text-stone-300 hover:text-white focus-visible:outline-white"
                         >
                             View Details &rarr;
                         </Link>

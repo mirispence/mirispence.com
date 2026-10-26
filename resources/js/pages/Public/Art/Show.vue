@@ -48,9 +48,9 @@ onUnmounted(() => {
                 <!-- Image Container -->
                 <div class="flex justify-center lg:sticky lg:top-32">
                     <Card
-                        class="group relative w-full overflow-hidden rounded-[2.5rem] border-none p-0 shadow-premium"
+                        class="group relative w-full overflow-hidden rounded-sm border-none p-0 shadow-none hover:translate-y-0 hover:shadow-none"
                     >
-                        <div class="aspect-square bg-white">
+                        <div class="aspect-square bg-card">
                             <NsfwGate
                                 :withheld="artwork.media_withheld"
                                 :artwork-id="artwork.id"
@@ -102,7 +102,7 @@ onUnmounted(() => {
                             class="flex items-center gap-2"
                         >
                             <span
-                                class="text-xs font-black tracking-[0.2em] text-accent uppercase"
+                                class="text-xs font-black tracking-[0.2em] text-primary uppercase"
                                 >Created</span
                             >
                             <span
@@ -138,7 +138,7 @@ onUnmounted(() => {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        class="h-10 rounded-full border-border/60 bg-white/50 transition-all hover:border-primary hover:text-primary"
+                                        class="h-10 rounded-full border-input bg-card transition-all hover:border-primary hover:text-primary"
                                     >
                                         {{ tag.name }}
                                     </Button>
@@ -147,11 +147,11 @@ onUnmounted(() => {
                         </div>
 
                         <!-- CTA -->
-                        <div class="border-t border-border/60 pt-8">
+                        <div class="border-t border-border pt-8">
                             <Link href="/contact?type=commission" class="block">
                                 <Button
                                     size="lg"
-                                    class="group h-16 w-full rounded-full bg-primary text-xl font-bold shadow-premium"
+                                    class="group h-16 w-full bg-primary text-xl font-bold"
                                 >
                                     Request a Commission
                                     <svg
@@ -178,11 +178,11 @@ onUnmounted(() => {
                         </div>
                     </div>
 
-                    <div class="mt-16 border-t border-border/60 pt-12">
+                    <div class="mt-16 border-t border-border pt-12">
                         <Link href="/art">
                             <Button
                                 variant="ghost"
-                                class="rounded-full text-muted-foreground hover:text-primary"
+                                class="text-muted-foreground hover:text-primary"
                             >
                                 <svg
                                     class="mr-2 h-4 w-4"
@@ -216,11 +216,11 @@ onUnmounted(() => {
         >
             <div
                 v-if="showLightbox"
-                class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-black/95"
+                class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-scrim"
                 @click.self="closeLightbox"
             >
                 <button
-                    class="absolute top-8 right-8 z-[110] text-white/70 transition-colors hover:text-white"
+                    class="absolute top-8 right-8 z-[110] text-stone-300 transition-colors hover:text-white focus-visible:outline-white"
                     @click="closeLightbox"
                 >
                     <svg
@@ -251,7 +251,7 @@ onUnmounted(() => {
                             :srcset="artwork.media_urls.display.srcset"
                             :alt="artwork.alt_text || artwork.title"
                             :class="[
-                                'rounded-lg shadow-2xl transition-all duration-500',
+                                'rounded-sm transition-all duration-500',
                                 isZoomed
                                     ? 'max-w-none'
                                     : 'max-h-[85vh] max-w-full object-contain',
@@ -270,7 +270,7 @@ onUnmounted(() => {
                 </div>
 
                 <div
-                    class="relative z-20 w-full bg-black/40 pt-4 pb-10 text-center backdrop-blur-sm"
+                    class="relative z-20 w-full bg-scrim pt-4 pb-10 text-center backdrop-blur-sm"
                 >
                     <h2 class="font-heading text-2xl font-bold text-white">
                         {{ artwork.title }}

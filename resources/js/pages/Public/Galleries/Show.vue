@@ -38,7 +38,7 @@ defineProps<{
                     <Link href="/art">
                         <Button
                             variant="ghost"
-                            class="rounded-full text-muted-foreground hover:text-primary"
+                            class="text-muted-foreground hover:text-primary"
                         >
                             <svg
                                 class="mr-2 h-4 w-4"
@@ -70,13 +70,14 @@ defineProps<{
 
             <div
                 v-if="artworks.data.length === 0"
-                class="rounded-[3rem] border border-white/60 bg-white/40 py-24 text-center"
+                class="rounded-lg border border-border bg-card py-24 text-center"
             >
                 <div
-                    class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-panel"
+                    class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted"
                 >
                     <svg
-                        class="h-8 w-8 text-muted-foreground/40"
+                        aria-hidden="true"
+                        class="h-8 w-8 text-muted-foreground"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -89,10 +90,12 @@ defineProps<{
                         />
                     </svg>
                 </div>
-                <h3 class="font-heading text-2xl font-bold text-foreground/60">
+                <h3
+                    class="font-heading text-2xl font-bold text-muted-foreground"
+                >
                     No artworks yet
                 </h3>
-                <p class="mt-2 text-muted-foreground/60">
+                <p class="mt-2 text-muted-foreground">
                     Check back soon for new additions to this collection.
                 </p>
             </div>
