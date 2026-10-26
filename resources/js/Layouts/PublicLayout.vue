@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
@@ -105,10 +106,10 @@ const seoData = computed(() => (page.props as any).seo);
 
                     <nav class="hidden items-center gap-8 md:flex">
                         <Link
-                            href="/art"
+                            :href="galleriesIndex.url()"
                             class="text-sm font-medium transition-colors hover:text-primary"
                             :class="
-                                $page.url.startsWith('/art')
+                                $page.url.startsWith(galleriesIndex.url())
                                     ? 'text-primary'
                                     : 'text-muted-foreground'
                             "

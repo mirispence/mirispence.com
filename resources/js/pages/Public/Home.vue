@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -32,9 +34,9 @@ defineProps<{
                             work.
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
-                            <Link href="/art">
+                            <Link :href="galleriesIndex.url()">
                                 <Button size="lg" class="bg-primary px-8"
-                                    >View Gallery</Button
+                                    >View Galleries</Button
                                 >
                             </Link>
                             <Link href="/contact?type=commission">
@@ -121,10 +123,10 @@ defineProps<{
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>
                     <Link
-                        href="/art"
+                        :href="artworkIndex.url()"
                         class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        Explore Gallery →
+                        View all artwork →
                     </Link>
                 </div>
 

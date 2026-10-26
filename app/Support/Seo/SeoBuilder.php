@@ -75,6 +75,15 @@ class SeoBuilder
         );
     }
 
+    public static function forArtworkIndex(): SeoPayload
+    {
+        return self::make(
+            title: 'Artwork',
+            description: 'Every artwork by Miri Spence. Digital paintings, character designs, and illustrations.',
+            image: self::getFallbackOgImage()
+        );
+    }
+
     public static function forArtwork(Artwork $artwork): SeoPayload
     {
         $description = $artwork->description ?: "View '{$artwork->title}' by Miri Spence.";
@@ -91,7 +100,7 @@ class SeoBuilder
                 '@type' => 'Person',
                 'name' => config('app.name'),
             ],
-            'url' => route('art.show', $artwork),
+            'url' => route('artwork.show', $artwork),
         ];
 
         if ($artwork->created_on) {

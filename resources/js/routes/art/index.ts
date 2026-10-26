@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -15,8 +15,8 @@ index.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -24,8 +24,8 @@ index.url = (options?: RouteQueryOptions) => {
 }
 
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -33,8 +33,8 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -43,8 +43,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -53,8 +53,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -62,8 +62,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\Public\ArtworkController::index
- * @see app/Http/Controllers/Public/ArtworkController.php:15
+* @see \App\Http\Controllers\Public\GalleryController::index
+ * @see app/Http/Controllers/Public/GalleryController.php:14
  * @route '/art'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -78,98 +78,98 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     index.form = indexForm
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-export const show = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(args, options),
+export const gallery = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: gallery.url(args, options),
     method: 'get',
 })
 
-show.definition = {
+gallery.definition = {
     methods: ["get","head"],
-    url: '/art/{artwork}',
+    url: '/art/{gallery}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-show.url = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
+gallery.url = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
-        args = { artwork: args }
+        args = { gallery: args }
     }
 
             if (typeof args === 'object' && !Array.isArray(args) && 'slug' in args) {
-            args = { artwork: args.slug }
+            args = { gallery: args.slug }
         }
     
     if (Array.isArray(args)) {
         args = {
-                    artwork: args[0],
+                    gallery: args[0],
                 }
     }
 
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-                        artwork: typeof args.artwork === 'object'
-                ? args.artwork.slug
-                : args.artwork,
+                        gallery: typeof args.gallery === 'object'
+                ? args.gallery.slug
+                : args.gallery,
                 }
 
-    return show.definition.url
-            .replace('{artwork}', parsedArgs.artwork.toString())
+    return gallery.definition.url
+            .replace('{gallery}', parsedArgs.gallery.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-show.get = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(args, options),
+gallery.get = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: gallery.url(args, options),
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-show.head = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: show.url(args, options),
+gallery.head = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: gallery.url(args, options),
     method: 'head',
 })
 
     /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-    const showForm = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: show.url(args, options),
+    const galleryForm = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: gallery.url(args, options),
         method: 'get',
     })
 
             /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-        showForm.get = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(args, options),
+        galleryForm.get = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: gallery.url(args, options),
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\Public\ArtworkController::show
- * @see app/Http/Controllers/Public/ArtworkController.php:44
- * @route '/art/{artwork}'
+* @see \App\Http\Controllers\Public\GalleryController::gallery
+ * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @route '/art/{gallery}'
  */
-        showForm.head = (args: { artwork: string | { slug: string } } | [artwork: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(args, {
+        galleryForm.head = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: gallery.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -178,10 +178,10 @@ show.head = (args: { artwork: string | { slug: string } } | [artwork: string | {
             method: 'get',
         })
     
-    show.form = showForm
+    gallery.form = galleryForm
 const art = {
     index: Object.assign(index, index),
-show: Object.assign(show, show),
+gallery: Object.assign(gallery, gallery),
 }
 
 export default art
