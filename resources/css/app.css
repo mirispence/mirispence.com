@@ -105,6 +105,15 @@
     }
 }
 
+/*
+  Display serif (Fraunces). Public pages use it only for the wordmark, h1 and
+  h2; everything else is Source Sans 3. Tune the weight here, nowhere else.
+*/
+@utility font-display {
+    font-family: var(--font-heading);
+    font-weight: 560;
+}
+
 @layer utilities {
     body,
     html {

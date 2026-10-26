@@ -97,7 +97,7 @@ const seoData = computed(() => (page.props as any).seo);
                 <div class="flex items-center gap-12">
                     <Link href="/" class="group flex items-center gap-2">
                         <span
-                            class="font-heading text-2xl font-black tracking-tight text-foreground transition-all duration-300 group-hover:text-primary"
+                            class="font-display text-2xl tracking-tight text-foreground transition-all duration-300 group-hover:text-primary"
                         >
                             Miri Spence
                         </span>
@@ -143,7 +143,7 @@ const seoData = computed(() => (page.props as any).seo);
                 <div class="flex items-center gap-4">
                     <Link
                         href="/contact?type=commission"
-                        class="hidden items-center justify-center rounded-lg bg-accent px-4 py-1.5 text-xs font-bold tracking-widest text-accent-foreground uppercase transition-all hover:scale-105 hover:bg-accent/90 active:scale-95 sm:inline-flex"
+                        class="hidden items-center justify-center rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground transition-all hover:scale-105 hover:bg-accent/90 active:scale-95 sm:inline-flex"
                     >
                         Hire Me
                     </Link>
@@ -160,7 +160,7 @@ const seoData = computed(() => (page.props as any).seo);
                 <div
                     class="flex flex-col items-center justify-between gap-6 md:flex-row"
                 >
-                    <p class="font-heading text-lg font-bold text-foreground">
+                    <p class="font-display text-lg text-foreground">
                         Miri Spence
                     </p>
                     <div class="flex items-center gap-6">

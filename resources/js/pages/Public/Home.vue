@@ -19,7 +19,7 @@ defineProps<{
                 <div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
                     <div class="text-left">
                         <h1
-                            class="font-heading text-5xl font-black tracking-tight text-foreground sm:text-7xl"
+                            class="font-display text-5xl tracking-tight text-foreground sm:text-7xl"
                         >
                             Art & <span class="text-primary">Stories</span>
                         </h1>
@@ -122,7 +122,7 @@ defineProps<{
                 <div class="mb-10 flex items-end justify-between">
                     <div>
                         <h2
-                            class="font-heading text-4xl font-bold tracking-tight text-foreground"
+                            class="font-display text-3xl tracking-tight text-foreground sm:text-4xl"
                         >
                             Featured Art
                         </h2>
@@ -130,7 +130,7 @@ defineProps<{
                     </div>
                     <Link
                         href="/art"
-                        class="text-sm font-bold tracking-widest text-primary uppercase underline-offset-4 transition-colors hover:underline"
+                        class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
                         Explore Gallery →
                     </Link>
@@ -153,7 +153,9 @@ defineProps<{
                 class="relative mt-32 overflow-hidden rounded-lg border border-border bg-muted p-12 text-center sm:p-20"
             >
                 <div class="relative mx-auto max-w-2xl">
-                    <h2 class="font-heading text-4xl font-bold text-foreground">
+                    <h2
+                        class="font-display text-3xl text-foreground sm:text-4xl"
+                    >
                         Have a vision in mind?
                     </h2>
                     <p
@@ -177,7 +179,7 @@ defineProps<{
                 <div class="mb-10 flex items-end justify-between">
                     <div>
                         <h2
-                            class="font-heading text-4xl font-bold tracking-tight text-foreground"
+                            class="font-display text-3xl tracking-tight text-foreground sm:text-4xl"
                         >
                             Featured Books
                         </h2>
@@ -185,7 +187,7 @@ defineProps<{
                     </div>
                     <Link
                         href="/books"
-                        class="text-sm font-bold tracking-widest text-primary uppercase underline-offset-4 transition-colors hover:underline"
+                        class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
                         View All Books →
                     </Link>
@@ -208,14 +210,14 @@ defineProps<{
                             />
                             <div
                                 v-else
-                                class="flex h-full items-center justify-center bg-muted font-heading text-muted-foreground italic"
+                                class="flex h-full items-center justify-center bg-muted text-muted-foreground italic"
                             >
                                 No Cover
                             </div>
                         </div>
                         <div class="p-8">
                             <h3
-                                class="font-heading text-xl font-bold text-foreground transition-colors group-hover:text-primary"
+                                class="text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
                                 <Link :href="`/books/${book.slug}`">
                                     {{ book.title }}

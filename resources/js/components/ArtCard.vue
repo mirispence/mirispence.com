@@ -51,7 +51,7 @@ defineEmits<{
                 />
                 <div
                     v-else
-                    class="flex h-full items-center justify-center bg-muted font-heading text-muted-foreground italic"
+                    class="flex h-full items-center justify-center bg-muted text-muted-foreground italic"
                 >
                     No Image available
                 </div>
@@ -76,7 +76,7 @@ defineEmits<{
         </div>
         <div class="p-6">
             <h3
-                class="line-clamp-1 font-heading text-xl font-bold text-foreground transition-colors group-hover:text-primary"
+                class="line-clamp-1 text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
             >
                 <Link :href="`/art/${artwork.slug}`">
                     {{ artwork.title }}
@@ -84,7 +84,7 @@ defineEmits<{
             </h3>
             <p
                 v-if="artwork.created_on"
-                class="mt-1 text-sm text-[10px] font-medium tracking-widest text-muted-foreground uppercase"
+                class="mt-1 text-sm text-muted-foreground"
             >
                 {{ artwork.created_on }}
             </p>

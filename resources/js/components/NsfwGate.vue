@@ -56,14 +56,11 @@ const reveal = () => {
             >
                 <span
                     v-if="variant === 'card'"
-                    class="mb-4 inline-block rounded-full bg-foreground px-4 py-1 text-[10px] font-black tracking-[0.2em] text-background uppercase"
+                    class="mb-4 inline-block rounded-full bg-foreground px-4 py-1 text-xs font-semibold text-background"
                 >
                     Sensitive Content
                 </span>
-                <h3
-                    v-else
-                    class="mb-2 font-heading text-xl font-bold text-foreground"
-                >
+                <h3 v-else class="mb-2 text-xl font-semibold text-foreground">
                     Sensitive Content
                 </h3>
 
@@ -80,7 +77,7 @@ const reveal = () => {
 
                 <Button
                     :size="variant === 'card' ? 'sm' : 'lg'"
-                    class="px-6 font-bold"
+                    class="px-6 font-semibold"
                     @click.stop="reveal"
                 >
                     Reveal Artwork
@@ -103,7 +100,7 @@ const reveal = () => {
                     />
                     <label
                         :for="checkboxId"
-                        class="text-[10px] font-bold text-foreground"
+                        class="text-sm font-medium text-foreground"
                     >
                         Show all NSFW artwork this session
                     </label>

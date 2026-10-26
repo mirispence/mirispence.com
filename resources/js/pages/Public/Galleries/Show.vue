@@ -23,7 +23,7 @@ defineProps<{
             >
                 <div class="max-w-3xl">
                     <h1
-                        class="font-heading text-5xl font-black tracking-tight text-foreground"
+                        class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
                         {{ gallery.name }}
                     </h1>
@@ -89,9 +89,7 @@ defineProps<{
                         />
                     </svg>
                 </div>
-                <h3
-                    class="font-heading text-2xl font-bold text-muted-foreground"
-                >
+                <h3 class="text-2xl font-semibold text-muted-foreground">
                     No artworks yet
                 </h3>
                 <p class="mt-2 text-muted-foreground">
