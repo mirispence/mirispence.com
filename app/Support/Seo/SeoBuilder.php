@@ -104,8 +104,7 @@ class SeoBuilder
             type: 'article',
             image: $image,
             imageAlt: $artwork->alt_text ?? "Artwork '{$artwork->title}' by Miri Spence",
-            jsonld: $jsonld,
-            appendBrand: false
+            jsonld: $jsonld
         );
     }
 
@@ -156,8 +155,7 @@ class SeoBuilder
             description: $description,
             type: 'book',
             image: $image,
-            jsonld: $jsonld,
-            appendBrand: false
+            jsonld: $jsonld
         );
     }
 
