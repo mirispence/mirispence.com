@@ -64,6 +64,7 @@ defineProps<{
                     v-for="artwork in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
+                    :reload-only="['artworks']"
                 />
             </div>
 

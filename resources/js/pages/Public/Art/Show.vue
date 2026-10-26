@@ -52,7 +52,9 @@ onUnmounted(() => {
                     >
                         <div class="aspect-square bg-card">
                             <NsfwGate
-                                :nsfw="artwork.nsfw_flag"
+                                :withheld="artwork.media_withheld"
+                                :artwork-id="artwork.id"
+                                :reload-only="['artwork']"
                                 variant="detail"
                                 v-slot="{ revealed }"
                             >
@@ -62,17 +64,13 @@ onUnmounted(() => {
                                     :srcset="artwork.media_urls.display.srcset"
                                     :alt="artwork.alt_text || artwork.title"
                                     class="h-full w-full object-contain transition-all duration-700"
-                                    :class="{
-                                        'scale-110 opacity-40 blur-3xl grayscale':
-                                            !revealed,
-                                    }"
                                     sizes="(max-width: 1024px) 100vw, 800px"
                                     loading="eager"
                                     fetchpriority="high"
                                 />
                                 <!-- Placeholder -->
                                 <div
-                                    v-else
+                                    v-else-if="!artwork.media_withheld"
                                     class="flex h-full items-center justify-center text-2xl text-muted-foreground italic"
                                 >
                                     No Image available

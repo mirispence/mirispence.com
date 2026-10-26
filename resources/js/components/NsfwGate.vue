@@ -1,40 +1,27 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { useNSFWPreference } from '@/composables/useNSFWPreference';
-import { computed, ref, useId } from 'vue';
+import { useMatureConsent } from '@/composables/useMatureConsent';
+import { computed, useId } from 'vue';
 
 const props = withDefaults(
     defineProps<{
-        /** Whether this artwork is flagged NSFW at all. When false, always revealed and no gate renders. */
-        nsfw: boolean;
-        /** Externally tracked reveal state. Omit to let the gate manage its own state (uncontrolled). */
-        modelValue?: boolean;
+        /** The server withheld this artwork's media (mature, no consent yet). When false, no gate renders. */
+        withheld: boolean;
+        artworkId: number;
+        /** Page props to reload once consent is recorded; empty reloads all. */
+        reloadOnly?: string[];
         variant?: 'card' | 'detail';
     }>(),
-    { modelValue: undefined, variant: 'card' },
+    { reloadOnly: () => [], variant: 'card' },
 );
 
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void;
-    (e: 'reveal'): void;
-}>();
-
-const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
-const internalRevealed = ref(false);
+const consent = useMatureConsent();
 const checkboxId = useId();
 
-const revealed = computed(
-    () =>
-        !props.nsfw ||
-        (props.modelValue ?? internalRevealed.value) ||
-        nsfwAlwaysReveal.value,
-);
+const revealed = computed(() => !props.withheld);
 
-const reveal = () => {
-    internalRevealed.value = true;
-    emit('update:modelValue', true);
-    emit('reveal');
-};
+const reveal = () => consent.reveal(props.artworkId, props.reloadOnly);
+const revealAll = () => consent.revealAll(props.reloadOnly);
 </script>
 
 <template>
@@ -90,12 +77,10 @@ const reveal = () => {
                     <input
                         :id="checkboxId"
                         type="checkbox"
-                        :checked="nsfwAlwaysReveal"
                         class="h-4 w-4 rounded border-input accent-primary"
                         @change="
-                            setPreference(
-                                ($event.target as HTMLInputElement).checked,
-                            )
+                            ($event.target as HTMLInputElement).checked &&
+                            revealAll()
                         "
                     />
                     <label

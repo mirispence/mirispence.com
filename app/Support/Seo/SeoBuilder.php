@@ -78,7 +78,8 @@ class SeoBuilder
     public static function forArtwork(Artwork $artwork): SeoPayload
     {
         $description = $artwork->description ?: "View '{$artwork->title}' by Miri Spence.";
-        $image = self::publicDisplayUrl($artwork) ?? self::getFallbackOgImage();
+        // Mature artwork never feeds SEO images (ADR-0004).
+        $image = ($artwork->nsfw_flag ? null : self::publicDisplayUrl($artwork)) ?? self::getFallbackOgImage();
 
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -113,7 +114,7 @@ class SeoBuilder
         return self::make(
             title: "{$gallery->name} - Art",
             description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
-            image: ($gallery->cover_urls['display']['src'] ?? null) ?: self::getFallbackOgImage()
+            image: self::galleryCoverImage($gallery) ?? self::getFallbackOgImage()
         );
     }
 
@@ -129,7 +130,9 @@ class SeoBuilder
     public static function forBook(Book $book): SeoPayload
     {
         $description = $book->description ?: "Read more about '{$book->title}' by Miri Spence.";
-        $image = ($book->cover['urls']['display']['src'] ?? null) ?: self::getFallbackOgImage();
+        // `cover` is null unless the gallery is published and has a visible cover.
+        $image = ($book->cover !== null && $book->gallery ? self::galleryCoverImage($book->gallery) : null)
+            ?? self::getFallbackOgImage();
 
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -200,14 +203,31 @@ class SeoBuilder
 
     /**
      * Site-wide og:image: the latest featured published artwork, else the latest
-     * published artwork. Only ever a public conversion URL, never the original.
+     * published artwork, never a mature (nsfw_flag) one. Only ever a public
+     * conversion URL, never the original.
      */
     protected static function getFallbackOgImage(): ?string
     {
-        $artwork = Artwork::published()->featured()->latest('created_on')->first()
-            ?? Artwork::published()->latest('created_on')->first();
+        $safe = fn () => Artwork::published()->where('nsfw_flag', false)->latest('created_on');
+
+        $artwork = $safe()->featured()->first() ?? $safe()->first();
 
         return self::publicDisplayUrl($artwork);
+    }
+
+    /**
+     * The gallery's cover display URL, or null when it has none or the cover is
+     * mature (consent never changes SEO output).
+     */
+    private static function galleryCoverImage(Gallery $gallery): ?string
+    {
+        if ($gallery->coverArtwork?->nsfw_flag) {
+            return null;
+        }
+
+        $src = $gallery->cover_urls['display']['src'] ?? null;
+
+        return is_string($src) && $src !== '' ? $src : null;
     }
 
     private static function publicDisplayUrl(?Artwork $artwork): ?string

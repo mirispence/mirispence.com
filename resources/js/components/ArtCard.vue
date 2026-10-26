@@ -13,13 +13,14 @@ defineProps<{
         alt_text: string;
         created_on: string;
         nsfw_flag: boolean;
+        /** Server withheld the media (mature, no consent yet): show the gate over a neutral placeholder. */
+        media_withheld: boolean;
     };
-    /** Omit to let the gate track reveal state itself; pass when a sibling view (e.g. a lightbox) must stay in sync. */
-    isRevealed?: boolean;
+    /** Page props to reload after the visitor reveals this artwork. */
+    reloadOnly?: string[];
 }>();
 
 defineEmits<{
-    (e: 'reveal'): void;
     (e: 'click-image'): void;
 }>();
 </script>
@@ -28,29 +29,22 @@ defineEmits<{
     <Card class="group overflow-hidden border-none bg-card">
         <div class="relative aspect-[4/5] overflow-hidden">
             <NsfwGate
-                :nsfw="artwork.nsfw_flag"
-                :model-value="isRevealed"
+                :withheld="artwork.media_withheld"
+                :artwork-id="artwork.id"
+                :reload-only="reloadOnly"
                 variant="card"
-                @reveal="$emit('reveal')"
                 v-slot="{ revealed }"
             >
                 <img
                     v-if="artwork.media_urls?.grid"
                     :src="artwork.media_urls.grid.src"
-                    :srcset="
-                        revealed ? artwork.media_urls.grid.srcset : undefined
-                    "
+                    :srcset="artwork.media_urls.grid.srcset"
                     :alt="artwork.alt_text || artwork.title"
-                    class="h-full w-full object-cover transition-all duration-700"
-                    :class="
-                        revealed
-                            ? 'group-hover:scale-110'
-                            : 'scale-110 blur-2xl grayscale'
-                    "
+                    class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 <div
-                    v-else
+                    v-else-if="!artwork.media_withheld"
                     class="flex h-full items-center justify-center bg-muted text-muted-foreground italic"
                 >
                     No Image available

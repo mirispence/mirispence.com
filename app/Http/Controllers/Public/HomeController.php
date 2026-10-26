@@ -23,7 +23,16 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
+        // The hero is never gated, so it never shows mature artwork (ADR-0004).
+        $heroArtworks = Artwork::featured()
+            ->published()
+            ->where('nsfw_flag', false)
+            ->latest('created_on')
+            ->take(2)
+            ->get();
+
         return Inertia::render('Public/Home', [
+            'heroArtworks' => PublicArtworkResource::collection($heroArtworks)->resolve(),
             'featuredArtworks' => PublicArtworkResource::collection($artworks)->resolve(),
             'featuredBooks' => Book::featured()
                 ->published()

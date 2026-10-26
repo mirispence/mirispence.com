@@ -86,3 +86,40 @@ function assertNoOriginalMedia(mixed $payload, array $privateUrls = []): void
 
     $walk($data, '');
 }
+
+/**
+ * Recursively assert a serialized payload contains none of the given artwork's
+ * public media URLs (any conversion) at any depth. Used for the mature-content
+ * gate (ADR-0004): flagged artwork must not leak URLs before consent.
+ */
+function assertNoMediaUrlsFor(mixed $payload, \App\Models\Artwork $artwork): void
+{
+    $urls = [];
+    $sets = $artwork->mediaUrlBuilder()->public();
+    array_walk_recursive($sets, function (string $value) use (&$urls): void {
+        foreach (preg_split('/,\s*/', $value) ?: [] as $part) {
+            $urls[] = explode(' ', trim($part))[0];
+        }
+    });
+    $urls = array_values(array_filter(array_unique($urls)));
+
+    Assert::assertNotEmpty($urls, 'Artwork has no media URLs to check against');
+
+    $walk = function (mixed $value, string $path) use (&$walk, $urls): void {
+        if (is_string($value)) {
+            foreach ($urls as $url) {
+                Assert::assertStringNotContainsString($url, $value, "Media URL of artwork leaked at [{$path}]");
+            }
+
+            return;
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $key => $child) {
+                $walk($child, $path === '' ? (string) $key : "{$path}.{$key}");
+            }
+        }
+    };
+
+    $walk(json_decode((string) json_encode($payload), true), '');
+}
