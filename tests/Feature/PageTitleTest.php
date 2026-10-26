@@ -12,10 +12,10 @@ uses(RefreshDatabase::class);
 // visit, so route renames only touch this list.
 dataset('public pages', [
     'home' => fn () => route('home'),
-    'art index' => fn () => route('art.index'),
-    'artwork show' => fn () => route('art.show', Artwork::factory()->create(['publish_status' => 'published'])),
-    'galleries index' => fn () => route('galleries.index'),
-    'gallery show' => fn () => route('galleries.show', Gallery::factory()->create(['publish_status' => 'published'])),
+    'art (gallery list)' => fn () => route('art.index'),
+    'gallery show' => fn () => route('art.gallery', Gallery::factory()->create(['publish_status' => 'published'])),
+    'artwork index' => fn () => route('artwork.index'),
+    'artwork show' => fn () => route('artwork.show', Artwork::factory()->create(['publish_status' => 'published'])),
     'books index' => fn () => route('books.index'),
     'book show' => fn () => route('books.show', Book::factory()->create(['publish_status' => 'published'])),
     'contact' => fn () => route('contact.create'),
