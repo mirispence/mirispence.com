@@ -39,7 +39,7 @@ const submit = () => {
             <div class="mx-auto max-w-3xl">
                 <div class="mb-16 text-center">
                     <h1
-                        class="font-heading text-5xl font-black tracking-tight text-foreground"
+                        class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
                         Get in Touch
                     </h1>
@@ -69,7 +69,7 @@ const submit = () => {
                                 />
                             </svg>
                         </div>
-                        <p class="text-sm font-bold text-green-800">
+                        <p class="text-sm font-semibold text-green-800">
                             {{ $page.props.flash.success }}
                         </p>
                     </div>
@@ -93,7 +93,7 @@ const submit = () => {
                             <div class="sm:col-span-2">
                                 <label
                                     for="type"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Message Type</label
                                 >
                                 <FormSelect id="type" v-model="form.type">
@@ -109,7 +109,7 @@ const submit = () => {
                             <div class="sm:col-span-1">
                                 <label
                                     for="name"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Name</label
                                 >
                                 <Input
@@ -120,7 +120,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.name"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.name }}
                                 </div>
@@ -129,7 +129,7 @@ const submit = () => {
                             <div class="sm:col-span-1">
                                 <label
                                     for="email"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Email</label
                                 >
                                 <Input
@@ -140,7 +140,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.email"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.email }}
                                 </div>
@@ -149,7 +149,7 @@ const submit = () => {
                             <div class="sm:col-span-2">
                                 <label
                                     for="subject"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Subject</label
                                 >
                                 <Input
@@ -160,7 +160,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.subject"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.subject }}
                                 </div>
@@ -169,7 +169,7 @@ const submit = () => {
                             <div class="sm:col-span-2">
                                 <label
                                     for="message"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Message</label
                                 >
                                 <FormTextarea
@@ -179,7 +179,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.message"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.message }}
                                 </div>
@@ -189,7 +189,7 @@ const submit = () => {
                                 <div class="sm:col-span-1">
                                     <label
                                         for="budget_range"
-                                        class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                        class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                         >Budget Range</label
                                     >
                                     <Input
@@ -200,7 +200,7 @@ const submit = () => {
                                     />
                                     <div
                                         v-if="form.errors.budget_range"
-                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
+                                        class="mt-2 ml-1 text-sm font-medium text-destructive"
                                     >
                                         {{ form.errors.budget_range }}
                                     </div>
@@ -209,7 +209,7 @@ const submit = () => {
                                 <div class="sm:col-span-1">
                                     <label
                                         for="desired_due_date"
-                                        class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                        class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                         >Desired Due Date</label
                                     >
                                     <Input
@@ -219,7 +219,7 @@ const submit = () => {
                                     />
                                     <div
                                         v-if="form.errors.desired_due_date"
-                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-destructive uppercase"
+                                        class="mt-2 ml-1 text-sm font-medium text-destructive"
                                     >
                                         {{ form.errors.desired_due_date }}
                                     </div>
@@ -231,7 +231,7 @@ const submit = () => {
                             <Button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="h-14 w-full bg-primary text-lg font-bold"
+                                class="h-14 w-full bg-primary text-lg font-semibold"
                             >
                                 {{
                                     form.processing

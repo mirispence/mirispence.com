@@ -17,7 +17,7 @@ defineProps<{
                 <Link
                     v-if="link.url"
                     :href="link.url"
-                    class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-all"
+                    class="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg px-3 text-sm font-semibold transition-all"
                     :class="
                         link.active
                             ? 'bg-primary text-primary-foreground'

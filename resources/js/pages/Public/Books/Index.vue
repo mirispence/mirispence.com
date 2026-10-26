@@ -14,7 +14,7 @@ defineProps<{
         <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div class="mb-16 text-center">
                 <h1
-                    class="font-heading text-5xl font-black tracking-tight text-foreground"
+                    class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                 >
                     Novels & Stories
                 </h1>
@@ -39,7 +39,7 @@ defineProps<{
                         <!-- Placeholder for cover -->
                         <div
                             v-else
-                            class="flex h-full items-center justify-center font-heading text-muted-foreground italic"
+                            class="flex h-full items-center justify-center text-muted-foreground italic"
                         >
                             No Cover available
                         </div>
@@ -54,14 +54,14 @@ defineProps<{
                     <div class="flex flex-1 flex-col p-8">
                         <div class="mb-4 flex flex-col gap-2">
                             <h3
-                                class="font-heading text-2xl font-bold text-foreground transition-colors group-hover:text-primary"
+                                class="text-2xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
                                 <Link :href="`/books/${book.slug}`">
                                     {{ book.title }}
                                 </Link>
                             </h3>
                             <p
-                                class="text-xs font-black tracking-[0.2em] text-primary uppercase"
+                                class="text-sm font-semibold text-primary"
                                 v-if="book.release_date"
                             >
                                 {{ book.release_date }}
@@ -102,9 +102,7 @@ defineProps<{
                             />
                         </svg>
                     </div>
-                    <h3
-                        class="font-heading text-2xl font-bold text-muted-foreground"
-                    >
+                    <h3 class="text-2xl font-semibold text-muted-foreground">
                         More coming soon
                     </h3>
                     <p class="mt-3 max-w-[200px] text-muted-foreground">

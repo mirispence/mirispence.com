@@ -105,7 +105,7 @@ watch(selectedGallery, (value) => {
             >
                 <div>
                     <h1
-                        class="font-heading text-5xl font-black tracking-tight text-foreground"
+                        class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
                         Gallery
                     </h1>
@@ -117,7 +117,7 @@ watch(selectedGallery, (value) => {
 
                 <div class="w-full md:w-64">
                     <label
-                        class="mb-3 block text-xs font-bold tracking-widest text-muted-foreground uppercase"
+                        class="mb-2 block text-sm font-semibold text-muted-foreground"
                         >Filter by Gallery</label
                     >
                     <FormSelect v-model="selectedGallery">
@@ -267,7 +267,9 @@ watch(selectedGallery, (value) => {
                     <div
                         class="relative z-20 bg-scrim pt-4 pb-10 text-center backdrop-blur-sm"
                     >
-                        <h2 class="font-heading text-2xl font-bold text-white">
+                        <h2
+                            class="font-display text-2xl wrap-break-word text-white"
+                        >
                             {{ activeArtwork.title }}
                         </h2>
                         <Link

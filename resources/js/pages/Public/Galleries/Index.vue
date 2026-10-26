@@ -19,7 +19,7 @@ defineProps<{
         <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div class="mb-16 text-center">
                 <h1
-                    class="font-heading text-5xl font-black tracking-tight text-foreground"
+                    class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                 >
                     Collections
                 </h1>
@@ -46,7 +46,7 @@ defineProps<{
                         <!-- Placeholder -->
                         <div
                             v-else
-                            class="flex h-full items-center justify-center font-heading text-2xl text-muted-foreground italic"
+                            class="flex h-full items-center justify-center text-2xl text-muted-foreground italic"
                         >
                             {{ gallery.name }}
                         </div>
@@ -65,7 +65,7 @@ defineProps<{
                     </div>
                     <div class="flex flex-1 flex-col p-8">
                         <h3
-                            class="mb-3 font-heading text-2xl font-bold text-foreground transition-colors group-hover:text-primary"
+                            class="mb-3 text-2xl font-semibold text-foreground transition-colors group-hover:text-primary"
                         >
                             <Link :href="`/galleries/${gallery.slug}`">
                                 {{ gallery.name }}

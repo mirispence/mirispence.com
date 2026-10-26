@@ -61,7 +61,7 @@ defineProps<{
                 <div class="mt-16 px-4 sm:px-0 lg:mt-0">
                     <div class="mb-8 flex flex-col gap-4">
                         <h1
-                            class="font-heading text-5xl leading-tight font-black tracking-tight text-foreground"
+                            class="font-display text-4xl leading-tight tracking-tight wrap-break-word text-foreground sm:text-5xl"
                         >
                             {{ book.title }}
                         </h1>
@@ -69,12 +69,11 @@ defineProps<{
                             v-if="book.release_date"
                             class="flex items-center gap-2"
                         >
-                            <span
-                                class="text-xs font-black tracking-[0.2em] text-primary uppercase"
+                            <span class="text-sm font-semibold text-primary"
                                 >Released</span
                             >
                             <span
-                                class="text-sm font-bold text-muted-foreground"
+                                class="text-sm font-semibold text-muted-foreground"
                                 >{{ book.release_date }}</span
                             >
                         </div>
@@ -90,7 +89,7 @@ defineProps<{
                         <!-- Chapters -->
                         <div v-if="book.chapters && book.chapters.length">
                             <h2
-                                class="mb-6 font-heading text-2xl font-bold text-foreground"
+                                class="mb-6 font-display text-2xl text-foreground"
                             >
                                 Chapters
                             </h2>
@@ -107,13 +106,13 @@ defineProps<{
                                     >
                                         <div class="flex items-center gap-4">
                                             <p
-                                                class="font-bold text-foreground"
+                                                class="font-semibold text-foreground"
                                             >
                                                 {{ chapter.title }}
                                             </p>
                                             <span
                                                 v-if="chapter.is_sample"
-                                                class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-[10px] font-black tracking-widest text-primary uppercase"
+                                                class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-xs font-semibold text-primary"
                                                 >Sample</span
                                             >
                                         </div>
@@ -133,7 +132,7 @@ defineProps<{
                         <!-- External Links -->
                         <div v-if="book.external_links">
                             <h3
-                                class="mb-6 font-heading text-xl font-bold text-foreground"
+                                class="mb-6 text-xl font-semibold text-foreground"
                             >
                                 Available at
                             </h3>
@@ -146,7 +145,7 @@ defineProps<{
                                 >
                                     <Button
                                         variant="outline"
-                                        class="group h-12 px-8 font-bold"
+                                        class="group h-12 px-8 font-semibold"
                                     >
                                         {{ label }}
                                         <svg

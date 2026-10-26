@@ -73,7 +73,7 @@ onUnmounted(() => {
                                 <!-- Placeholder -->
                                 <div
                                     v-else
-                                    class="flex h-full items-center justify-center font-heading text-2xl text-muted-foreground italic"
+                                    class="flex h-full items-center justify-center text-2xl text-muted-foreground italic"
                                 >
                                     No Image available
                                 </div>
@@ -95,7 +95,7 @@ onUnmounted(() => {
                 <div class="mt-16 px-4 sm:px-0 lg:mt-0">
                     <div class="mb-8 flex flex-col gap-4">
                         <h1
-                            class="font-heading text-5xl leading-tight font-black tracking-tight text-foreground"
+                            class="font-display text-4xl leading-tight tracking-tight wrap-break-word text-foreground sm:text-5xl"
                         >
                             {{ artwork.title }}
                         </h1>
@@ -103,12 +103,11 @@ onUnmounted(() => {
                             v-if="artwork.created_on"
                             class="flex items-center gap-2"
                         >
-                            <span
-                                class="text-xs font-black tracking-[0.2em] text-primary uppercase"
+                            <span class="text-sm font-semibold text-primary"
                                 >Created</span
                             >
                             <span
-                                class="text-sm font-bold text-muted-foreground"
+                                class="text-sm font-semibold text-muted-foreground"
                                 >{{ artwork.created_on }}</span
                             >
                         </div>
@@ -127,7 +126,7 @@ onUnmounted(() => {
                         <!-- Tags -->
                         <div v-if="artwork.tags && artwork.tags.length">
                             <h2
-                                class="mb-4 text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                class="mb-4 text-sm font-semibold text-muted-foreground"
                             >
                                 Tags
                             </h2>
@@ -153,7 +152,7 @@ onUnmounted(() => {
                             <Link href="/contact?type=commission" class="block">
                                 <Button
                                     size="lg"
-                                    class="group h-16 w-full bg-primary text-xl font-bold"
+                                    class="group h-16 w-full bg-primary text-xl font-semibold"
                                 >
                                     Request a Commission
                                     <svg
@@ -274,7 +273,9 @@ onUnmounted(() => {
                 <div
                     class="relative z-20 w-full bg-scrim pt-4 pb-10 text-center backdrop-blur-sm"
                 >
-                    <h2 class="font-heading text-2xl font-bold text-white">
+                    <h2
+                        class="font-display text-2xl wrap-break-word text-white"
+                    >
                         {{ artwork.title }}
                     </h2>
                 </div>
