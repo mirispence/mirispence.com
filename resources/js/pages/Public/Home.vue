@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import {
+    index as artworkIndex,
+    show as artworkShow,
+} from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
@@ -7,12 +10,27 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-defineProps<{
-    heroArtworks: Array<any>;
+const props = defineProps<{
+    /** Newest unflagged featured artwork, or null when none is eligible (ADR-0004). */
+    heroArtwork: {
+        id: number;
+        title: string;
+        slug: string;
+        alt_text: string | null;
+        media_urls: any;
+    } | null;
     featuredArtworks: Array<any>;
     featuredBooks: Array<any>;
 }>();
+
+const heroImage = computed(
+    () =>
+        props.heroArtwork?.media_urls?.display ??
+        props.heroArtwork?.media_urls?.grid ??
+        null,
+);
 </script>
 
 <template>
@@ -43,65 +61,25 @@ defineProps<{
                             <CommissionCta />
                         </div>
                     </div>
-                    <div class="relative mt-16 lg:mt-0">
-                        <div class="relative grid grid-cols-2 gap-4">
-                            <div v-if="heroArtworks[0]" class="space-y-4">
-                                <div
-                                    class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-sm transition-transform hover:rotate-0"
-                                >
-                                    <img
-                                        fetchpriority="high"
-                                        v-if="heroArtworks[0].media_urls?.grid"
-                                        :src="
-                                            heroArtworks[0].media_urls.grid.src
-                                        "
-                                        :srcset="
-                                            heroArtworks[0].media_urls.grid
-                                                .srcset
-                                        "
-                                        :alt="
-                                            heroArtworks[0].alt_text ||
-                                            heroArtworks[0].title
-                                        "
-                                        class="h-full w-full object-cover"
-                                        sizes="(max-width: 1024px) 50vw, 400px"
-                                    />
-                                    <!-- Invisible overlay to discourage casual image saving -->
-                                    <div
-                                        class="absolute inset-0 z-[5] cursor-pointer"
-                                        @click="$emit('click-image')"
-                                    ></div>
-                                </div>
-                            </div>
-                            <div v-if="heroArtworks[1]" class="space-y-4 pt-12">
-                                <div
-                                    class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-sm transition-transform hover:rotate-0"
-                                >
-                                    <img
-                                        fetchpriority="high"
-                                        v-if="heroArtworks[1].media_urls?.grid"
-                                        :src="
-                                            heroArtworks[1].media_urls.grid.src
-                                        "
-                                        :srcset="
-                                            heroArtworks[1].media_urls.grid
-                                                .srcset
-                                        "
-                                        :alt="
-                                            heroArtworks[1].alt_text ||
-                                            heroArtworks[1].title
-                                        "
-                                        class="h-full w-full object-cover"
-                                        sizes="(max-width: 1024px) 50vw, 400px"
-                                    />
-                                    <!-- Invisible overlay to discourage casual image saving -->
-                                    <div
-                                        class="absolute inset-0 z-[5] cursor-pointer"
-                                        @click="$emit('click-image')"
-                                    ></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div
+                        v-if="heroImage"
+                        class="mt-16 flex justify-center lg:mt-0 lg:justify-end"
+                    >
+                        <Link
+                            :href="artworkShow.url(heroArtwork!.slug)"
+                            class="block"
+                        >
+                            <img
+                                fetchpriority="high"
+                                :src="heroImage.src"
+                                :srcset="heroImage.srcset"
+                                :alt="
+                                    heroArtwork!.alt_text || heroArtwork!.title
+                                "
+                                class="max-h-[70vh] w-auto max-w-full object-contain"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>
