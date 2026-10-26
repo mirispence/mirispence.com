@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -132,7 +134,11 @@ onUnmounted(() => {
                                 <Link
                                     v-for="tag in artwork.tags"
                                     :key="tag.id"
-                                    :href="`/art?tag=${tag.slug}`"
+                                    :href="
+                                        artworkIndex.url({
+                                            query: { tag: tag.slug },
+                                        })
+                                    "
                                 >
                                     <Button
                                         variant="outline"
@@ -143,6 +149,30 @@ onUnmounted(() => {
                                     </Button>
                                 </Link>
                             </div>
+                        </div>
+
+                        <!-- Galleries this artwork belongs to (published only) -->
+                        <div
+                            v-if="artwork.galleries && artwork.galleries.length"
+                        >
+                            <h2
+                                class="mb-4 text-sm font-semibold text-muted-foreground"
+                            >
+                                In Galleries
+                            </h2>
+                            <ul class="flex flex-wrap gap-x-6 gap-y-2">
+                                <li
+                                    v-for="gallery in artwork.galleries"
+                                    :key="gallery.id"
+                                >
+                                    <Link
+                                        :href="galleryShow.url(gallery.slug)"
+                                        class="font-semibold text-primary underline-offset-4 hover:underline"
+                                    >
+                                        {{ gallery.name }}
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
 
                         <!-- CTA -->
@@ -178,7 +208,7 @@ onUnmounted(() => {
                     </div>
 
                     <div class="mt-16 border-t border-border pt-12">
-                        <Link href="/art">
+                        <Link :href="artworkIndex.url()">
                             <Button
                                 variant="ghost"
                                 class="text-muted-foreground hover:text-primary"
@@ -196,7 +226,7 @@ onUnmounted(() => {
                                         d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                     />
                                 </svg>
-                                Back to Gallery
+                                Back to Artwork
                             </Button>
                         </Link>
                     </div>

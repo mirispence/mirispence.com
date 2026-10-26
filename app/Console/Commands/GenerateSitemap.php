@@ -32,15 +32,15 @@ class GenerateSitemap extends Command
     {
         $sitemap = Sitemap::create()
             ->add(Url::create('/')->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
-            ->add(Url::create('/art')->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
+            ->add(Url::create(route('art.index'))->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
+            ->add(Url::create(route('artwork.index'))->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
             ->add(Url::create('/books')->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
-            ->add(Url::create('/galleries')->setPriority(0.8)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
             ->add(Url::create('/contact')->setPriority(0.5)->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
 
         // Add all published artworks
         Artwork::published()->get()->each(function (Artwork $artwork) use ($sitemap) {
             $sitemap->add(
-                Url::create(route('art.show', $artwork))
+                Url::create(route('artwork.show', $artwork))
                     ->setPriority(0.8)
                     ->setLastModificationDate($artwork->updated_at)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -60,7 +60,7 @@ class GenerateSitemap extends Command
         // Add all published galleries
         Gallery::published()->get()->each(function (Gallery $gallery) use ($sitemap) {
             $sitemap->add(
-                Url::create(route('galleries.show', $gallery))
+                Url::create(route('art.gallery', $gallery))
                     ->setPriority(0.7)
                     ->setLastModificationDate($gallery->updated_at)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)

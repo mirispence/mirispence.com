@@ -26,13 +26,13 @@ test('home page renders with featured items', function () {
         );
 });
 
-test('art index page renders with pagination when more than 6 artworks exist', function () {
+test('artwork index page renders with pagination when more than 6 artworks exist', function () {
     Artwork::factory()->count(7)->create(['publish_status' => 'published']);
 
-    $this->get(route('art.index'))
+    $this->get(route('artwork.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Public/Art/Index')
+            ->component('Public/Artwork/Index')
             ->has('artworks.data', 6)
             ->has('artworks.links') // Root links object (first, last, etc)
             ->has('artworks.meta') // Meta object containing links array
@@ -40,21 +40,21 @@ test('art index page renders with pagination when more than 6 artworks exist', f
         );
 });
 
-test('art show page renders artwork', function () {
+test('artwork show page renders artwork', function () {
     $artwork = Artwork::factory()->create(['publish_status' => 'published']);
 
-    $this->get(route('art.show', $artwork))
+    $this->get(route('artwork.show', $artwork))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Public/Art/Show')
+            ->component('Public/Artwork/Show')
             ->where('artwork.id', $artwork->id)
         );
 });
 
-test('galleries index page renders with pagination', function () {
+test('art index (gallery list) renders with pagination', function () {
     Gallery::factory()->count(7)->create(['publish_status' => 'published']);
 
-    $this->get(route('galleries.index'))
+    $this->get(route('art.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Galleries/Index')
@@ -64,7 +64,7 @@ test('galleries index page renders with pagination', function () {
         );
 });
 
-test('galleries index renders each gallery chosen cover from public media urls only', function () {
+test('art index renders each gallery chosen cover from public media urls only', function () {
     Storage::fake('media_private');
     Storage::fake('public');
     Storage::fake('r2_private');
@@ -78,7 +78,7 @@ test('galleries index renders each gallery chosen cover from public media urls o
     $gallery->artworks()->attach($cover->id);
     $gallery->update(['cover_artwork_id' => $cover->id]);
 
-    $response = $this->get(route('galleries.index'))->assertOk();
+    $response = $this->get(route('art.index'))->assertOk();
 
     $response->assertInertia(fn (Assert $page) => $page
         ->component('Public/Galleries/Index')
@@ -93,23 +93,23 @@ test('galleries index renders each gallery chosen cover from public media urls o
         ->and($galleries)->not->toContain(json_encode($originalUrl));
 });
 
-test('galleries index hides a cover artwork that is not published', function () {
+test('art index hides a cover artwork that is not published', function () {
     $draft = Artwork::factory()->create(['publish_status' => 'draft']);
     $gallery = Gallery::factory()->create(['publish_status' => 'published']);
     $gallery->artworks()->attach($draft->id);
     $gallery->update(['cover_artwork_id' => $draft->id]);
 
-    $this->get(route('galleries.index'))
+    $this->get(route('art.index'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->where('galleries.data.0.cover_urls', [])
         );
 });
 
-test('galleries show page renders gallery with paginated artworks prop', function () {
+test('gallery page renders gallery with paginated artworks prop', function () {
     $gallery = Gallery::factory()->create(['publish_status' => 'published']);
 
-    $this->get(route('galleries.show', $gallery))
+    $this->get(route('art.gallery', $gallery))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Galleries/Show')
@@ -120,12 +120,12 @@ test('galleries show page renders gallery with paginated artworks prop', functio
         );
 });
 
-test('galleries show page paginates artworks at 6 per page', function () {
+test('gallery page paginates artworks at 6 per page', function () {
     $gallery = Gallery::factory()->create(['publish_status' => 'published']);
     $artworks = Artwork::factory()->count(8)->create(['publish_status' => 'published']);
     $gallery->artworks()->attach($artworks->pluck('id'));
 
-    $this->get(route('galleries.show', $gallery))
+    $this->get(route('art.gallery', $gallery))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Public/Galleries/Show')
@@ -242,7 +242,7 @@ test('books show page has no hero when the gallery has no cover', function () {
         ->assertInertia(fn (Assert $page) => $page->where('book.cover', null));
 });
 
-test('books show page and galleries index ignore a gallery cover that is no longer a member', function () {
+test('books show page and art index ignore a gallery cover that is no longer a member', function () {
     Storage::fake('media_private');
     Storage::fake('public');
     Storage::fake('r2_private');
@@ -260,7 +260,7 @@ test('books show page and galleries index ignore a gallery cover that is no long
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page->where('book.cover', null));
 
-    $this->get(route('galleries.index'))
+    $this->get(route('art.index'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page->where('galleries.data.0.cover_urls', []));
 });

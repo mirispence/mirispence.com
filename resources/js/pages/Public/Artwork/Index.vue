@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import {
+    index as artworkIndex,
+    show as artworkShow,
+} from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
-import FormSelect from '@/components/FormSelect.vue';
 import NsfwGate from '@/components/NsfwGate.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps<{
     artworks: {
@@ -15,12 +19,10 @@ const props = defineProps<{
     };
     filters: {
         tag?: string;
-        gallery?: string;
     };
-    galleries: Array<any>;
+    /** The tag named by `?tag=`, or null when there is none or it is unknown. */
+    activeTag: { name: string; slug: string } | null;
 }>();
-
-const selectedGallery = ref(props.filters.gallery || '');
 
 const activeLightboxIndex = ref<number | null>(null);
 const isZoomed = ref(false);
@@ -80,14 +82,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
 });
-
-watch(selectedGallery, (value) => {
-    router.get(
-        '/art',
-        { gallery: value },
-        { preserveState: true, replace: true },
-    );
-});
 </script>
 
 <template>
@@ -100,30 +94,36 @@ watch(selectedGallery, (value) => {
                     <h1
                         class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
-                        Gallery
+                        Artwork
                     </h1>
                     <p class="mt-4 text-lg text-muted-foreground">
-                        A collection of my recent illustrations and character
-                        art.
+                        All of my recent illustrations and character art.
+                    </p>
+                    <p
+                        v-if="filters.tag"
+                        class="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground"
+                    >
+                        <span>
+                            Tagged
+                            <span class="font-semibold text-foreground">{{
+                                activeTag?.name ?? filters.tag
+                            }}</span>
+                        </span>
+                        <Link
+                            :href="artworkIndex.url()"
+                            class="font-semibold text-primary underline-offset-4 hover:underline"
+                        >
+                            Clear filter
+                        </Link>
                     </p>
                 </div>
 
-                <div class="w-full md:w-64">
-                    <label
-                        class="mb-2 block text-sm font-semibold text-muted-foreground"
-                        >Filter by Gallery</label
-                    >
-                    <FormSelect v-model="selectedGallery">
-                        <option value="">All Collections</option>
-                        <option
-                            v-for="gallery in galleries"
-                            :key="gallery.id"
-                            :value="gallery.slug"
-                        >
-                            {{ gallery.name }}
-                        </option>
-                    </FormSelect>
-                </div>
+                <Link
+                    :href="galleriesIndex.url()"
+                    class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
+                >
+                    Browse Galleries &rarr;
+                </Link>
             </div>
 
             <div
@@ -136,6 +136,27 @@ watch(selectedGallery, (value) => {
                     :reload-only="['artworks']"
                     @click-image="openLightbox(index)"
                 />
+            </div>
+
+            <div
+                v-if="artworks.data.length === 0"
+                class="mt-16 rounded-lg border border-border bg-card py-24 text-center"
+            >
+                <h2 class="text-2xl font-semibold text-muted-foreground">
+                    No artwork found
+                </h2>
+                <p class="mt-2 text-muted-foreground">
+                    <template v-if="filters.tag">
+                        Nothing is tagged with that yet.
+                        <Link
+                            :href="artworkIndex.url()"
+                            class="font-semibold text-primary underline-offset-4 hover:underline"
+                        >
+                            See all artwork
+                        </Link>
+                    </template>
+                    <template v-else>Check back soon for new work.</template>
+                </p>
             </div>
 
             <PublicPagination :links="artworks.meta.links" />
@@ -277,7 +298,7 @@ watch(selectedGallery, (value) => {
                             {{ activeArtwork.title }}
                         </h2>
                         <Link
-                            :href="`/art/${activeArtwork.id}`"
+                            :href="artworkShow.url(activeArtwork.slug)"
                             class="mt-2 inline-block text-stone-300 hover:text-white focus-visible:outline-white"
                         >
                             View Details &rarr;

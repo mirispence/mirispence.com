@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ defineProps<{
                 </div>
 
                 <div class="mt-8 md:mt-0">
-                    <Link href="/art">
+                    <Link :href="galleriesIndex.url()">
                         <Button
                             variant="ghost"
                             class="text-muted-foreground hover:text-primary"
@@ -53,7 +54,7 @@ defineProps<{
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                 />
                             </svg>
-                            Back to Gallery
+                            Back to Galleries
                         </Button>
                     </Link>
                 </div>
@@ -94,7 +95,7 @@ defineProps<{
                     No artworks yet
                 </h3>
                 <p class="mt-2 text-muted-foreground">
-                    Check back soon for new additions to this collection.
+                    Check back soon for new additions to this gallery.
                 </p>
             </div>
 

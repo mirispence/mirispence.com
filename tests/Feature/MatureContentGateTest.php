@@ -64,7 +64,7 @@ function gateFind(array $payload, int $id): array
 test('flagged artwork props on the art index carry no media urls before consent', function () {
     $flagged = gateFlaggedArtwork();
 
-    $props = gateProps($this->get(route('art.index')));
+    $props = gateProps($this->get(route('artwork.index')));
 
     assertNoMediaUrlsFor($props, $flagged);
     $serialized = gateFind($props, $flagged->id);
@@ -91,9 +91,9 @@ test('flagged artwork carries no media urls on gallery show, home and detail bef
     $gallery = gateGalleryCoveredBy($flagged);
 
     foreach ([
-        route('galleries.show', $gallery),
+        route('art.gallery', $gallery),
         route('home'),
-        route('art.show', $flagged),
+        route('artwork.show', $flagged),
     ] as $url) {
         $props = gateProps($this->get($url));
 
@@ -111,7 +111,7 @@ test('a gallery whose cover is flagged shows no cover urls before consent', func
     $flagged = gateFlaggedArtwork();
     gateGalleryCoveredBy($flagged);
 
-    $props = gateProps($this->get(route('galleries.index')));
+    $props = gateProps($this->get(route('art.index')));
 
     assertNoMediaUrlsFor($props, $flagged);
     expect($props['galleries']['data'][0]['cover_urls'])->toBe([]);
@@ -121,11 +121,11 @@ test('revealing one flagged artwork exposes only that artwork', function () {
     $revealed = gateFlaggedArtwork();
     $other = gateFlaggedArtwork();
 
-    $this->from(route('art.index'))
+    $this->from(route('artwork.index'))
         ->post(route('mature-consent.store'), ['artwork_id' => $revealed->id])
-        ->assertRedirect(route('art.index'));
+        ->assertRedirect(route('artwork.index'));
 
-    $props = gateProps($this->get(route('art.index')));
+    $props = gateProps($this->get(route('artwork.index')));
 
     expect(gateFind($props, $revealed->id))
         ->media_withheld->toBeFalse()
@@ -138,12 +138,12 @@ test('revealing on the detail page reloads only the artwork prop, now with its i
     $flagged = gateFlaggedArtwork();
     $version = app(HandleInertiaRequests::class)->version(request());
 
-    $response = $this->from(route('art.show', $flagged))
+    $response = $this->from(route('artwork.show', $flagged))
         ->followingRedirects()
         ->withHeaders([
             'X-Inertia' => 'true',
             'X-Inertia-Version' => (string) $version,
-            'X-Inertia-Partial-Component' => 'Public/Art/Show',
+            'X-Inertia-Partial-Component' => 'Public/Artwork/Show',
             'X-Inertia-Partial-Data' => 'artwork',
         ])
         ->post(route('mature-consent.store'), ['artwork_id' => $flagged->id])
@@ -162,11 +162,11 @@ test('show all exposes every flagged artwork and gallery cover for the session',
 
     $this->post(route('mature-consent.store'), ['all' => true])->assertRedirect();
 
-    $props = gateProps($this->get(route('art.index')));
+    $props = gateProps($this->get(route('artwork.index')));
     expect(gateFind($props, $first->id)['media_urls'])->toBe($first->mediaUrlBuilder()->public());
     expect(gateFind($props, $second->id)['media_urls'])->toBe($second->mediaUrlBuilder()->public());
 
-    $galleries = gateProps($this->get(route('galleries.index')));
+    $galleries = gateProps($this->get(route('art.index')));
     expect($galleries['galleries']['data'][0]['cover_urls'])->toBe($second->mediaUrlBuilder()->public());
 });
 
@@ -210,13 +210,13 @@ test('seo for a flagged artwork, and for a gallery with a flagged cover, uses th
     // Consent must not change SEO output.
     $this->post(route('mature-consent.store'), ['all' => true]);
 
-    $artworkSeo = gateProps($this->get(route('art.show', $flagged)))['seo'];
+    $artworkSeo = gateProps($this->get(route('artwork.show', $flagged)))['seo'];
     expect($artworkSeo['og']['image'])->toBe($fallback)
         ->and($artworkSeo['twitter']['image'])->toBe($fallback)
         ->and($artworkSeo['jsonld']['image'])->toBe($fallback);
     assertNoMediaUrlsFor($artworkSeo, $flagged);
 
-    $gallerySeo = gateProps($this->get(route('galleries.show', $gallery)))['seo'];
+    $gallerySeo = gateProps($this->get(route('art.gallery', $gallery)))['seo'];
     expect($gallerySeo['og']['image'])->toBe($fallback);
     assertNoMediaUrlsFor($gallerySeo, $flagged);
 
@@ -242,12 +242,12 @@ test('unflagged artwork keeps its media urls without any consent', function () {
 
     expect($urls)->not->toBe([]);
 
-    foreach ([route('art.index'), route('art.show', $artwork), route('galleries.show', $gallery), route('home')] as $url) {
+    foreach ([route('artwork.index'), route('artwork.show', $artwork), route('art.gallery', $gallery), route('home')] as $url) {
         expect(gateFind(gateProps($this->get($url)), $artwork->id))
             ->media_withheld->toBeFalse()
             ->media_urls->toBe($urls);
     }
 
-    expect(gateProps($this->get(route('galleries.index')))['galleries']['data'][0]['cover_urls'])->toBe($urls);
-    expect(gateProps($this->get(route('art.show', $artwork)))['seo']['og']['image'])->toBe($urls['display']['src']);
+    expect(gateProps($this->get(route('art.index')))['galleries']['data'][0]['cover_urls'])->toBe($urls);
+    expect(gateProps($this->get(route('artwork.show', $artwork)))['seo']['og']['image'])->toBe($urls['display']['src']);
 });

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { show as artworkShow } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -59,7 +60,7 @@ defineEmits<{
                     <div
                         class="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-gradient-to-t from-black/60 to-transparent p-6 transition-transform duration-300 group-hover:translate-y-0 focus-within:translate-y-0"
                     >
-                        <Link :href="`/art/${artwork.slug}`">
+                        <Link :href="artworkShow.url(artwork.slug)">
                             <Button size="sm" class="w-full">
                                 View Details
                             </Button>
@@ -72,7 +73,7 @@ defineEmits<{
             <h3
                 class="line-clamp-1 text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
             >
-                <Link :href="`/art/${artwork.slug}`">
+                <Link :href="artworkShow.url(artwork.slug)">
                     {{ artwork.title }}
                 </Link>
             </h3>
