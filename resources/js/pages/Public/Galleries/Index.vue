@@ -2,8 +2,6 @@
 import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import PublicPagination from '@/components/PublicPagination.vue';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -37,53 +35,44 @@ defineProps<{
             </div>
 
             <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
-                <Card
+                <Link
                     v-for="gallery in galleries.data"
                     :key="gallery.id"
-                    class="group flex flex-col overflow-hidden border-none bg-card p-0"
+                    :href="galleryShow.url(gallery.slug)"
+                    :aria-labelledby="`gallery-${gallery.id}-name`"
+                    :aria-describedby="`gallery-${gallery.id}-count`"
+                    class="group block"
                 >
-                    <div class="relative aspect-[4/5] overflow-hidden bg-muted">
+                    <div
+                        class="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted"
+                    >
                         <img
                             v-if="gallery.cover_urls?.grid?.src"
                             :src="gallery.cover_urls.grid.src"
                             :srcset="gallery.cover_urls.grid.srcset"
                             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                            :alt="gallery.name"
-                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            alt=""
+                            class="h-full w-full object-cover"
                         />
-                        <!-- Placeholder -->
-                        <div
-                            v-else
-                            class="flex h-full items-center justify-center text-2xl text-muted-foreground italic"
-                        >
-                            {{ gallery.name }}
-                        </div>
-                        <div
-                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100"
-                        >
-                            <Link
-                                :href="galleryShow.url(gallery.slug)"
-                                class="w-full"
-                            >
-                                <Button class="w-full">Explore Gallery</Button>
-                            </Link>
-                        </div>
                     </div>
-                    <div class="flex flex-1 flex-col p-8">
-                        <h3
-                            class="mb-3 text-2xl font-semibold text-foreground transition-colors group-hover:text-primary"
-                        >
-                            <Link :href="galleryShow.url(gallery.slug)">
-                                {{ gallery.name }}
-                            </Link>
-                        </h3>
-                        <div
-                            class="prose dark:prose-invert prose-sm line-clamp-2 leading-relaxed text-muted-foreground"
-                            v-if="gallery.description_html"
-                            v-html="gallery.description_html"
-                        ></div>
-                    </div>
-                </Card>
+                    <h2
+                        :id="`gallery-${gallery.id}-name`"
+                        class="mt-3 text-xl font-semibold text-foreground underline-offset-4 group-hover:text-primary group-hover:underline"
+                    >
+                        {{ gallery.name }}
+                    </h2>
+                    <p
+                        :id="`gallery-${gallery.id}-count`"
+                        class="mt-0.5 text-sm text-muted-foreground"
+                    >
+                        {{ gallery.published_artworks_count }}
+                        {{
+                            gallery.published_artworks_count === 1
+                                ? 'artwork'
+                                : 'artworks'
+                        }}
+                    </p>
+                </Link>
             </div>
 
             <PublicPagination :links="galleries.meta.links" />

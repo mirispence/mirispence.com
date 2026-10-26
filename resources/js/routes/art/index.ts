@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
 export const gallery = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ gallery.definition = {
 
 /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
 gallery.url = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions) => {
@@ -127,7 +127,7 @@ gallery.url = (args: { gallery: string | { slug: string } } | [gallery: string |
 
 /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
 gallery.get = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -136,7 +136,7 @@ gallery.get = (args: { gallery: string | { slug: string } } | [gallery: string |
 })
 /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
 gallery.head = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -146,7 +146,7 @@ gallery.head = (args: { gallery: string | { slug: string } } | [gallery: string 
 
     /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
     const galleryForm = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -156,7 +156,7 @@ gallery.head = (args: { gallery: string | { slug: string } } | [gallery: string 
 
             /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
         galleryForm.get = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -165,7 +165,7 @@ gallery.head = (args: { gallery: string | { slug: string } } | [gallery: string 
         })
             /**
 * @see \App\Http\Controllers\Public\GalleryController::gallery
- * @see app/Http/Controllers/Public/GalleryController.php:26
+ * @see app/Http/Controllers/Public/GalleryController.php:27
  * @route '/art/{gallery}'
  */
         galleryForm.head = (args: { gallery: string | { slug: string } } | [gallery: string | { slug: string } ] | string | { slug: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
