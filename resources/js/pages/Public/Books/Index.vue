@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -16,10 +17,10 @@ defineProps<{
                 <h1
                     class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                 >
-                    Novels & Stories
+                    {{ copy.books.heading }}
                 </h1>
                 <p class="mt-4 text-xl text-muted-foreground">
-                    Exploring worlds through words.
+                    {{ copy.books.intro }}
                 </p>
             </div>
 
@@ -103,10 +104,10 @@ defineProps<{
                         </svg>
                     </div>
                     <h3 class="text-2xl font-semibold text-muted-foreground">
-                        More coming soon
+                        {{ copy.books.comingSoonHeading }}
                     </h3>
                     <p class="mt-3 max-w-[200px] text-muted-foreground">
-                        New stories and illustrations are always in development.
+                        {{ copy.books.comingSoonBody }}
                     </p>
                 </Card>
             </div>

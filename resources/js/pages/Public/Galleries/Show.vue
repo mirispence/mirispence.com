@@ -4,6 +4,7 @@ import ArtCard from '@/components/ArtCard.vue';
 import ArtLightbox from '@/components/ArtLightbox.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -97,10 +98,10 @@ const lightboxIndex = ref<number | null>(null);
                     </svg>
                 </div>
                 <h3 class="text-2xl font-semibold text-muted-foreground">
-                    No artworks yet
+                    {{ copy.gallery.emptyHeading }}
                 </h3>
                 <p class="mt-2 text-muted-foreground">
-                    Check back soon for new additions to this gallery.
+                    {{ copy.gallery.emptyBody }}
                 </p>
             </div>
 

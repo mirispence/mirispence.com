@@ -38,7 +38,7 @@ class SeoBuilderTest extends TestCase
 
         $payload = SeoBuilder::forArtwork($artwork);
 
-        $this->assertEquals("Test Painting - Art - " . config('app.name'), $payload->title);
+        $this->assertEquals("Test Painting - Artwork - " . config('app.name'), $payload->title);
         $this->assertEquals("This is a test description.", $payload->description);
         $this->assertEquals('article', $payload->og['type']);
         $this->assertNotNull($payload->jsonld);

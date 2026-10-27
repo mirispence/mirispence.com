@@ -8,6 +8,7 @@ import ArtCard from '@/components/ArtCard.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -43,14 +44,16 @@ const heroImage = computed(
                         <h1
                             class="font-display text-5xl tracking-tight text-foreground sm:text-7xl"
                         >
-                            Art & <span class="text-primary">Stories</span>
+                            {{ copy.home.heroTitleLead }}
+                            <span class="text-primary">{{
+                                copy.home.heroTitleAccent
+                            }}</span>
                         </h1>
                         <p
                             class="mt-8 max-w-xl text-xl leading-relaxed text-muted-foreground"
                         >
-                            The art and books of Miri Spence.<br />
-                            Illustration, storytelling, and personal creative
-                            work.
+                            {{ copy.home.heroIntro[0] }}<br />
+                            {{ copy.home.heroIntro[1] }}
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
                             <Link :href="galleriesIndex.url()">
@@ -93,7 +96,7 @@ const heroImage = computed(
                         <h2
                             class="font-display text-3xl tracking-tight text-foreground sm:text-4xl"
                         >
-                            Featured Art
+                            {{ copy.home.featuredArtHeading }}
                         </h2>
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>
@@ -125,14 +128,12 @@ const heroImage = computed(
                     <h2
                         class="font-display text-3xl text-foreground sm:text-4xl"
                     >
-                        Have a vision in mind?
+                        {{ copy.home.commissionHeading }}
                     </h2>
                     <p
                         class="mt-6 text-lg leading-relaxed text-muted-foreground"
                     >
-                        I am currently available for custom art commissions and
-                        narrative collaborations. Let's bring your ideas to
-                        life.
+                        {{ copy.home.commissionBlurb }}
                     </p>
                     <div class="mt-10">
                         <CommissionCta />
@@ -146,7 +147,7 @@ const heroImage = computed(
                         <h2
                             class="font-display text-3xl tracking-tight text-foreground sm:text-4xl"
                         >
-                            Featured Books
+                            {{ copy.home.featuredBooksHeading }}
                         </h2>
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>

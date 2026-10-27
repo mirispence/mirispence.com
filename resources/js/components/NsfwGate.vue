@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { useMatureConsent } from '@/composables/useMatureConsent';
+import { copy } from '@/content/copy';
 import { computed, useId } from 'vue';
 
 const props = withDefaults(
@@ -45,10 +46,10 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
                     v-if="variant === 'card'"
                     class="mb-4 inline-block rounded-full bg-foreground px-4 py-1 text-xs font-semibold text-background"
                 >
-                    Sensitive Content
+                    {{ copy.nsfwGate.heading }}
                 </span>
                 <h3 v-else class="mb-2 text-xl font-semibold text-foreground">
-                    Sensitive Content
+                    {{ copy.nsfwGate.heading }}
                 </h3>
 
                 <p
@@ -59,7 +60,7 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
                             : 'mb-6 text-sm text-muted-foreground'
                     "
                 >
-                    This artwork may not be suitable for all audiences.
+                    {{ copy.nsfwGate.body }}
                 </p>
 
                 <Button
@@ -67,7 +68,7 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
                     class="px-6 font-semibold"
                     @click.stop="reveal"
                 >
-                    Reveal Artwork
+                    {{ copy.nsfwGate.revealButton }}
                 </Button>
 
                 <div
@@ -87,7 +88,7 @@ const revealAll = () => consent.revealAll(props.reloadOnly);
                         :for="checkboxId"
                         class="text-sm font-medium text-foreground"
                     >
-                        Show all NSFW artwork this session
+                        {{ copy.nsfwGate.revealAllLabel }}
                     </label>
                 </div>
             </div>

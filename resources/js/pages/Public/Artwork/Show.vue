@@ -5,6 +5,7 @@ import ArtLightbox from '@/components/ArtLightbox.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
 import NsfwGate from '@/components/NsfwGate.vue';
 import { Button } from '@/components/ui/button';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
@@ -151,7 +152,7 @@ const galleries = computed<{ id: number; name: string; slug: string }[]>(
                 <div class="mt-12 border-t border-border pt-8">
                     <CommissionCta />
                     <p class="mt-4 text-sm text-muted-foreground italic">
-                        Loved this style? Send a request to work together!
+                        {{ copy.artwork.commissionBlurb }}
                     </p>
                 </div>
 

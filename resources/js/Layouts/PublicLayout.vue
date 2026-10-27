@@ -13,6 +13,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
+import { copy } from '@/content/copy';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { Menu } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
@@ -163,7 +164,7 @@ onUnmounted(() => removeStartListener?.());
                         <span
                             class="font-display text-2xl tracking-tight text-foreground transition-all duration-300 group-hover:text-primary"
                         >
-                            Miri Spence
+                            {{ copy.site.name }}
                         </span>
                     </Link>
 
@@ -245,7 +246,7 @@ onUnmounted(() => removeStartListener?.());
                     class="flex flex-col items-center justify-between gap-6 md:flex-row"
                 >
                     <p class="font-display text-lg text-foreground">
-                        Miri Spence
+                        {{ copy.site.name }}
                     </p>
                     <div class="flex items-center gap-6">
                         <a
@@ -290,8 +291,8 @@ onUnmounted(() => removeStartListener?.());
                     </div>
 
                     <p class="text-sm text-muted-foreground">
-                        &copy; {{ new Date().getFullYear() }} Miri Spence. All
-                        rights reserved.
+                        &copy; {{ new Date().getFullYear() }}
+                        {{ copy.footer.copyright }}
                     </p>
                 </div>
             </div>
