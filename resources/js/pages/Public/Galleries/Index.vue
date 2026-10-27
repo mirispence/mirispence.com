@@ -31,7 +31,7 @@ defineProps<{
                     :href="artworkIndex.url()"
                     class="mt-6 inline-block text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                 >
-                    View all artwork &rarr;
+                    {{ copy.links.viewAllArtwork }}
                 </Link>
             </div>
 

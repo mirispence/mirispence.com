@@ -52,7 +52,9 @@ defineProps<{
                                 :href="bookShow.url(book.slug)"
                                 class="w-full"
                             >
-                                <Button class="w-full">Read More</Button>
+                                <Button class="w-full">{{
+                                    copy.links.readMore
+                                }}</Button>
                             </Link>
                         </div>
                     </div>

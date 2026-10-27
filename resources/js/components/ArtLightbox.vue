@@ -2,6 +2,7 @@
 import { show as artworkShow } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import GatedArtworkImage from '@/components/GatedArtworkImage.vue';
 import { Dialog, DialogClose } from '@/components/ui/dialog';
+import { copy } from '@/content/copy';
 import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
@@ -192,7 +193,7 @@ const iconButton =
                         :href="artworkShow.url(active.slug)"
                         class="mt-2 inline-block font-semibold text-stone-300 underline-offset-4 hover:text-white hover:underline focus-visible:outline-white"
                     >
-                        View details &rarr;
+                        {{ copy.links.viewDetails }}
                     </Link>
                 </div>
             </DialogContent>

@@ -56,9 +56,9 @@ const heroImage = computed(
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
                             <Link :href="galleriesIndex.url()">
-                                <Button size="lg" class="bg-primary px-8"
-                                    >View Galleries</Button
-                                >
+                                <Button size="lg" class="bg-primary px-8">{{
+                                    copy.links.viewGalleries
+                                }}</Button>
                             </Link>
                             <CommissionCta />
                         </div>
@@ -103,7 +103,7 @@ const heroImage = computed(
                         :href="artworkIndex.url()"
                         class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        View all artwork →
+                        {{ copy.links.viewAllArtwork }}
                     </Link>
                 </div>
 
@@ -154,7 +154,7 @@ const heroImage = computed(
                         :href="booksIndex.url()"
                         class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        View All Books →
+                        {{ copy.links.viewAllBooks }}
                     </Link>
                 </div>
 

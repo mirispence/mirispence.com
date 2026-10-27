@@ -66,7 +66,7 @@ const lightboxIndex = ref<number | null>(null);
                     :href="galleriesIndex.url()"
                     class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                 >
-                    Browse Galleries &rarr;
+                    {{ copy.links.browseGalleries }}
                 </Link>
             </div>
 
@@ -96,7 +96,7 @@ const lightboxIndex = ref<number | null>(null);
                             :href="artworkIndex.url()"
                             class="font-semibold text-primary underline-offset-4 hover:underline"
                         >
-                            See all artwork
+                            {{ copy.links.seeAllArtwork }}
                         </Link>
                     </template>
                     <template v-else>{{
