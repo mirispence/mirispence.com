@@ -1,9 +1,71 @@
 <script setup lang="ts">
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import { index as booksIndex } from '@/actions/App/Http/Controllers/Public/BookController';
+import { create as contactCreate } from '@/actions/App/Http/Controllers/Public/ContactController';
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
+import { index as homeIndex } from '@/actions/App/Http/Controllers/Public/HomeController';
+import CommissionCta from '@/components/CommissionCta.vue';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
+import { copy } from '@/content/copy';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { Menu } from 'lucide-vue-next';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const page = usePage();
 const seoData = computed(() => (page.props as any).seo);
+
+// TODO(#45): replace with the shared `books` feature flag once #45 lands.
+const showBooks = true;
+
+type NavItem = { label: string; href: string; prefixes: string[] };
+
+const navItems = computed<NavItem[]>(() =>
+    [
+        {
+            label: 'Art',
+            href: galleriesIndex.url(),
+            prefixes: [galleriesIndex.url(), artworkIndex.url()],
+        },
+        showBooks
+            ? {
+                  label: 'Books',
+                  href: booksIndex.url(),
+                  prefixes: [booksIndex.url()],
+              }
+            : null,
+        {
+            label: 'Contact',
+            href: contactCreate.url(),
+            prefixes: [contactCreate.url()],
+        },
+    ].filter((item): item is NavItem => item !== null),
+);
+
+const matchesPrefix = (url: string, prefix: string) =>
+    url === prefix ||
+    url.startsWith(`${prefix}/`) ||
+    url.startsWith(`${prefix}?`);
+
+const isActive = (item: NavItem) =>
+    item.prefixes.some((prefix) => matchesPrefix(page.url, prefix));
+
+const menuOpen = ref(false);
+
+// Close the mobile menu on any navigation, including links to the current page.
+let removeStartListener: (() => void) | undefined;
+onMounted(() => {
+    removeStartListener = router.on('start', () => {
+        menuOpen.value = false;
+    });
+});
+onUnmounted(() => removeStartListener?.());
 </script>
 
 <template>
@@ -88,65 +150,88 @@ const seoData = computed(() => (page.props as any).seo);
         <!-- eslint-enable vue/no-v-text-v-html-on-component -->
     </Head>
     <div
-        class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-accent/20 selection:text-accent"
+        class="bg-site-gradient min-h-screen font-sans text-foreground antialiased selection:bg-primary selection:text-primary-foreground"
     >
         <header class="glass-header">
             <div
                 class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
             >
                 <div class="flex items-center gap-12">
-                    <Link href="/" class="group flex items-center gap-2">
+                    <Link
+                        :href="homeIndex.url()"
+                        class="group flex items-center gap-2"
+                    >
                         <span
-                            class="font-heading text-2xl font-black tracking-tight text-foreground transition-all duration-300 group-hover:text-primary"
+                            class="font-display text-2xl tracking-tight text-foreground transition-all duration-300 group-hover:text-primary"
                         >
-                            Miri Spence
+                            {{ copy.site.name }}
                         </span>
                     </Link>
 
-                    <nav class="hidden items-center gap-8 md:flex">
+                    <nav
+                        aria-label="Main"
+                        class="hidden items-center gap-8 md:flex"
+                    >
                         <Link
-                            href="/art"
+                            v-for="item in navItems"
+                            :key="item.label"
+                            :href="item.href"
                             class="text-sm font-medium transition-colors hover:text-primary"
                             :class="
-                                $page.url.startsWith('/art')
+                                isActive(item)
                                     ? 'text-primary'
                                     : 'text-muted-foreground'
                             "
+                            :aria-current="isActive(item) ? 'page' : undefined"
                         >
-                            Art
-                        </Link>
-                        <Link
-                            href="/books"
-                            class="text-sm font-medium transition-colors hover:text-primary"
-                            :class="
-                                $page.url.startsWith('/books')
-                                    ? 'text-primary'
-                                    : 'text-muted-foreground'
-                            "
-                        >
-                            Books
-                        </Link>
-                        <Link
-                            href="/contact"
-                            class="text-sm font-medium transition-colors hover:text-primary"
-                            :class="
-                                $page.url.startsWith('/contact')
-                                    ? 'text-primary'
-                                    : 'text-muted-foreground'
-                            "
-                        >
-                            Contact
+                            {{ item.label }}
                         </Link>
                     </nav>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <Link
-                        href="/contact?type=commission"
-                        class="hidden items-center justify-center rounded-full bg-accent px-4 py-1.5 text-xs font-bold tracking-widest text-white uppercase transition-all hover:scale-105 hover:bg-accent/90 active:scale-95 sm:inline-flex"
-                    >
-                        Hire Me
-                    </Link>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <CommissionCta
+                        size="compact"
+                        class="hidden sm:inline-flex"
+                    />
+
+                    <Sheet v-model:open="menuOpen">
+                        <SheetTrigger
+                            class="inline-flex size-10 items-center justify-center rounded-lg text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
+                            aria-label="Open menu"
+                        >
+                            <Menu class="size-6" aria-hidden="true" />
+                        </SheetTrigger>
+                        <SheetContent side="right" class="px-6 py-6">
+                            <SheetHeader class="p-0">
+                                <SheetTitle class="font-display text-xl">
+                                    Menu
+                                </SheetTitle>
+                                <SheetDescription class="sr-only">
+                                    Site navigation
+                                </SheetDescription>
+                            </SheetHeader>
+                            <nav aria-label="Main" class="flex flex-col gap-1">
+                                <Link
+                                    v-for="item in navItems"
+                                    :key="item.label"
+                                    :href="item.href"
+                                    class="rounded-lg px-3 py-3 text-base font-medium transition-colors hover:bg-muted hover:text-primary"
+                                    :class="
+                                        isActive(item)
+                                            ? 'text-primary'
+                                            : 'text-foreground'
+                                    "
+                                    :aria-current="
+                                        isActive(item) ? 'page' : undefined
+                                    "
+                                >
+                                    {{ item.label }}
+                                </Link>
+                            </nav>
+                            <CommissionCta class="mt-4 w-full" />
+                        </SheetContent>
+                    </Sheet>
                 </div>
             </div>
         </header>
@@ -155,15 +240,13 @@ const seoData = computed(() => (page.props as any).seo);
             <slot />
         </main>
 
-        <footer
-            class="mt-20 border-t border-border bg-white/50 py-12 backdrop-blur-sm"
-        >
+        <footer class="mt-20 border-t border-border bg-card py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
                     class="flex flex-col items-center justify-between gap-6 md:flex-row"
                 >
-                    <p class="font-heading text-lg font-bold text-foreground">
-                        Miri Spence
+                    <p class="font-display text-lg text-foreground">
+                        {{ copy.site.name }}
                     </p>
                     <div class="flex items-center gap-6">
                         <a
@@ -171,7 +254,7 @@ const seoData = computed(() => (page.props as any).seo);
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Follow me on Bluesky"
-                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                            class="group rounded-full bg-muted p-2.5 transition-all hover:bg-primary/10"
                         >
                             <img
                                 src="/build/icons/bluesky.svg"
@@ -184,7 +267,7 @@ const seoData = computed(() => (page.props as any).seo);
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Follow me on Cara"
-                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                            class="group rounded-full bg-muted p-2.5 transition-all hover:bg-primary/10"
                         >
                             <img
                                 src="/build/icons/cara.svg"
@@ -197,7 +280,7 @@ const seoData = computed(() => (page.props as any).seo);
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Follow me on Instagram"
-                            class="group rounded-full bg-foreground/5 p-2.5 transition-all hover:bg-primary/10"
+                            class="group rounded-full bg-muted p-2.5 transition-all hover:bg-primary/10"
                         >
                             <img
                                 src="/build/icons/instagram.svg"
@@ -208,8 +291,8 @@ const seoData = computed(() => (page.props as any).seo);
                     </div>
 
                     <p class="text-sm text-muted-foreground">
-                        &copy; {{ new Date().getFullYear() }} Miri Spence. All
-                        rights reserved.
+                        &copy; {{ new Date().getFullYear() }}
+                        {{ copy.footer.copyright }}
                     </p>
                 </div>
             </div>

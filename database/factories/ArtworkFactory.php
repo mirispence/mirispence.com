@@ -23,9 +23,19 @@ class ArtworkFactory extends Factory
             'alt_text' => $this->faker->sentence(),
             'created_on' => $this->faker->date(),
             'publish_status' => $this->faker->randomElement(['draft', 'published']),
-            'nsfw_flag' => $this->faker->boolean(10),
+            // Deterministic: flagged artwork has its media withheld on public pages
+            // (ADR-0004), so a random flag would make public-page tests flaky.
+            'nsfw_flag' => false,
             'featured_flag' => $this->faker->boolean(20),
             'metadata' => ['technique' => $this->faker->word()],
         ];
+    }
+
+    /**
+     * A mature (nsfw_flag) artwork.
+     */
+    public function mature(): static
+    {
+        return $this->state(fn () => ['nsfw_flag' => true]);
     }
 }

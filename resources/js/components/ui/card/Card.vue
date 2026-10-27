@@ -12,7 +12,7 @@ const props = defineProps<{
     data-slot="card"
     :class="
       cn(
-        'bg-white text-card-foreground flex flex-col gap-6 rounded-2xl border-none shadow-premium transition-all duration-300 hover:shadow-2xl hover:-translate-y-1',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-lg border border-border shadow-card transition-all duration-300 hover:shadow-md hover:-translate-y-0.5',
         props.class,
       )
     "

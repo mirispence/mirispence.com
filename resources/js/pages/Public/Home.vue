@@ -1,14 +1,36 @@
 <script setup lang="ts">
+import {
+    index as artworkIndex,
+    show as artworkShow,
+} from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import {
+    show as bookShow,
+    index as booksIndex,
+} from '@/actions/App/Http/Controllers/Public/BookController';
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
+import CommissionCta from '@/components/CommissionCta.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-defineProps<{
-    featuredArtworks: Array<any>;
+const props = defineProps<{
+    /** Newest unflagged featured artwork, or null when none is eligible (ADR-0004). */
+    heroArtwork: PublicArtwork | null;
+    featuredArtworks: PublicArtwork[];
     featuredBooks: Array<any>;
 }>();
+
+const heroImage = computed(
+    () =>
+        props.heroArtwork?.media_urls?.display ??
+        props.heroArtwork?.media_urls?.grid ??
+        null,
+);
 </script>
 
 <template>
@@ -19,106 +41,47 @@ defineProps<{
                 <div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
                     <div class="text-left">
                         <h1
-                            class="font-heading text-5xl font-black tracking-tight text-foreground sm:text-7xl"
+                            class="font-display text-5xl tracking-tight text-foreground sm:text-7xl"
                         >
-                            Art & <span class="text-primary">Stories</span>
+                            {{ copy.home.heroTitleLead }}
+                            <span class="text-primary">{{
+                                copy.home.heroTitleAccent
+                            }}</span>
                         </h1>
                         <p
                             class="mt-8 max-w-xl text-xl leading-relaxed text-muted-foreground"
                         >
-                            The art and books of Miri Spence.<br />
-                            Illustration, storytelling, and personal creative
-                            work.
+                            {{ copy.home.heroIntro[0] }}<br />
+                            {{ copy.home.heroIntro[1] }}
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
-                            <Link href="/art">
-                                <Button
-                                    size="lg"
-                                    class="rounded-full bg-primary px-8"
-                                    >View Gallery</Button
-                                >
+                            <Link :href="galleriesIndex.url()">
+                                <Button size="lg" class="bg-primary px-8">{{
+                                    copy.links.viewGalleries
+                                }}</Button>
                             </Link>
-                            <Link href="/contact?type=commission">
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    class="rounded-full px-8"
-                                    >Commissions</Button
-                                >
-                            </Link>
+                            <CommissionCta />
                         </div>
                     </div>
-                    <div class="relative mt-16 lg:mt-0">
-                        <div
-                            class="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/10 to-accent/10 blur-3xl"
-                        />
-                        <div class="relative grid grid-cols-2 gap-4">
-                            <div v-if="featuredArtworks[0]" class="space-y-4">
-                                <div
-                                    class="aspect-[4/5] rotate-[-2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
-                                >
-                                    <img
-                                        fetchpriority="high"
-                                        v-if="
-                                            featuredArtworks[0].media_urls?.grid
-                                        "
-                                        :src="
-                                            featuredArtworks[0].media_urls.grid
-                                                .src
-                                        "
-                                        :srcset="
-                                            featuredArtworks[0].media_urls.grid
-                                                .srcset
-                                        "
-                                        :alt="
-                                            featuredArtworks[0].alt_text ||
-                                            featuredArtworks[0].title
-                                        "
-                                        class="h-full w-full object-cover"
-                                        sizes="(max-width: 1024px) 50vw, 400px"
-                                    />
-                                    <!-- Invisible overlay to discourage casual image saving -->
-                                    <div
-                                        class="absolute inset-0 z-[5] cursor-pointer"
-                                        @click="$emit('click-image')"
-                                    ></div>
-                                </div>
-                            </div>
-                            <div
-                                v-if="featuredArtworks[1]"
-                                class="space-y-4 pt-12"
-                            >
-                                <div
-                                    class="aspect-[4/5] rotate-[2deg] overflow-hidden rounded-3xl shadow-premium transition-transform hover:rotate-0"
-                                >
-                                    <img
-                                        fetchpriority="high"
-                                        v-if="
-                                            featuredArtworks[1].media_urls?.grid
-                                        "
-                                        :src="
-                                            featuredArtworks[1].media_urls.grid
-                                                .src
-                                        "
-                                        :srcset="
-                                            featuredArtworks[1].media_urls.grid
-                                                .srcset
-                                        "
-                                        :alt="
-                                            featuredArtworks[1].alt_text ||
-                                            featuredArtworks[1].title
-                                        "
-                                        class="h-full w-full object-cover"
-                                        sizes="(max-width: 1024px) 50vw, 400px"
-                                    />
-                                    <!-- Invisible overlay to discourage casual image saving -->
-                                    <div
-                                        class="absolute inset-0 z-[5] cursor-pointer"
-                                        @click="$emit('click-image')"
-                                    ></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div
+                        v-if="heroImage"
+                        class="mt-16 flex justify-center lg:mt-0 lg:justify-end"
+                    >
+                        <Link
+                            :href="artworkShow.url(heroArtwork!.slug)"
+                            class="block"
+                        >
+                            <img
+                                fetchpriority="high"
+                                :src="heroImage.src"
+                                :srcset="heroImage.srcset"
+                                :alt="
+                                    heroArtwork!.alt_text || heroArtwork!.title
+                                "
+                                class="max-h-[70vh] w-auto max-w-full object-contain"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -130,17 +93,17 @@ defineProps<{
                 <div class="mb-10 flex items-end justify-between">
                     <div>
                         <h2
-                            class="font-heading text-4xl font-bold tracking-tight text-foreground"
+                            class="font-display text-3xl tracking-tight text-foreground sm:text-4xl"
                         >
-                            Featured Art
+                            {{ copy.home.featuredArtHeading }}
                         </h2>
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>
                     <Link
-                        href="/art"
-                        class="text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-primary/80"
+                        :href="artworkIndex.url()"
+                        class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        Explore Gallery →
+                        {{ copy.links.viewAllArtwork }}
                     </Link>
                 </div>
 
@@ -151,42 +114,28 @@ defineProps<{
                         v-for="artwork in featuredArtworks.slice(0, 6)"
                         :key="artwork.id"
                         :artwork="artwork"
-                        :is-revealed="false"
+                        :reload-only="['featuredArtworks']"
                     />
                 </div>
             </div>
 
             <!-- Commission Callout -->
             <section
-                class="relative mt-32 overflow-hidden rounded-[3rem] bg-panel p-12 text-center sm:p-20"
+                class="relative mt-32 overflow-hidden rounded-lg border border-border bg-muted p-12 text-center sm:p-20"
             >
-                <div
-                    class="absolute top-0 right-0 h-96 w-96 translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-3xl"
-                />
-                <div
-                    class="absolute bottom-0 left-0 h-96 w-96 -translate-x-1/2 translate-y-1/2 rounded-full bg-primary/10 blur-3xl"
-                />
-
                 <div class="relative mx-auto max-w-2xl">
-                    <h2 class="font-heading text-4xl font-bold text-foreground">
-                        Have a vision in mind?
+                    <h2
+                        class="font-display text-3xl text-foreground sm:text-4xl"
+                    >
+                        {{ copy.home.commissionHeading }}
                     </h2>
                     <p
                         class="mt-6 text-lg leading-relaxed text-muted-foreground"
                     >
-                        I am currently available for custom art commissions and
-                        narrative collaborations. Let's bring your ideas to
-                        life.
+                        {{ copy.home.commissionBlurb }}
                     </p>
                     <div class="mt-10">
-                        <Link href="/contact?type=commission">
-                            <Button
-                                size="lg"
-                                class="rounded-full bg-accent px-12 shadow-premium hover:bg-accent/90"
-                            >
-                                Start a Commission
-                            </Button>
-                        </Link>
+                        <CommissionCta />
                     </div>
                 </div>
             </section>
@@ -195,17 +144,17 @@ defineProps<{
                 <div class="mb-10 flex items-end justify-between">
                     <div>
                         <h2
-                            class="font-heading text-4xl font-bold tracking-tight text-foreground"
+                            class="font-display text-3xl tracking-tight text-foreground sm:text-4xl"
                         >
-                            Featured Books
+                            {{ copy.home.featuredBooksHeading }}
                         </h2>
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>
                     <Link
-                        href="/books"
-                        class="text-sm font-bold tracking-widest text-primary uppercase transition-colors hover:text-primary/80"
+                        :href="booksIndex.url()"
+                        class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        View All Books →
+                        {{ copy.links.viewAllBooks }}
                     </Link>
                 </div>
 
@@ -215,7 +164,7 @@ defineProps<{
                     <Card
                         v-for="book in featuredBooks"
                         :key="book.id"
-                        class="group overflow-hidden border-none bg-white p-0"
+                        class="group overflow-hidden border-none bg-card p-0"
                     >
                         <div class="aspect-[2/3] overflow-hidden">
                             <img
@@ -226,16 +175,16 @@ defineProps<{
                             />
                             <div
                                 v-else
-                                class="flex h-full items-center justify-center bg-panel font-heading text-muted-foreground italic"
+                                class="flex h-full items-center justify-center bg-muted text-muted-foreground italic"
                             >
                                 No Cover
                             </div>
                         </div>
                         <div class="p-8">
                             <h3
-                                class="font-heading text-xl font-bold text-foreground transition-colors group-hover:text-primary"
+                                class="text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
-                                <Link :href="`/books/${book.slug}`">
+                                <Link :href="bookShow.url(book.slug)">
                                     {{ book.title }}
                                 </Link>
                             </h3>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PublicArtworkResource;
 use App\Models\Gallery;
 use App\Support\Seo\SeoBuilder;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,10 +17,12 @@ class GalleryController extends Controller
         Inertia::share('seo', SeoBuilder::forArtIndex());
 
         return Inertia::render('Public/Galleries/Index', [
-            'galleries' => Gallery::published()
+            // A resource collection gives the `meta.links` shape PublicPagination reads, like the artwork lists.
+            'galleries' => JsonResource::collection(Gallery::published()
                 ->withPublicCover()
+                ->withCount(['artworks as published_artworks_count' => fn ($query) => $query->published()])
                 ->orderBy('sort_order')
-                ->paginate(6),
+                ->paginate(6)),
         ]);
     }
 

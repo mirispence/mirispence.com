@@ -9,6 +9,31 @@ use Illuminate\Support\Str;
 
 class SeoBuilder
 {
+    /*
+     * Meta descriptions (#57): edit the words here. Page copy lives in
+     * resources/js/content/copy.ts. %s is replaced with the record's title or name.
+     */
+    public const DEFAULT_DESCRIPTION = 'The official website of Miri Spence, artist and author.';
+
+    public const HOME_DESCRIPTION = 'Portfolio of Miri Spence - Concept Art, Illustration, and Fantasy Books.';
+
+    public const ART_INDEX_DESCRIPTION = 'Browse the art gallery of Miri Spence. Digital paintings, character designs, and illustrations.';
+
+    public const ARTWORK_INDEX_DESCRIPTION = 'Every artwork by Miri Spence. Digital paintings, character designs, and illustrations.';
+
+    public const BOOKS_INDEX_DESCRIPTION = 'Explore the books and stories by Miri Spence. Fantasy novels, world-building, and more.';
+
+    public const CONTACT_DESCRIPTION = 'Get in touch with Miri Spence for commissions, inquiries, or just to say hello.';
+
+    /** Used when the artwork has no description. */
+    public const ARTWORK_FALLBACK_DESCRIPTION = "View '%s' by Miri Spence.";
+
+    /** Used when the gallery has no description. */
+    public const GALLERY_FALLBACK_DESCRIPTION = 'View the %s gallery by Miri Spence.';
+
+    /** Used when the book has no description. */
+    public const BOOK_FALLBACK_DESCRIPTION = "Read more about '%s' by Miri Spence.";
+
     public static function make(
         string $title,
         ?string $description = null,
@@ -61,7 +86,7 @@ class SeoBuilder
     {
         return self::make(
             title: config('app.name'),
-            description: 'Portfolio of Miri Spence - Concept Art, Illustration, and Fantasy Books.',
+            description: self::HOME_DESCRIPTION,
             image: self::getFallbackOgImage()
         );
     }
@@ -70,15 +95,24 @@ class SeoBuilder
     {
         return self::make(
             title: 'Art',
-            description: 'Browse the art gallery of Miri Spence. Digital paintings, character designs, and illustrations.',
+            description: self::ART_INDEX_DESCRIPTION,
+            image: self::getFallbackOgImage()
+        );
+    }
+
+    public static function forArtworkIndex(): SeoPayload
+    {
+        return self::make(
+            title: 'Artwork',
+            description: self::ARTWORK_INDEX_DESCRIPTION,
             image: self::getFallbackOgImage()
         );
     }
 
     public static function forArtwork(Artwork $artwork): SeoPayload
     {
-        $description = $artwork->description ?: "View '{$artwork->title}' by Miri Spence.";
-        $image = self::publicDisplayUrl($artwork) ?? self::getFallbackOgImage();
+        $description = $artwork->description ?: sprintf(self::ARTWORK_FALLBACK_DESCRIPTION, $artwork->title);
+        $image = self::seoImage($artwork) ?? self::getFallbackOgImage();
 
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -90,7 +124,7 @@ class SeoBuilder
                 '@type' => 'Person',
                 'name' => config('app.name'),
             ],
-            'url' => route('art.show', $artwork),
+            'url' => route('artwork.show', $artwork),
         ];
 
         if ($artwork->created_on) {
@@ -98,13 +132,12 @@ class SeoBuilder
         }
 
         return self::make(
-            title: "{$artwork->title} - Art",
+            title: "{$artwork->title} - Artwork",
             description: $description,
             type: 'article',
             image: $image,
             imageAlt: $artwork->alt_text ?? "Artwork '{$artwork->title}' by Miri Spence",
-            jsonld: $jsonld,
-            appendBrand: false
+            jsonld: $jsonld
         );
     }
 
@@ -112,8 +145,8 @@ class SeoBuilder
     {
         return self::make(
             title: "{$gallery->name} - Art",
-            description: $gallery->description ?: "View the {$gallery->name} gallery by Miri Spence.",
-            image: ($gallery->cover_urls['display']['src'] ?? null) ?: self::getFallbackOgImage()
+            description: $gallery->description ?: sprintf(self::GALLERY_FALLBACK_DESCRIPTION, $gallery->name),
+            image: self::galleryCoverImage($gallery) ?? self::getFallbackOgImage()
         );
     }
 
@@ -121,15 +154,17 @@ class SeoBuilder
     {
         return self::make(
             title: 'Books',
-            description: 'Explore the books and stories by Miri Spence. Fantasy novels, world-building, and more.',
+            description: self::BOOKS_INDEX_DESCRIPTION,
             image: self::getFallbackOgImage()
         );
     }
 
     public static function forBook(Book $book): SeoPayload
     {
-        $description = $book->description ?: "Read more about '{$book->title}' by Miri Spence.";
-        $image = ($book->cover['urls']['display']['src'] ?? null) ?: self::getFallbackOgImage();
+        $description = $book->description ?: sprintf(self::BOOK_FALLBACK_DESCRIPTION, $book->title);
+        // `cover` is null unless the gallery is published and has a visible cover.
+        $image = ($book->cover !== null && $book->gallery ? self::galleryCoverImage($book->gallery) : null)
+            ?? self::getFallbackOgImage();
 
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -153,8 +188,7 @@ class SeoBuilder
             description: $description,
             type: 'book',
             image: $image,
-            jsonld: $jsonld,
-            appendBrand: false
+            jsonld: $jsonld
         );
     }
 
@@ -162,7 +196,7 @@ class SeoBuilder
     {
         return self::make(
             title: 'Contact',
-            description: 'Get in touch with Miri Spence for commissions, inquiries, or just to say hello.',
+            description: self::CONTACT_DESCRIPTION,
             image: self::getFallbackOgImage()
         );
     }
@@ -190,7 +224,7 @@ class SeoBuilder
 
     protected static function getDefaultDescription(): string
     {
-        return 'The official website of Miri Spence, artist and author.';
+        return self::DEFAULT_DESCRIPTION;
     }
 
     protected static function getDefaultOgImage(?string $type): ?string
@@ -200,19 +234,38 @@ class SeoBuilder
 
     /**
      * Site-wide og:image: the latest featured published artwork, else the latest
-     * published artwork. Only ever a public conversion URL, never the original.
+     * published artwork, never a mature (nsfw_flag) one. Only ever a public
+     * conversion URL, never the original.
      */
     protected static function getFallbackOgImage(): ?string
     {
-        $artwork = Artwork::published()->featured()->latest('created_on')->first()
-            ?? Artwork::published()->latest('created_on')->first();
+        $safe = fn () => Artwork::published()->notMature()->latest('created_on');
 
-        return self::publicDisplayUrl($artwork);
+        return self::seoImage($safe()->featured()->first() ?? $safe()->first());
     }
 
-    private static function publicDisplayUrl(?Artwork $artwork): ?string
+    /**
+     * The gallery's cover image for SEO, or null when it has no visible cover
+     * (`cover_urls` is empty) or the cover is mature.
+     */
+    private static function galleryCoverImage(Gallery $gallery): ?string
     {
-        $src = $artwork?->mediaUrlBuilder()->public()['display']['src'] ?? null;
+        return $gallery->cover_urls === [] ? null : self::seoImage($gallery->coverArtwork);
+    }
+
+    /**
+     * The one "may this image appear publicly" check: the artwork's public
+     * display URL, or null when there is no artwork or media, or it is mature.
+     * Mature artwork never feeds SEO images, whatever the session consented to
+     * (ADR-0004).
+     */
+    private static function seoImage(?Artwork $artwork): ?string
+    {
+        if ($artwork === null || $artwork->nsfw_flag) {
+            return null;
+        }
+
+        $src = $artwork->mediaUrlBuilder()->public()['display']['src'] ?? null;
 
         return is_string($src) && $src !== '' ? $src : null;
     }

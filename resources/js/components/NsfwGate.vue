@@ -1,40 +1,28 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { useNSFWPreference } from '@/composables/useNSFWPreference';
-import { computed, ref, useId } from 'vue';
+import { useMatureConsent } from '@/composables/useMatureConsent';
+import { copy } from '@/content/copy';
+import { computed, useId } from 'vue';
 
 const props = withDefaults(
     defineProps<{
-        /** Whether this artwork is flagged NSFW at all. When false, always revealed and no gate renders. */
-        nsfw: boolean;
-        /** Externally tracked reveal state. Omit to let the gate manage its own state (uncontrolled). */
-        modelValue?: boolean;
+        /** The server withheld this artwork's media (mature, no consent yet). When false, no gate renders. */
+        withheld: boolean;
+        artworkId: number;
+        /** Page props to reload once consent is recorded; empty reloads all. */
+        reloadOnly?: string[];
         variant?: 'card' | 'detail';
     }>(),
-    { modelValue: undefined, variant: 'card' },
+    { reloadOnly: () => [], variant: 'card' },
 );
 
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void;
-    (e: 'reveal'): void;
-}>();
-
-const { nsfwAlwaysReveal, setPreference } = useNSFWPreference();
-const internalRevealed = ref(false);
+const consent = useMatureConsent();
 const checkboxId = useId();
 
-const revealed = computed(
-    () =>
-        !props.nsfw ||
-        (props.modelValue ?? internalRevealed.value) ||
-        nsfwAlwaysReveal.value,
-);
+const revealed = computed(() => !props.withheld);
 
-const reveal = () => {
-    internalRevealed.value = true;
-    emit('update:modelValue', true);
-    emit('reveal');
-};
+const reveal = () => consent.reveal(props.artworkId, props.reloadOnly);
+const revealAll = () => consent.revealAll(props.reloadOnly);
 </script>
 
 <template>
@@ -44,27 +32,24 @@ const reveal = () => {
         <div
             v-if="!revealed"
             class="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center text-center backdrop-blur-md"
-            :class="variant === 'card' ? 'bg-panel/60 p-6' : 'bg-panel/20 p-8'"
+            :class="variant === 'card' ? 'bg-muted/90 p-6' : 'bg-muted/40 p-8'"
             @click.stop="reveal"
         >
             <div
                 :class="
                     variant === 'detail'
-                        ? 'max-w-[280px] rounded-[2rem] bg-white/80 p-8 shadow-2xl'
+                        ? 'max-w-[280px] rounded-lg border border-border bg-card p-8 shadow-card'
                         : ''
                 "
             >
                 <span
                     v-if="variant === 'card'"
-                    class="mb-4 inline-block rounded-full bg-accent px-4 py-1 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-lg"
+                    class="mb-4 inline-block rounded-full bg-foreground px-4 py-1 text-xs font-semibold text-background"
                 >
-                    Sensitive Content
+                    {{ copy.nsfwGate.heading }}
                 </span>
-                <h3
-                    v-else
-                    class="mb-2 font-heading text-xl font-bold text-foreground"
-                >
-                    Sensitive Content
+                <h3 v-else class="mb-2 text-xl font-semibold text-foreground">
+                    {{ copy.nsfwGate.heading }}
                 </h3>
 
                 <p
@@ -75,16 +60,15 @@ const reveal = () => {
                             : 'mb-6 text-sm text-muted-foreground'
                     "
                 >
-                    This artwork may not be suitable for all audiences.
+                    {{ copy.nsfwGate.body }}
                 </p>
 
                 <Button
-                    variant="accent"
                     :size="variant === 'card' ? 'sm' : 'lg'"
-                    class="rounded-full px-6 font-bold"
+                    class="px-6 font-semibold"
                     @click.stop="reveal"
                 >
-                    Reveal Artwork
+                    {{ copy.nsfwGate.revealButton }}
                 </Button>
 
                 <div
@@ -94,19 +78,17 @@ const reveal = () => {
                     <input
                         :id="checkboxId"
                         type="checkbox"
-                        :checked="nsfwAlwaysReveal"
-                        class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                        class="h-4 w-4 rounded border-input accent-primary"
                         @change="
-                            setPreference(
-                                ($event.target as HTMLInputElement).checked,
-                            )
+                            ($event.target as HTMLInputElement).checked &&
+                            revealAll()
                         "
                     />
                     <label
                         :for="checkboxId"
-                        class="text-[10px] font-bold text-foreground"
+                        class="text-sm font-medium text-foreground"
                     >
-                        Show all NSFW artwork this session
+                        {{ copy.nsfwGate.revealAllLabel }}
                     </label>
                 </div>
             </div>

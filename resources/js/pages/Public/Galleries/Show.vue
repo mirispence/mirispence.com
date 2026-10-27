@@ -1,18 +1,25 @@
 <script setup lang="ts">
+import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
+import ArtLightbox from '@/components/ArtLightbox.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps<{
     gallery: any;
     artworks: {
-        data: Array<any>;
+        data: PublicArtwork[];
         links: Array<any>;
         meta: any;
     };
 }>();
+
+const lightboxIndex = ref<number | null>(null);
 </script>
 
 <template>
@@ -23,7 +30,7 @@ defineProps<{
             >
                 <div class="max-w-3xl">
                     <h1
-                        class="font-heading text-5xl font-black tracking-tight text-foreground"
+                        class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
                         {{ gallery.name }}
                     </h1>
@@ -35,10 +42,10 @@ defineProps<{
                 </div>
 
                 <div class="mt-8 md:mt-0">
-                    <Link href="/art">
+                    <Link :href="galleriesIndex.url()">
                         <Button
                             variant="ghost"
-                            class="rounded-full text-muted-foreground hover:text-primary"
+                            class="text-muted-foreground hover:text-primary"
                         >
                             <svg
                                 class="mr-2 h-4 w-4"
@@ -53,7 +60,7 @@ defineProps<{
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                 />
                             </svg>
-                            Back to Gallery
+                            {{ copy.links.backToGalleries }}
                         </Button>
                     </Link>
                 </div>
@@ -61,21 +68,24 @@ defineProps<{
 
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 <ArtCard
-                    v-for="artwork in artworks.data"
+                    v-for="(artwork, index) in artworks.data"
                     :key="artwork.id"
                     :artwork="artwork"
+                    :reload-only="['artworks']"
+                    @click-image="lightboxIndex = index"
                 />
             </div>
 
             <div
                 v-if="artworks.data.length === 0"
-                class="rounded-[3rem] border border-white/60 bg-white/40 py-24 text-center"
+                class="rounded-lg border border-border bg-card py-24 text-center"
             >
                 <div
-                    class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-panel"
+                    class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted"
                 >
                     <svg
-                        class="h-8 w-8 text-muted-foreground/40"
+                        aria-hidden="true"
+                        class="h-8 w-8 text-muted-foreground"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -88,15 +98,21 @@ defineProps<{
                         />
                     </svg>
                 </div>
-                <h3 class="font-heading text-2xl font-bold text-foreground/60">
-                    No artworks yet
+                <h3 class="text-2xl font-semibold text-muted-foreground">
+                    {{ copy.gallery.emptyHeading }}
                 </h3>
-                <p class="mt-2 text-muted-foreground/60">
-                    Check back soon for new additions to this collection.
+                <p class="mt-2 text-muted-foreground">
+                    {{ copy.gallery.emptyBody }}
                 </p>
             </div>
 
             <PublicPagination :links="artworks.meta.links" />
         </div>
+
+        <ArtLightbox
+            v-model:index="lightboxIndex"
+            :artworks="artworks.data"
+            :reload-only="['artworks']"
+        />
     </PublicLayout>
 </template>

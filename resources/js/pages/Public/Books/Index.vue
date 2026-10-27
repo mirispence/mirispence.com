@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { show as bookShow } from '@/actions/App/Http/Controllers/Public/BookController';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -14,12 +16,12 @@ defineProps<{
         <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
             <div class="mb-16 text-center">
                 <h1
-                    class="font-heading text-5xl font-black tracking-tight text-foreground"
+                    class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                 >
-                    Novels & Stories
+                    {{ copy.books.heading }}
                 </h1>
                 <p class="mt-4 text-xl text-muted-foreground">
-                    Exploring worlds through words.
+                    {{ copy.books.intro }}
                 </p>
             </div>
 
@@ -27,9 +29,9 @@ defineProps<{
                 <Card
                     v-for="book in books"
                     :key="book.id"
-                    class="group flex flex-col overflow-hidden border-none bg-white p-0"
+                    class="group flex flex-col overflow-hidden border-none bg-card p-0"
                 >
-                    <div class="relative aspect-[2/3] overflow-hidden bg-panel">
+                    <div class="relative aspect-[2/3] overflow-hidden bg-muted">
                         <img
                             v-if="book.cover?.urls?.thumb"
                             :src="book.cover.urls.thumb"
@@ -39,33 +41,34 @@ defineProps<{
                         <!-- Placeholder for cover -->
                         <div
                             v-else
-                            class="flex h-full items-center justify-center font-heading text-muted-foreground italic"
+                            class="flex h-full items-center justify-center text-muted-foreground italic"
                         >
                             No Cover available
                         </div>
                         <div
-                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                            class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100"
                         >
-                            <Link :href="`/books/${book.slug}`" class="w-full">
-                                <Button
-                                    variant="accent"
-                                    class="w-full rounded-full"
-                                    >Read More</Button
-                                >
+                            <Link
+                                :href="bookShow.url(book.slug)"
+                                class="w-full"
+                            >
+                                <Button class="w-full">{{
+                                    copy.links.readMore
+                                }}</Button>
                             </Link>
                         </div>
                     </div>
                     <div class="flex flex-1 flex-col p-8">
                         <div class="mb-4 flex flex-col gap-2">
                             <h3
-                                class="font-heading text-2xl font-bold text-foreground transition-colors group-hover:text-primary"
+                                class="text-2xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
-                                <Link :href="`/books/${book.slug}`">
+                                <Link :href="bookShow.url(book.slug)">
                                     {{ book.title }}
                                 </Link>
                             </h3>
                             <p
-                                class="text-xs font-black tracking-[0.2em] text-accent/80 uppercase"
+                                class="text-sm font-semibold text-primary"
                                 v-if="book.release_date"
                             >
                                 {{ book.release_date }}
@@ -89,10 +92,11 @@ defineProps<{
                     class="group flex cursor-default flex-col items-center justify-center overflow-hidden border-2 border-dashed border-border bg-transparent p-12 text-center shadow-none hover:translate-y-0 hover:shadow-none"
                 >
                     <div
-                        class="mb-6 rounded-full bg-panel p-6 transition-transform duration-500 group-hover:scale-110"
+                        class="mb-6 rounded-full bg-muted p-6 transition-transform duration-500 group-hover:scale-110"
                     >
                         <svg
-                            class="h-10 w-10 text-primary/40"
+                            aria-hidden="true"
+                            class="h-10 w-10 text-muted-foreground"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -105,13 +109,11 @@ defineProps<{
                             />
                         </svg>
                     </div>
-                    <h3
-                        class="font-heading text-2xl font-bold text-foreground/60"
-                    >
-                        More coming soon
+                    <h3 class="text-2xl font-semibold text-muted-foreground">
+                        {{ copy.books.comingSoonHeading }}
                     </h3>
-                    <p class="mt-3 max-w-[200px] text-muted-foreground/60">
-                        New stories and illustrations are always in development.
+                    <p class="mt-3 max-w-[200px] text-muted-foreground">
+                        {{ copy.books.comingSoonBody }}
                     </p>
                 </Card>
             </div>

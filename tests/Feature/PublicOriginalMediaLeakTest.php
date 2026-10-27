@@ -35,20 +35,20 @@ function inertiaProps(TestResponse $response): array
     return $response->viewData('page')['props'];
 }
 
-test('art index props and seo never expose the original', function () {
+test('artwork index props and seo never expose the original', function () {
     [, $originalUrl] = publishedArtworkWithImage();
 
-    $props = inertiaProps($this->get(route('art.index'))->assertOk());
+    $props = inertiaProps($this->get(route('artwork.index'))->assertOk());
 
     expect($props['artworks']['data'])->toHaveCount(1);
     assertNoOriginalMedia($props['artworks'], [$originalUrl]);
     assertNoOriginalMedia($props['seo'], [$originalUrl]);
 });
 
-test('art show props and seo og:image never expose the original', function () {
+test('artwork show props and seo og:image never expose the original', function () {
     [$artwork, $originalUrl] = publishedArtworkWithImage();
 
-    $props = inertiaProps($this->get(route('art.show', $artwork))->assertOk());
+    $props = inertiaProps($this->get(route('artwork.show', $artwork))->assertOk());
 
     expect($props['seo']['og']['image'])->toBe($artwork->mediaUrlBuilder()->public()['display']['src']);
     assertNoOriginalMedia($props['artwork'], [$originalUrl]);
@@ -61,7 +61,7 @@ test('gallery show props and seo never expose the original', function () {
     $gallery->artworks()->attach($artwork->id);
     $gallery->update(['cover_artwork_id' => $artwork->id]);
 
-    $props = inertiaProps($this->get(route('galleries.show', $gallery))->assertOk());
+    $props = inertiaProps($this->get(route('art.gallery', $gallery))->assertOk());
 
     expect($props['artworks']['data'])->toHaveCount(1);
     assertNoOriginalMedia($props['gallery'], [$originalUrl]);
@@ -69,13 +69,15 @@ test('gallery show props and seo never expose the original', function () {
     assertNoOriginalMedia($props['seo'], [$originalUrl]);
 });
 
-test('home featured artworks and seo og:image never expose the original', function () {
-    [, $originalUrl] = publishedArtworkWithImage();
+test('home hero, featured artworks and seo og:image never expose the original', function () {
+    [$artwork, $originalUrl] = publishedArtworkWithImage();
 
     $props = inertiaProps($this->get(route('home'))->assertOk());
 
-    expect($props['featuredArtworks'])->toHaveCount(1);
-    assertNoOriginalMedia($props['featuredArtworks'], [$originalUrl]);
+    // A lone featured artwork is the hero, so the grid holds no duplicate of it.
+    expect($props['heroArtwork']['id'])->toBe($artwork->id);
+    expect($props['featuredArtworks'])->toHaveCount(0);
+    assertNoOriginalMedia($props['heroArtwork'], [$originalUrl]);
     assertNoOriginalMedia($props['seo'], [$originalUrl]);
 });
 
@@ -83,7 +85,7 @@ test('artwork without an image falls back to the site og image, never an origina
     [$featured, $originalUrl] = publishedArtworkWithImage();
     $bare = Artwork::factory()->create(['publish_status' => 'published', 'featured_flag' => false]);
 
-    $props = inertiaProps($this->get(route('art.show', $bare))->assertOk());
+    $props = inertiaProps($this->get(route('artwork.show', $bare))->assertOk());
 
     expect($props['seo']['og']['image'])->toBe($featured->mediaUrlBuilder()->public()['display']['src']);
     assertNoOriginalMedia($props['seo'], [$originalUrl]);

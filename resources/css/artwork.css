@@ -1,6 +1,6 @@
 @layer components {
     .artwork-prose {
-        @apply max-w-none text-sm leading-7 text-gray-800;
+        @apply max-w-none text-sm leading-7 text-foreground;
     }
 
     .artwork-prose > * + * {
@@ -11,7 +11,7 @@
     .artwork-prose h2,
     .artwork-prose h3,
     .artwork-prose h4 {
-        @apply font-semibold tracking-tight text-gray-900;
+        @apply font-semibold tracking-tight text-foreground;
     }
 
     .artwork-prose h1 {
@@ -31,19 +31,19 @@
     }
 
     .artwork-prose p {
-        @apply text-gray-800;
+        @apply text-foreground;
     }
 
     .artwork-prose a {
-        @apply font-medium text-indigo-700 underline decoration-indigo-300 underline-offset-4 hover:text-indigo-800 hover:decoration-indigo-400;
+        @apply font-medium text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary;
     }
 
     .artwork-prose strong {
-        @apply font-semibold text-gray-900;
+        @apply font-semibold text-foreground;
     }
 
     .artwork-prose em {
-        @apply text-gray-900;
+        @apply text-foreground;
     }
 
     .artwork-prose ul,
@@ -64,22 +64,22 @@
     }
 
     .artwork-prose blockquote {
-        @apply mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-gray-700;
+        @apply mt-4 rounded-lg border border-border bg-muted px-4 py-3 text-muted-foreground;
     }
 
     .artwork-prose hr {
-        @apply my-6 border-gray-200;
+        @apply my-6 border-border;
     }
 
     .artwork-prose code {
-        @apply rounded bg-gray-100 px-1.5 py-0.5 text-[0.9em] text-gray-900;
+        @apply rounded bg-muted px-1.5 py-0.5 text-[0.9em] text-foreground;
     }
 
     .artwork-prose pre {
-        @apply overflow-x-auto rounded-lg border border-gray-200 bg-gray-900 p-4 text-gray-100;
+        @apply overflow-x-auto rounded-lg border border-border bg-foreground p-4 text-background;
     }
 
     .artwork-prose pre code {
-        @apply bg-transparent p-0 text-gray-100;
+        @apply bg-transparent p-0 text-background;
     }
 }

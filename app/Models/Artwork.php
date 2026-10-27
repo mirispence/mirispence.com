@@ -189,4 +189,16 @@ class Artwork extends Model implements HasMedia
     {
         return $query->where('featured_flag', true);
     }
+
+    /** Mature (nsfw_flag) artwork: gated on public pages (ADR-0004). */
+    public function scopeMature(Builder $query): Builder
+    {
+        return $query->where('nsfw_flag', true);
+    }
+
+    /** Artwork that may appear ungated: the hero and SEO images (ADR-0004). */
+    public function scopeNotMature(Builder $query): Builder
+    {
+        return $query->where('nsfw_flag', false);
+    }
 }

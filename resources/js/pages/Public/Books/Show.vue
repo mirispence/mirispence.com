@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { index as booksIndex } from '@/actions/App/Http/Controllers/Public/BookController';
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -42,9 +44,9 @@ defineProps<{
                         :aria-label="`View the ${book.cover.gallery.name} gallery`"
                     >
                         <Card
-                            class="w-full overflow-hidden rounded-[2rem] border-none p-0 shadow-2xl"
+                            class="w-full overflow-hidden rounded-sm border-none p-0 shadow-none hover:translate-y-0 hover:shadow-none"
                         >
-                            <div class="aspect-[2/3] bg-panel">
+                            <div class="aspect-[2/3] bg-muted">
                                 <img
                                     :src="book.cover.urls.display.src"
                                     :srcset="book.cover.urls.display.srcset"
@@ -61,7 +63,7 @@ defineProps<{
                 <div class="mt-16 px-4 sm:px-0 lg:mt-0">
                     <div class="mb-8 flex flex-col gap-4">
                         <h1
-                            class="font-heading text-5xl leading-tight font-black tracking-tight text-foreground"
+                            class="font-display text-4xl leading-tight tracking-tight wrap-break-word text-foreground sm:text-5xl"
                         >
                             {{ book.title }}
                         </h1>
@@ -69,12 +71,11 @@ defineProps<{
                             v-if="book.release_date"
                             class="flex items-center gap-2"
                         >
-                            <span
-                                class="text-xs font-black tracking-[0.2em] text-accent uppercase"
+                            <span class="text-sm font-semibold text-primary"
                                 >Released</span
                             >
                             <span
-                                class="text-sm font-bold text-muted-foreground"
+                                class="text-sm font-semibold text-muted-foreground"
                                 >{{ book.release_date }}</span
                             >
                         </div>
@@ -90,30 +91,30 @@ defineProps<{
                         <!-- Chapters -->
                         <div v-if="book.chapters && book.chapters.length">
                             <h2
-                                class="mb-6 font-heading text-2xl font-bold text-foreground"
+                                class="mb-6 font-display text-2xl text-foreground"
                             >
-                                Chapters
+                                {{ copy.book.chaptersHeading }}
                             </h2>
                             <div
-                                class="divide-y divide-border/40 overflow-hidden rounded-3xl border border-white/60 bg-white/40 backdrop-blur-xl"
+                                class="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card shadow-card"
                             >
                                 <div
                                     v-for="chapter in book.chapters"
                                     :key="chapter.id"
-                                    class="flex flex-col gap-2 p-6 transition-colors hover:bg-white/60"
+                                    class="flex flex-col gap-2 p-6 transition-colors hover:bg-muted"
                                 >
                                     <div
                                         class="flex items-center justify-between"
                                     >
                                         <div class="flex items-center gap-4">
                                             <p
-                                                class="font-bold text-foreground"
+                                                class="font-semibold text-foreground"
                                             >
                                                 {{ chapter.title }}
                                             </p>
                                             <span
                                                 v-if="chapter.is_sample"
-                                                class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-[10px] font-black tracking-widest text-primary uppercase"
+                                                class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-xs font-semibold text-primary"
                                                 >Sample</span
                                             >
                                         </div>
@@ -133,9 +134,9 @@ defineProps<{
                         <!-- External Links -->
                         <div v-if="book.external_links">
                             <h3
-                                class="mb-6 font-heading text-xl font-bold text-foreground"
+                                class="mb-6 text-xl font-semibold text-foreground"
                             >
-                                Available at
+                                {{ copy.book.availableAtHeading }}
                             </h3>
                             <div class="flex flex-wrap gap-4">
                                 <a
@@ -146,7 +147,7 @@ defineProps<{
                                 >
                                     <Button
                                         variant="outline"
-                                        class="group h-12 rounded-full px-8 font-bold"
+                                        class="group h-12 px-8 font-semibold"
                                     >
                                         {{ label }}
                                         <svg
@@ -168,11 +169,11 @@ defineProps<{
                         </div>
                     </div>
 
-                    <div class="mt-16 border-t border-border/60 pt-12">
-                        <Link href="/books">
+                    <div class="mt-16 border-t border-border pt-12">
+                        <Link :href="booksIndex.url()">
                             <Button
                                 variant="ghost"
-                                class="rounded-full text-muted-foreground hover:text-primary"
+                                class="text-muted-foreground hover:text-primary"
                             >
                                 <svg
                                     class="mr-2 h-4 w-4"
@@ -187,7 +188,7 @@ defineProps<{
                                         d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                     />
                                 </svg>
-                                Back to Library
+                                {{ copy.links.backToLibrary }}
                             </Button>
                         </Link>
                     </div>

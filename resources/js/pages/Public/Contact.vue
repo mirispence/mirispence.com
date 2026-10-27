@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { store as contactStore } from '@/actions/App/Http/Controllers/Public/ContactController';
 import FormSelect from '@/components/FormSelect.vue';
 import FormTextarea from '@/components/FormTextarea.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
@@ -26,7 +28,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/contact', {
+    form.post(contactStore.url(), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
     });
@@ -39,19 +41,18 @@ const submit = () => {
             <div class="mx-auto max-w-3xl">
                 <div class="mb-16 text-center">
                     <h1
-                        class="font-heading text-5xl font-black tracking-tight text-foreground"
+                        class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
-                        Get in Touch
+                        {{ copy.contact.heading }}
                     </h1>
                     <p class="mt-4 text-xl text-muted-foreground">
-                        Have a question or want to work together? I'd love to
-                        hear from you.
+                        {{ copy.contact.intro }}
                     </p>
                 </div>
 
                 <div
                     v-if="$page.props.flash.success"
-                    class="mb-10 animate-in rounded-2xl border border-green-100 bg-green-50 p-6 shadow-sm duration-500 fade-in slide-in-from-top-4"
+                    class="mb-10 animate-in rounded-lg border border-green-100 bg-green-50 p-6 shadow-sm duration-500 fade-in slide-in-from-top-4"
                 >
                     <div class="flex items-center gap-4">
                         <div
@@ -69,14 +70,14 @@ const submit = () => {
                                 />
                             </svg>
                         </div>
-                        <p class="text-sm font-bold text-green-800">
-                            {{ $page.props.flash.success }}
+                        <p class="text-sm font-semibold text-green-800">
+                            {{ copy.contact.success }}
                         </p>
                     </div>
                 </div>
 
                 <div
-                    class="rounded-[2.5rem] border border-white/60 bg-white/40 p-8 shadow-premium backdrop-blur-xl sm:p-12"
+                    class="rounded-lg border border-border bg-card p-8 shadow-card sm:p-12"
                 >
                     <form @submit.prevent="submit" class="space-y-8">
                         <!-- Honeypot -->
@@ -93,7 +94,7 @@ const submit = () => {
                             <div class="sm:col-span-2">
                                 <label
                                     for="type"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Message Type</label
                                 >
                                 <FormSelect id="type" v-model="form.type">
@@ -109,7 +110,7 @@ const submit = () => {
                             <div class="sm:col-span-1">
                                 <label
                                     for="name"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Name</label
                                 >
                                 <Input
@@ -120,7 +121,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.name"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.name }}
                                 </div>
@@ -129,7 +130,7 @@ const submit = () => {
                             <div class="sm:col-span-1">
                                 <label
                                     for="email"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Email</label
                                 >
                                 <Input
@@ -140,7 +141,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.email"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.email }}
                                 </div>
@@ -149,7 +150,7 @@ const submit = () => {
                             <div class="sm:col-span-2">
                                 <label
                                     for="subject"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Subject</label
                                 >
                                 <Input
@@ -160,7 +161,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.subject"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.subject }}
                                 </div>
@@ -169,7 +170,7 @@ const submit = () => {
                             <div class="sm:col-span-2">
                                 <label
                                     for="message"
-                                    class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                    class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                     >Message</label
                                 >
                                 <FormTextarea
@@ -179,7 +180,7 @@ const submit = () => {
                                 />
                                 <div
                                     v-if="form.errors.message"
-                                    class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                    class="mt-2 ml-1 text-sm font-medium text-destructive"
                                 >
                                     {{ form.errors.message }}
                                 </div>
@@ -189,7 +190,7 @@ const submit = () => {
                                 <div class="sm:col-span-1">
                                     <label
                                         for="budget_range"
-                                        class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                        class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                         >Budget Range</label
                                     >
                                     <Input
@@ -200,7 +201,7 @@ const submit = () => {
                                     />
                                     <div
                                         v-if="form.errors.budget_range"
-                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                        class="mt-2 ml-1 text-sm font-medium text-destructive"
                                     >
                                         {{ form.errors.budget_range }}
                                     </div>
@@ -209,7 +210,7 @@ const submit = () => {
                                 <div class="sm:col-span-1">
                                     <label
                                         for="desired_due_date"
-                                        class="mb-3 ml-1 block text-xs font-black tracking-[0.2em] text-muted-foreground uppercase"
+                                        class="mb-2 ml-1 block text-sm font-semibold text-muted-foreground"
                                         >Desired Due Date</label
                                     >
                                     <Input
@@ -219,7 +220,7 @@ const submit = () => {
                                     />
                                     <div
                                         v-if="form.errors.desired_due_date"
-                                        class="mt-2 ml-1 text-xs font-bold tracking-wider text-accent uppercase"
+                                        class="mt-2 ml-1 text-sm font-medium text-destructive"
                                     >
                                         {{ form.errors.desired_due_date }}
                                     </div>
@@ -231,7 +232,7 @@ const submit = () => {
                             <Button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="h-14 w-full rounded-full bg-primary text-lg font-bold shadow-premium"
+                                class="h-14 w-full bg-primary text-lg font-semibold"
                             >
                                 {{
                                     form.processing
