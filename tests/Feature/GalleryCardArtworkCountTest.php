@@ -28,3 +28,15 @@ test('art index gallery cards count only published artworks', function () {
             ->where('galleries.data.1.published_artworks_count', 0)
         );
 });
+
+test('art index sends pagination links where the page reads them', function () {
+    Gallery::factory()->count(7)->create(['publish_status' => 'published']);
+
+    $this->get(route('art.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Public/Galleries/Index')
+            ->has('galleries.data', 6)
+            ->has('galleries.meta.links')
+        );
+});

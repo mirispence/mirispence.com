@@ -9,7 +9,6 @@ import { Link } from '@inertiajs/vue3';
 defineProps<{
     galleries: {
         data: Array<any>;
-        links: Array<any>;
         meta: any;
     };
 }>();
