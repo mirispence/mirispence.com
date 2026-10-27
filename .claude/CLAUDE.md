@@ -196,7 +196,8 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 - Commissions are only partly built. The public contact form (`?type=commission`) collects budget and due date, and `ContactController::store` creates a `CommissionRequest` (`status=new`). There is no commissions info page and no admin UI for status, quote or invoice.
 - The contact form sends no email notification (`ContactController` TODO). Messages are visible only in admin.
 - The `.dark` token block in `resources/css/app.css` is dead: nothing ever adds the `dark` class, so dark mode doesn't exist.
-- Public-site design and bug round (2026-10-25): the mature-content gate is cosmetic (ADR-0004), titles repeat the site name, there's no mobile nav, the lightbox has unreadable contrast and a 404 "View Details" link, and the URLs are moving (ADR-0005). Tracked as GitHub issues under the parent tracking issue.
+- Mature content: revealing a flagged artwork on its detail page still shifts the layout, because the public resource carries no image dimensions to reserve the aspect ratio. A book whose gallery cover is flagged shows no hero and has no reveal control.
+- The Books nav link is hard-coded on (`showBooks` in `PublicLayout.vue`, `TODO(#45)`) until the shared books feature flag lands.
 - `.env.example` is missing all R2 environment variables
 - Admin form restyle is specced in `instructions/update-admin-styles.md` but not yet applied
 - CI (`.github/workflows/ci.yml`) runs tests/PHPStan/ESLint/type-check/Prettier check on PRs to `main`; `.github/workflows/deploy.yml` deploys on push to `main` without re-running them

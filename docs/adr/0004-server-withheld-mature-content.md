@@ -10,7 +10,7 @@ Artworks flagged `nsfw_flag` were "gated" only in the browser. `PublicArtworkRes
 
 ## Decision
 
-- **No media URLs for flagged artwork until the session has consented.** For a flagged artwork the public resource omits `media_urls` (cards show a neutral placeholder, not a blurred real image), unless that artwork's ID is in the session's revealed set or the session's "show all" flag is set.
+- **No media URLs for flagged artwork until the session has consented.** For a flagged artwork the public resource sends an empty `media_urls` and sets `media_withheld: true` (cards show a neutral placeholder, not a blurred real image), unless that artwork's ID is in the session's revealed set or the session's "show all" flag is set.
 - **Consent is stored in the Laravel session**, as a set of revealed artwork IDs plus a boolean "show all" flag. It inherits the session lifetime (`SESSION_LIFETIME`, 120 minutes idle). There is no separate cookie and no long-lived consent.
 - **Revealing goes through the server.** "Reveal" (one artwork) and "Show all this session" call a consent endpoint, then the page reloads the affected props. This works the same on cards, the detail page and inside the lightbox.
 - **Flagged artwork never feeds SEO or the home hero.** `og:image`, `twitter:image` and JSON-LD `image` fall back to the site default for flagged artwork. Hero selection excludes flagged artwork on the server.
