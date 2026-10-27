@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { show as artworkShow } from '@/actions/App/Http/Controllers/Public/ArtworkController';
-import NsfwGate from '@/components/NsfwGate.vue';
+import GatedArtworkImage from '@/components/GatedArtworkImage.vue';
 import { Dialog, DialogClose } from '@/components/ui/dialog';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { ChevronLeft, ChevronRight, X } from 'lucide-vue-next';
 // The shadcn DialogContent/Title wrappers bring their own card chrome and type
@@ -15,20 +16,10 @@ import {
 } from 'reka-ui';
 import { computed, ref, watch } from 'vue';
 
-export interface LightboxArtwork {
-    id: number;
-    slug: string;
-    title: string;
-    alt_text?: string | null;
-    /** Server withheld the media (mature, no consent yet): show the gate, never the image. */
-    media_withheld: boolean;
-    media_urls?: { display?: { src: string; srcset?: string } } | null;
-}
-
 const props = withDefaults(
     defineProps<{
         /** The current page of results; prev/next wrap around within it. */
-        artworks: LightboxArtwork[];
+        artworks: PublicArtwork[];
         /** Page props the gate reloads after consent. */
         reloadOnly?: string[];
         /** Prev/next buttons and arrow keys. Off for a single artwork. */
@@ -151,25 +142,24 @@ const iconButton =
                     class="relative flex flex-1 items-center justify-center overflow-auto p-4 sm:p-10"
                     @click.self="close"
                 >
-                    <div
-                        v-if="active.media_withheld"
-                        class="relative m-auto h-[60vh] w-full max-w-md"
-                    >
-                        <NsfwGate
-                            withheld
-                            :artwork-id="active.id"
-                            :reload-only="reloadOnly"
-                            variant="detail"
-                        />
-                    </div>
-                    <div
-                        v-else-if="active.media_urls?.display"
-                        class="relative m-auto inline-block"
+                    <GatedArtworkImage
+                        :key="active.id"
+                        :artwork="active"
+                        conversion="display"
+                        variant="detail"
+                        :reload-only="reloadOnly"
+                        withheld-class="relative m-auto h-[60vh] w-full max-w-md"
+                        frame-class="m-auto inline-block"
+                        empty-class="text-stone-300 italic"
+                        :action-label="isZoomed ? 'Zoom out' : 'Zoom in'"
+                        :pressed="isZoomed"
+                        :action-class="`focus-visible:outline-white ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`"
+                        @action="isZoomed = !isZoomed"
+                        v-slot="{ image }"
                     >
                         <img
-                            :key="active.id"
-                            :src="active.media_urls.display.src"
-                            :srcset="active.media_urls.display.srcset"
+                            :src="image.src"
+                            :srcset="image.srcset"
                             :alt="active.alt_text || active.title"
                             sizes="100vw"
                             :class="[
@@ -179,21 +169,7 @@ const iconButton =
                                     : 'max-h-[75vh] max-w-full object-contain',
                             ]"
                         />
-                        <!-- Covers the image to discourage casual saving; also the zoom toggle -->
-                        <button
-                            type="button"
-                            class="absolute inset-0 z-10 focus-visible:-outline-offset-4 focus-visible:outline-white"
-                            :class="
-                                isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
-                            "
-                            :aria-label="isZoomed ? 'Zoom out' : 'Zoom in'"
-                            :aria-pressed="isZoomed"
-                            @click="isZoomed = !isZoomed"
-                        ></button>
-                    </div>
-                    <p v-else class="text-stone-300 italic">
-                        No image available
-                    </p>
+                    </GatedArtworkImage>
                 </div>
 
                 <div class="relative z-20 px-4 pt-4 pb-10 text-center">

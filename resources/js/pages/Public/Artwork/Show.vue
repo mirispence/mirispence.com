@@ -3,81 +3,57 @@ import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/Art
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtLightbox from '@/components/ArtLightbox.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
-import NsfwGate from '@/components/NsfwGate.vue';
+import GatedArtworkImage from '@/components/GatedArtworkImage.vue';
 import { Button } from '@/components/ui/button';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
-    artwork: any;
+    artwork: PublicArtwork;
 }>();
 
 /** 0 while the lightbox shows this artwork, null when closed. */
 const lightboxIndex = ref<number | null>(null);
 
 /** Published galleries only (the controller filters them). */
-const galleries = computed<{ id: number; name: string; slug: string }[]>(
-    () => props.artwork.galleries ?? [],
-);
+const galleries = computed(() => props.artwork.galleries ?? []);
 </script>
 
 <template>
     <PublicLayout>
         <article class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <!-- Image: content width at its natural aspect ratio, capped at 85vh tall -->
-            <NsfwGate
-                :withheld="artwork.media_withheld"
-                :artwork-id="artwork.id"
-                :reload-only="['artwork']"
+            <!-- Withheld: no dimensions are known, so the gate gets a sensible minimum -->
+            <GatedArtworkImage
+                :artwork="artwork"
+                conversion="display"
                 variant="detail"
-                v-slot="{ revealed }"
+                :reload-only="['artwork']"
+                withheld-class="h-[70vh] min-h-96 w-full bg-card"
+                frame-class="mx-auto w-fit max-w-full"
+                empty-class="flex h-80 items-center justify-center bg-card text-2xl text-muted-foreground italic"
+                :action-label="`Enlarge ${artwork.title}`"
+                opens-dialog
+                action-class="cursor-zoom-in"
+                @action="lightboxIndex = 0"
+                v-slot="{ image }"
             >
-                <div
-                    v-if="artwork.media_urls?.display"
-                    class="relative mx-auto w-fit max-w-full"
-                >
-                    <!-- With a w-descriptor srcset the intrinsic width is the `sizes`
-                         slot, so wide pieces fill the content width and tall ones
-                         shrink to the height cap without a letterboxing box. -->
-                    <img
-                        :src="artwork.media_urls.display.src"
-                        :srcset="artwork.media_urls.display.srcset"
-                        :alt="artwork.alt_text || artwork.title"
-                        class="block h-auto max-h-[85vh] w-auto max-w-full"
-                        sizes="(min-width: 1280px) 1216px, calc(100vw - 2rem)"
-                        loading="eager"
-                        fetchpriority="high"
-                    />
-
-                    <!-- Covers the image to discourage casual saving; opens the lightbox -->
-                    <button
-                        v-if="revealed"
-                        type="button"
-                        class="absolute inset-0 z-10 cursor-zoom-in focus-visible:-outline-offset-4"
-                        :aria-label="`Enlarge ${artwork.title}`"
-                        aria-haspopup="dialog"
-                        @click="
-                            ($event.currentTarget as HTMLElement).focus();
-                            lightboxIndex = 0;
-                        "
-                    ></button>
-                </div>
-
-                <!-- Withheld: no dimensions are known, so reserve a sensible minimum for the gate -->
-                <div
-                    v-else-if="artwork.media_withheld"
-                    class="h-[70vh] min-h-96 w-full bg-card"
-                ></div>
-
-                <div
-                    v-else
-                    class="flex h-80 items-center justify-center bg-card text-2xl text-muted-foreground italic"
-                >
-                    No image available
-                </div>
-            </NsfwGate>
+                <!-- With a w-descriptor srcset the intrinsic width is the `sizes`
+                     slot, so wide pieces fill the content width and tall ones
+                     shrink to the height cap without a letterboxing box. -->
+                <img
+                    :src="image.src"
+                    :srcset="image.srcset"
+                    :alt="artwork.alt_text || artwork.title"
+                    class="block h-auto max-h-[85vh] w-auto max-w-full"
+                    sizes="(min-width: 1280px) 1216px, calc(100vw - 2rem)"
+                    loading="eager"
+                    fetchpriority="high"
+                />
+            </GatedArtworkImage>
 
             <!-- Text: one readable column -->
             <div class="mx-auto mt-12 max-w-[65ch]">

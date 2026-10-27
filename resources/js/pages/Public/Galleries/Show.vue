@@ -6,13 +6,14 @@ import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 defineProps<{
     gallery: any;
     artworks: {
-        data: Array<any>;
+        data: PublicArtwork[];
         links: Array<any>;
         meta: any;
     };

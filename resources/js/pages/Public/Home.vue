@@ -10,19 +10,14 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps<{
     /** Newest unflagged featured artwork, or null when none is eligible (ADR-0004). */
-    heroArtwork: {
-        id: number;
-        title: string;
-        slug: string;
-        alt_text: string | null;
-        media_urls: any;
-    } | null;
-    featuredArtworks: Array<any>;
+    heroArtwork: PublicArtwork | null;
+    featuredArtworks: PublicArtwork[];
     featuredBooks: Array<any>;
 }>();
 
