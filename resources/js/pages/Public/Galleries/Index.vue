@@ -2,6 +2,7 @@
 import { index as artworkIndex } from '@/actions/App/Http/Controllers/Public/ArtworkController';
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import PublicPagination from '@/components/PublicPagination.vue';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -21,10 +22,10 @@ defineProps<{
                 <h1
                     class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                 >
-                    Galleries
+                    {{ copy.galleries.heading }}
                 </h1>
                 <p class="mt-4 text-xl text-muted-foreground">
-                    Curated sets of themed illustrations and studies.
+                    {{ copy.galleries.intro }}
                 </p>
                 <Link
                     :href="artworkIndex.url()"

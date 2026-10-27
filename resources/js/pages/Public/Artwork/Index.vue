@@ -4,6 +4,7 @@ import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/G
 import ArtCard from '@/components/ArtCard.vue';
 import ArtLightbox from '@/components/ArtLightbox.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -36,10 +37,10 @@ const lightboxIndex = ref<number | null>(null);
                     <h1
                         class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
-                        Artwork
+                        {{ copy.artworkIndex.heading }}
                     </h1>
                     <p class="mt-4 text-lg text-muted-foreground">
-                        All of my recent illustrations and character art.
+                        {{ copy.artworkIndex.intro }}
                     </p>
                     <p
                         v-if="filters.tag"
@@ -85,11 +86,11 @@ const lightboxIndex = ref<number | null>(null);
                 class="mt-16 rounded-lg border border-border bg-card py-24 text-center"
             >
                 <h2 class="text-2xl font-semibold text-muted-foreground">
-                    No artwork found
+                    {{ copy.artworkIndex.emptyHeading }}
                 </h2>
                 <p class="mt-2 text-muted-foreground">
                     <template v-if="filters.tag">
-                        Nothing is tagged with that yet.
+                        {{ copy.artworkIndex.emptyTaggedBody }}
                         <Link
                             :href="artworkIndex.url()"
                             class="font-semibold text-primary underline-offset-4 hover:underline"
@@ -97,7 +98,9 @@ const lightboxIndex = ref<number | null>(null);
                             See all artwork
                         </Link>
                     </template>
-                    <template v-else>Check back soon for new work.</template>
+                    <template v-else>{{
+                        copy.artworkIndex.emptyBody
+                    }}</template>
                 </p>
             </div>
 

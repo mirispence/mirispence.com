@@ -2,6 +2,7 @@
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -91,7 +92,7 @@ defineProps<{
                             <h2
                                 class="mb-6 font-display text-2xl text-foreground"
                             >
-                                Chapters
+                                {{ copy.book.chaptersHeading }}
                             </h2>
                             <div
                                 class="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card shadow-card"
@@ -134,7 +135,7 @@ defineProps<{
                             <h3
                                 class="mb-6 text-xl font-semibold text-foreground"
                             >
-                                Available at
+                                {{ copy.book.availableAtHeading }}
                             </h3>
                             <div class="flex flex-wrap gap-4">
                                 <a

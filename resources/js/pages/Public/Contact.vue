@@ -3,6 +3,7 @@ import FormSelect from '@/components/FormSelect.vue';
 import FormTextarea from '@/components/FormTextarea.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
@@ -41,11 +42,10 @@ const submit = () => {
                     <h1
                         class="font-display text-4xl tracking-tight wrap-break-word text-foreground sm:text-5xl"
                     >
-                        Get in Touch
+                        {{ copy.contact.heading }}
                     </h1>
                     <p class="mt-4 text-xl text-muted-foreground">
-                        Have a question or want to work together? I'd love to
-                        hear from you.
+                        {{ copy.contact.intro }}
                     </p>
                 </div>
 
@@ -70,7 +70,7 @@ const submit = () => {
                             </svg>
                         </div>
                         <p class="text-sm font-semibold text-green-800">
-                            {{ $page.props.flash.success }}
+                            {{ copy.contact.success }}
                         </p>
                     </div>
                 </div>
