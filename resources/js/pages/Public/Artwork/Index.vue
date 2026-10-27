@@ -6,12 +6,13 @@ import ArtLightbox from '@/components/ArtLightbox.vue';
 import PublicPagination from '@/components/PublicPagination.vue';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 defineProps<{
     artworks: {
-        data: Array<any>;
+        data: PublicArtwork[];
         links: Array<any>;
         meta: any;
     };
@@ -65,7 +66,7 @@ const lightboxIndex = ref<number | null>(null);
                     :href="galleriesIndex.url()"
                     class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                 >
-                    Browse Galleries &rarr;
+                    {{ copy.links.browseGalleries }}
                 </Link>
             </div>
 
@@ -95,7 +96,7 @@ const lightboxIndex = ref<number | null>(null);
                             :href="artworkIndex.url()"
                             class="font-semibold text-primary underline-offset-4 hover:underline"
                         >
-                            See all artwork
+                            {{ copy.links.seeAllArtwork }}
                         </Link>
                     </template>
                     <template v-else>{{

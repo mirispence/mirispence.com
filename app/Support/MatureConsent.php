@@ -49,7 +49,7 @@ final class MatureConsent
     public function reveal(int $artworkId): void
     {
         $eligible = Artwork::published()
-            ->where('nsfw_flag', true)
+            ->mature()
             ->whereKey($artworkId)
             ->exists();
 

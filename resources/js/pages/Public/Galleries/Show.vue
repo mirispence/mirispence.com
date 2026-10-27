@@ -6,13 +6,14 @@ import PublicPagination from '@/components/PublicPagination.vue';
 import { Button } from '@/components/ui/button';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 defineProps<{
     gallery: any;
     artworks: {
-        data: Array<any>;
+        data: PublicArtwork[];
         links: Array<any>;
         meta: any;
     };
@@ -59,7 +60,7 @@ const lightboxIndex = ref<number | null>(null);
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                 />
                             </svg>
-                            Back to Galleries
+                            {{ copy.links.backToGalleries }}
                         </Button>
                     </Link>
                 </div>

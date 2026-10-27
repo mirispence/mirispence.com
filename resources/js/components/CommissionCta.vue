@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { create as contactCreate } from '@/actions/App/Http/Controllers/Public/ContactController';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/vue3';
 import type { HTMLAttributes } from 'vue';
 
@@ -20,8 +19,8 @@ const props = withDefaults(
     <Button
         as-child
         variant="accent"
-        :size="props.size === 'compact' ? 'sm' : 'lg'"
-        :class="cn(props.size === 'default' && 'px-8', props.class)"
+        :size="props.size === 'compact' ? 'sm' : 'default'"
+        :class="props.class"
     >
         <Link :href="contactCreate.url({ query: { type: 'commission' } })">
             Commissions

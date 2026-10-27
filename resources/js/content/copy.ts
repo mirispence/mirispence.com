@@ -1,9 +1,10 @@
 /**
  * Public-site marketing copy (#57): edit the words here, not in the page templates.
  *
- * Keyed by page. Data-driven text (titles and descriptions from the database),
- * form field labels, validation messages and UI chrome (nav, buttons, aria
- * labels) are not here. Meta descriptions live in app/Support/Seo/SeoBuilder.php.
+ * Keyed by page, plus `links` for call-to-action and "back" link labels shared
+ * across pages. Data-driven text (titles and descriptions from the database),
+ * form field labels, validation messages and UI chrome (nav, aria labels,
+ * placeholders, filter controls, the "Commissions" CTA) are not here. Meta descriptions live in app/Support/Seo/SeoBuilder.php.
  */
 export interface PublicCopy {
     site: {
@@ -67,6 +68,26 @@ export interface PublicCopy {
         revealButton: string;
         revealAllLabel: string;
     };
+    links: {
+        /** Home hero button to /art. */
+        viewGalleries: string;
+        /** Home featured art and /art header, to /artwork. */
+        viewAllArtwork: string;
+        /** Home featured books, to /books. */
+        viewAllBooks: string;
+        /** /artwork header, to /art. */
+        browseGalleries: string;
+        /** /artwork?tag= empty state, clears the filter. */
+        seeAllArtwork: string;
+        /** /books card hover button. */
+        readMore: string;
+        /** Lightbox link to the artwork page. */
+        viewDetails: string;
+        backToArtwork: string;
+        backToGalleries: string;
+        /** /books/{slug}, back to /books. */
+        backToLibrary: string;
+    };
 }
 
 export const copy: PublicCopy = {
@@ -128,5 +149,17 @@ export const copy: PublicCopy = {
         body: 'This artwork may not be suitable for all audiences.',
         revealButton: 'Reveal Artwork',
         revealAllLabel: 'Show all NSFW artwork this session',
+    },
+    links: {
+        viewGalleries: 'View Galleries',
+        viewAllArtwork: 'View all artwork →',
+        viewAllBooks: 'View All Books →',
+        browseGalleries: 'Browse Galleries →',
+        seeAllArtwork: 'See all artwork',
+        readMore: 'Read More',
+        viewDetails: 'View details →',
+        backToArtwork: 'Back to Artwork',
+        backToGalleries: 'Back to Galleries',
+        backToLibrary: 'Back to Library',
     },
 };

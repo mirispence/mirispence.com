@@ -19,7 +19,7 @@ class HomeController extends Controller
         // The hero is never gated, so it never shows mature artwork (ADR-0004).
         $heroArtwork = Artwork::featured()
             ->published()
-            ->where('nsfw_flag', false)
+            ->notMature()
             ->latest('created_on')
             ->first();
 

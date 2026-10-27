@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { index as booksIndex } from '@/actions/App/Http/Controllers/Public/BookController';
 import { show as galleryShow } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -169,7 +170,7 @@ defineProps<{
                     </div>
 
                     <div class="mt-16 border-t border-border pt-12">
-                        <Link href="/books">
+                        <Link :href="booksIndex.url()">
                             <Button
                                 variant="ghost"
                                 class="text-muted-foreground hover:text-primary"
@@ -187,7 +188,7 @@ defineProps<{
                                         d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                     />
                                 </svg>
-                                Back to Library
+                                {{ copy.links.backToLibrary }}
                             </Button>
                         </Link>
                     </div>

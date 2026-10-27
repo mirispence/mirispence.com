@@ -3,6 +3,10 @@ import {
     index as artworkIndex,
     show as artworkShow,
 } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import {
+    show as bookShow,
+    index as booksIndex,
+} from '@/actions/App/Http/Controllers/Public/BookController';
 import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
@@ -10,19 +14,14 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import type { PublicArtwork } from '@/types/publicArtwork';
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps<{
     /** Newest unflagged featured artwork, or null when none is eligible (ADR-0004). */
-    heroArtwork: {
-        id: number;
-        title: string;
-        slug: string;
-        alt_text: string | null;
-        media_urls: any;
-    } | null;
-    featuredArtworks: Array<any>;
+    heroArtwork: PublicArtwork | null;
+    featuredArtworks: PublicArtwork[];
     featuredBooks: Array<any>;
 }>();
 
@@ -57,9 +56,9 @@ const heroImage = computed(
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">
                             <Link :href="galleriesIndex.url()">
-                                <Button size="lg" class="bg-primary px-8"
-                                    >View Galleries</Button
-                                >
+                                <Button size="lg" class="bg-primary px-8">{{
+                                    copy.links.viewGalleries
+                                }}</Button>
                             </Link>
                             <CommissionCta />
                         </div>
@@ -104,7 +103,7 @@ const heroImage = computed(
                         :href="artworkIndex.url()"
                         class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        View all artwork →
+                        {{ copy.links.viewAllArtwork }}
                     </Link>
                 </div>
 
@@ -152,10 +151,10 @@ const heroImage = computed(
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>
                     <Link
-                        href="/books"
+                        :href="booksIndex.url()"
                         class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
-                        View All Books →
+                        {{ copy.links.viewAllBooks }}
                     </Link>
                 </div>
 
@@ -185,7 +184,7 @@ const heroImage = computed(
                             <h3
                                 class="text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
-                                <Link :href="`/books/${book.slug}`">
+                                <Link :href="bookShow.url(book.slug)">
                                     {{ book.title }}
                                 </Link>
                             </h3>
