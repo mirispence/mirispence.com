@@ -3,6 +3,10 @@ import {
     index as artworkIndex,
     show as artworkShow,
 } from '@/actions/App/Http/Controllers/Public/ArtworkController';
+import {
+    show as bookShow,
+    index as booksIndex,
+} from '@/actions/App/Http/Controllers/Public/BookController';
 import { index as galleriesIndex } from '@/actions/App/Http/Controllers/Public/GalleryController';
 import ArtCard from '@/components/ArtCard.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
@@ -147,7 +151,7 @@ const heroImage = computed(
                         <div class="mt-2 h-1 w-20 rounded-full bg-primary/20" />
                     </div>
                     <Link
-                        href="/books"
+                        :href="booksIndex.url()"
                         class="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
                     >
                         View All Books →
@@ -180,7 +184,7 @@ const heroImage = computed(
                             <h3
                                 class="text-xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
-                                <Link :href="`/books/${book.slug}`">
+                                <Link :href="bookShow.url(book.slug)">
                                     {{ book.title }}
                                 </Link>
                             </h3>

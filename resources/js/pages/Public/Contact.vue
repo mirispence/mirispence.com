@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { store as contactStore } from '@/actions/App/Http/Controllers/Public/ContactController';
 import FormSelect from '@/components/FormSelect.vue';
 import FormTextarea from '@/components/FormTextarea.vue';
 import { Button } from '@/components/ui/button';
@@ -27,7 +28,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/contact', {
+    form.post(contactStore.url(), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
     });

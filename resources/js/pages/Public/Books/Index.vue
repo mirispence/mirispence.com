@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { show as bookShow } from '@/actions/App/Http/Controllers/Public/BookController';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { copy } from '@/content/copy';
@@ -47,7 +48,10 @@ defineProps<{
                         <div
                             class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100"
                         >
-                            <Link :href="`/books/${book.slug}`" class="w-full">
+                            <Link
+                                :href="bookShow.url(book.slug)"
+                                class="w-full"
+                            >
                                 <Button class="w-full">Read More</Button>
                             </Link>
                         </div>
@@ -57,7 +61,7 @@ defineProps<{
                             <h3
                                 class="text-2xl font-semibold text-foreground transition-colors group-hover:text-primary"
                             >
-                                <Link :href="`/books/${book.slug}`">
+                                <Link :href="bookShow.url(book.slug)">
                                     {{ book.title }}
                                 </Link>
                             </h3>
