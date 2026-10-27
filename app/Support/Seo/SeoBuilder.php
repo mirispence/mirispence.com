@@ -112,8 +112,7 @@ class SeoBuilder
     public static function forArtwork(Artwork $artwork): SeoPayload
     {
         $description = $artwork->description ?: sprintf(self::ARTWORK_FALLBACK_DESCRIPTION, $artwork->title);
-        // Mature artwork never feeds SEO images (ADR-0004).
-        $image = ($artwork->nsfw_flag ? null : self::publicDisplayUrl($artwork)) ?? self::getFallbackOgImage();
+        $image = self::seoImage($artwork) ?? self::getFallbackOgImage();
 
         $jsonld = [
             '@context' => 'https://schema.org',
@@ -240,31 +239,33 @@ class SeoBuilder
      */
     protected static function getFallbackOgImage(): ?string
     {
-        $safe = fn () => Artwork::published()->where('nsfw_flag', false)->latest('created_on');
+        $safe = fn () => Artwork::published()->notMature()->latest('created_on');
 
-        $artwork = $safe()->featured()->first() ?? $safe()->first();
-
-        return self::publicDisplayUrl($artwork);
+        return self::seoImage($safe()->featured()->first() ?? $safe()->first());
     }
 
     /**
-     * The gallery's cover display URL, or null when it has none or the cover is
-     * mature (consent never changes SEO output).
+     * The gallery's cover image for SEO, or null when it has no visible cover
+     * (`cover_urls` is empty) or the cover is mature.
      */
     private static function galleryCoverImage(Gallery $gallery): ?string
     {
-        if ($gallery->coverArtwork?->nsfw_flag) {
+        return $gallery->cover_urls === [] ? null : self::seoImage($gallery->coverArtwork);
+    }
+
+    /**
+     * The one "may this image appear publicly" check: the artwork's public
+     * display URL, or null when there is no artwork or media, or it is mature.
+     * Mature artwork never feeds SEO images, whatever the session consented to
+     * (ADR-0004).
+     */
+    private static function seoImage(?Artwork $artwork): ?string
+    {
+        if ($artwork === null || $artwork->nsfw_flag) {
             return null;
         }
 
-        $src = $gallery->cover_urls['display']['src'] ?? null;
-
-        return is_string($src) && $src !== '' ? $src : null;
-    }
-
-    private static function publicDisplayUrl(?Artwork $artwork): ?string
-    {
-        $src = $artwork?->mediaUrlBuilder()->public()['display']['src'] ?? null;
+        $src = $artwork->mediaUrlBuilder()->public()['display']['src'] ?? null;
 
         return is_string($src) && $src !== '' ? $src : null;
     }

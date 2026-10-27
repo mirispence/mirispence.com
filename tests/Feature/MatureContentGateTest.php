@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\Artwork;
+use App\Models\Book;
 use App\Models\Gallery;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -222,6 +223,31 @@ test('seo for a flagged artwork, and for a gallery with a flagged cover, uses th
 
     // The site-wide fallback itself never picks the newer flagged featured artwork.
     assertNoMediaUrlsFor(gateProps($this->get(route('home')))['seo'], $flagged);
+});
+
+test('seo for a book whose gallery cover is flagged uses the site fallback image, and an unflagged cover is used', function () {
+    $safe = gateArtwork(['created_on' => now()->subYear()]);
+    $flagged = gateFlaggedArtwork(['featured_flag' => false]);
+    $fallback = $safe->mediaUrlBuilder()->public()['display']['src'];
+
+    $this->post(route('mature-consent.store'), ['all' => true]);
+
+    $flaggedBook = Book::factory()->create([
+        'publish_status' => 'published',
+        'gallery_id' => gateGalleryCoveredBy($flagged)->id,
+    ]);
+    $bookSeo = gateProps($this->get(route('books.show', $flaggedBook)))['seo'];
+    expect($bookSeo['og']['image'])->toBe($fallback)
+        ->and($bookSeo['jsonld']['image'])->toBe($fallback);
+    assertNoMediaUrlsFor($bookSeo, $flagged);
+
+    $cover = gateArtwork(['featured_flag' => false]);
+    $safeBook = Book::factory()->create([
+        'publish_status' => 'published',
+        'gallery_id' => gateGalleryCoveredBy($cover)->id,
+    ]);
+    expect(gateProps($this->get(route('books.show', $safeBook)))['seo']['og']['image'])
+        ->toBe($cover->mediaUrlBuilder()->public()['display']['src']);
 });
 
 test('the home hero never selects flagged artwork while the featured grid still lists it gated', function () {
