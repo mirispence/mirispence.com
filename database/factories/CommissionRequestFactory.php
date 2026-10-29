@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\CommissionRequest;
+use App\Models\ContactMessage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CommissionRequest>
+ * @extends Factory<CommissionRequest>
  */
 class CommissionRequestFactory extends Factory
 {
@@ -17,7 +19,7 @@ class CommissionRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'contact_message_id' => \App\Models\ContactMessage::factory(),
+            'contact_message_id' => ContactMessage::factory(),
             'project_description' => $this->faker->paragraph(),
             'budget_range' => '$100-$500',
             'desired_due_date' => $this->faker->date(),

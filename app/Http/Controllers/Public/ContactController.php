@@ -6,19 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
 use App\Models\ContactMessage;
 use App\Support\Seo\SeoBuilder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ContactController extends Controller
 {
-    public function create(): \Inertia\Response
+    public function create(): Response
     {
         Inertia::share('seo', SeoBuilder::forContact());
 
         return Inertia::render('Public/Contact');
     }
 
-    public function store(ContactRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(ContactRequest $request): RedirectResponse
     {
         $key = 'contact:'.$request->ip();
 

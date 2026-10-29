@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Artwork;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Assert;
 use Tests\TestCase;
@@ -92,7 +93,7 @@ function assertNoOriginalMedia(mixed $payload, array $privateUrls = []): void
  * public media URLs (any conversion) at any depth. Used for the mature-content
  * gate (ADR-0004): flagged artwork must not leak URLs before consent.
  */
-function assertNoMediaUrlsFor(mixed $payload, \App\Models\Artwork $artwork): void
+function assertNoMediaUrlsFor(mixed $payload, Artwork $artwork): void
 {
     $urls = [];
     $sets = $artwork->mediaUrlBuilder()->public();

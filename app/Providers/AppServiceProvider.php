@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -26,13 +27,13 @@ class AppServiceProvider extends ServiceProvider
             'book' => 'App\Models\Book',
         ]);
 
-        Gate::define('view-original', function (\App\Models\User $user): bool {
+        Gate::define('view-original', function (User $user): bool {
             return $user->hasPermissionTo('can view source image');
         });
 
         // Implicitly grant "admin" role all permissions
         // This works in the gate system which is used by $this->authorize()
-        Gate::before(function (\App\Models\User $user, string $ability): ?bool {
+        Gate::before(function (User $user, string $ability): ?bool {
             return $user->hasRole('admin') ? true : null;
         });
     }

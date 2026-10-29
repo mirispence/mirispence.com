@@ -19,7 +19,7 @@ class SeoPayload implements Arrayable
         public bool $appendBrand = true,
     ) {
         $this->site_name ??= config('app.name');
-        
+
         $this->og = array_merge([
             'type' => 'website',
             'title' => $this->title,

@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreFeaturedItemRequest;
 use App\Http\Requests\Admin\UpdateFeaturedItemRequest;
+use App\Models\Artwork;
+use App\Models\Book;
 use App\Models\FeaturedItem;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class FeaturedItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         $this->authorize('admin');
 
@@ -25,17 +29,17 @@ class FeaturedItemController extends Controller
         ]);
     }
 
-    public function create(): \Inertia\Response
+    public function create(): Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/FeaturedItems/Create', [
-            'artworks' => \App\Models\Artwork::all(),
-            'books' => \App\Models\Book::all(),
+            'artworks' => Artwork::all(),
+            'books' => Book::all(),
         ]);
     }
 
-    public function store(StoreFeaturedItemRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreFeaturedItemRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -50,18 +54,18 @@ class FeaturedItemController extends Controller
         //
     }
 
-    public function edit(FeaturedItem $featuredItem): \Inertia\Response
+    public function edit(FeaturedItem $featuredItem): Response
     {
         $this->authorize('admin');
 
         return Inertia::render('Admin/FeaturedItems/Edit', [
             'featuredItem' => $featuredItem,
-            'artworks' => \App\Models\Artwork::all(),
-            'books' => \App\Models\Book::all(),
+            'artworks' => Artwork::all(),
+            'books' => Book::all(),
         ]);
     }
 
-    public function update(UpdateFeaturedItemRequest $request, FeaturedItem $featuredItem): \Illuminate\Http\RedirectResponse
+    public function update(UpdateFeaturedItemRequest $request, FeaturedItem $featuredItem): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -71,7 +75,7 @@ class FeaturedItemController extends Controller
             ->with('success', 'Featured item updated successfully.');
     }
 
-    public function destroy(FeaturedItem $featuredItem): \Illuminate\Http\RedirectResponse
+    public function destroy(FeaturedItem $featuredItem): RedirectResponse
     {
         $this->authorize('admin');
 

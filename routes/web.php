@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\ChapterController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FeaturedItemController;
+use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\OriginalMediaController;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Public\ArtworkController;
 use App\Http\Controllers\Public\BookController;
 use App\Http\Controllers\Public\ContactController;
@@ -25,17 +32,17 @@ Route::post('/mature-consent', [MatureConsentController::class, 'store'])
 require __DIR__.'/settings.php';
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('artworks', App\Http\Controllers\Admin\ArtworkController::class);
     Route::resource('galleries', App\Http\Controllers\Admin\GalleryController::class);
     Route::resource('books', App\Http\Controllers\Admin\BookController::class);
-    Route::resource('chapters', App\Http\Controllers\Admin\ChapterController::class);
-    Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
-    Route::resource('featured-items', App\Http\Controllers\Admin\FeaturedItemController::class);
-    Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->only(['index', 'show', 'update', 'destroy']);
-    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    Route::resource('chapters', ChapterController::class);
+    Route::resource('tags', TagController::class);
+    Route::resource('featured-items', FeaturedItemController::class);
+    Route::resource('messages', MessageController::class)->only(['index', 'show', 'update', 'destroy']);
+    Route::resource('users', UserController::class);
 
-    Route::get('media/{media}/original', [\App\Http\Controllers\Admin\OriginalMediaController::class, 'show'])
+    Route::get('media/{media}/original', [OriginalMediaController::class, 'show'])
         ->middleware(['permission:can view source image'])
         ->name('media.original');
 
