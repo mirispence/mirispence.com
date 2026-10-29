@@ -91,7 +91,7 @@ composer analyse
 ## Code formatting
 
 ```bash
-./vendor/bin/pint                     # format PHP
+./vendor/bin/pint                     # format PHP (Laravel preset, no pint.json; CI runs pint --test)
 npm run format                        # format JS/TS/Vue (Prettier)
 ```
 
@@ -200,7 +200,7 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 - The Books nav link is hard-coded on (`showBooks` in `PublicLayout.vue`, `TODO(#45)`) until the shared books feature flag lands.
 - `.env.example` is missing all R2 environment variables
 - Admin form restyle is specced in `instructions/update-admin-styles.md` but not yet applied
-- CI (`.github/workflows/ci.yml`) runs tests/PHPStan/ESLint/type-check/Prettier check on PRs to `main`; `.github/workflows/deploy.yml` deploys on push to `main` without re-running them
+- CI (`.github/workflows/ci.yml`) runs tests/PHPStan/Pint/ESLint/type-check/Prettier check on PRs to `main`; `.github/workflows/deploy.yml` deploys on push to `main` without re-running them
 
 ---
 

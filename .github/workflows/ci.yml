@@ -55,6 +55,9 @@ jobs:
       - name: Run PHPStan
         run: composer analyse
 
+      - name: Check PHP formatting
+        run: ./vendor/bin/pint --test
+
       - name: Run ESLint
         run: npx eslint .
 

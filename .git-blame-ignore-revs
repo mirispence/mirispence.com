@@ -1,0 +1,3 @@
+# Formatting-only commits. Use with: git config blame.ignoreRevsFile .git-blame-ignore-revs
+# Laravel Pint preset applied across the codebase (#44)
+7207f441198584481d3b4359fb22c57aadc1cd99
