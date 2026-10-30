@@ -7,16 +7,18 @@ use App\Http\Requests\Admin\StoreChapterRequest;
 use App\Http\Requests\Admin\UpdateChapterRequest;
 use App\Models\Book;
 use App\Models\Chapter;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ChapterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): \Inertia\Response
+    public function index(Request $request): Response
     {
         $this->authorize('admin');
 
@@ -39,7 +41,7 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function create(Request $request): \Inertia\Response
+    public function create(Request $request): Response
     {
         $this->authorize('admin');
 
@@ -49,7 +51,7 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function store(StoreChapterRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreChapterRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -66,7 +68,7 @@ class ChapterController extends Controller
         //
     }
 
-    public function edit(Chapter $chapter): \Inertia\Response
+    public function edit(Chapter $chapter): Response
     {
         $this->authorize('admin');
 
@@ -76,7 +78,7 @@ class ChapterController extends Controller
         ]);
     }
 
-    public function update(UpdateChapterRequest $request, Chapter $chapter): \Illuminate\Http\RedirectResponse
+    public function update(UpdateChapterRequest $request, Chapter $chapter): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -90,7 +92,7 @@ class ChapterController extends Controller
             ->with('success', 'Chapter updated successfully.');
     }
 
-    public function destroy(Chapter $chapter): \Illuminate\Http\RedirectResponse
+    public function destroy(Chapter $chapter): RedirectResponse
     {
         $this->authorize('admin');
 

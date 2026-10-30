@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ContactMessage extends Model
 {
@@ -26,7 +27,7 @@ class ContactMessage extends Model
         ];
     }
 
-    public function commissionRequest(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function commissionRequest(): HasOne
     {
         return $this->hasOne(CommissionRequest::class);
     }

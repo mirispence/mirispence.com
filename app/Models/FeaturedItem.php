@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class FeaturedItem extends Model
 {
@@ -23,7 +24,7 @@ class FeaturedItem extends Model
         ];
     }
 
-    public function item(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function item(): MorphTo
     {
         return $this->morphTo();
     }

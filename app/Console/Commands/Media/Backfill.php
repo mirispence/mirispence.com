@@ -3,8 +3,8 @@
 namespace App\Console\Commands\Media;
 
 use Illuminate\Console\Command;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Backfill extends Command
 {
@@ -33,11 +33,11 @@ class Backfill extends Command
             foreach ($media->getGeneratedConversions() as $conversionName => $status) {
                 if ($status) {
                     $conversionPath = $media->getPathRelativeToRoot($conversionName);
-                    
+
                     // Check if it's accidentally in r2_private from a previous run
                     if ($r2Private->exists($conversionPath)) {
                         $this->line("Found conversion on private bucket, moving to public: {$conversionPath}");
-                        if (!$this->option('dry-run')) {
+                        if (! $this->option('dry-run')) {
                             $r2Public->put($conversionPath, $r2Private->get($conversionPath));
                             $r2Private->delete($conversionPath);
                         }
@@ -49,7 +49,7 @@ class Backfill extends Command
             }
 
             // 3. Update disk names in DB
-            if (!$this->option('dry-run')) {
+            if (! $this->option('dry-run')) {
                 $media->disk = 'r2_private';
                 $media->conversions_disk = 'r2_public';
                 $media->save();
@@ -74,6 +74,7 @@ class Backfill extends Command
         if ($sourceDisk->exists($relativePath)) {
             if ($this->option('dry-run')) {
                 $this->line("Would move {$type}: {$relativePath}");
+
                 return;
             }
 

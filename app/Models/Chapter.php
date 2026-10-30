@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Services\MarkdownRenderer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Chapter extends Model
 {
@@ -23,7 +25,7 @@ class Chapter extends Model
 
     public function getBodyHtmlAttribute(): string
     {
-        return app(\App\Services\MarkdownRenderer::class)->toHtml($this->body_markdown);
+        return app(MarkdownRenderer::class)->toHtml($this->body_markdown);
     }
 
     protected function casts(): array
@@ -34,7 +36,7 @@ class Chapter extends Model
         ];
     }
 
-    public function book(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }

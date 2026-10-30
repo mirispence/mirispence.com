@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
+use App\Models\Chapter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Chapter>
+ * @extends Factory<Chapter>
  */
 class ChapterFactory extends Factory
 {
@@ -17,7 +19,7 @@ class ChapterFactory extends Factory
     public function definition(): array
     {
         return [
-            'book_id' => \App\Models\Book::factory(),
+            'book_id' => Book::factory(),
             'title' => $this->faker->sentence(3),
             'slug' => $this->faker->slug(),
             'summary' => $this->faker->paragraph(),
