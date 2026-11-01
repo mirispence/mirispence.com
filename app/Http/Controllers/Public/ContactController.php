@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
 use App\Models\ContactMessage;
+use App\Services\SubmissionNotifier;
 use App\Support\Seo\SeoBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\RateLimiter;
@@ -20,7 +21,7 @@ class ContactController extends Controller
         return Inertia::render('Public/Contact');
     }
 
-    public function store(ContactRequest $request): RedirectResponse
+    public function store(ContactRequest $request, SubmissionNotifier $notifier): RedirectResponse
     {
         $key = 'contact:'.$request->ip();
 
@@ -50,7 +51,7 @@ class ContactController extends Controller
             ]);
         }
 
-        // TODO: Send email notification (Phase 5)
+        $notifier->notify($message);
 
         return redirect()->back()->with('success', 'Message sent successfully!');
     }

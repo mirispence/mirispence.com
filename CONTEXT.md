@@ -27,7 +27,8 @@ app/
                         #   ContactMessage, CommissionRequest, User
   Providers/            # AppServiceProvider (Gate defs), FortifyServiceProvider,
                         #   HorizonServiceProvider
-  Services/             # MarkdownRenderer
+  Mail/                 # SubmissionReceived (queued owner email, plain text)
+  Services/             # MarkdownRenderer, SubmissionNotifier
   Support/              # MatureConsent (session consent for nsfw_flag artwork, ADR-0004)
     Media/              # MediaUrlBuilder (single source of media URL sets)
     MediaLibrary/       # CustomPathGenerator
@@ -137,6 +138,7 @@ Book has no media of its own either (not `HasMedia`). It points at a Gallery (`B
 ## Queue / Jobs
 
 - `RegenerateArtworkImages` — tracks `image_status` on artwork (pending → processing → ready/failed)
+- `SubmissionReceived` — owner email for each contact or commission submission, sent to `MAIL_OWNER_ADDRESS` with Reply-To set to the requester. `SubmissionNotifier` queues it after the record is saved, skips it when the address is unset, and reports rather than throws if queueing fails
 - Dev: `QUEUE_CONNECTION=database` (run `php artisan queue:listen`)
 - Prod: Redis + Horizon (`supervisorctl restart horizon` on deploy)
 
@@ -153,6 +155,7 @@ Book has no media of its own either (not `HasMedia`). It points at a Gallery (`B
 - `ci.yml`: on PRs to `main` and pushes to `main`, runs `composer test`, `composer analyse` (PHPStan), `npx eslint .`, `npm run type-check`, `npm run format:check` (Prettier; generated Wayfinder dirs are in `.prettierignore`)
 - `deploy.yml`: manual only (`gh workflow run deploy.yml -f action=deploy`, or Run workflow in GitHub Actions); merging to `main` does not deploy. It deploys the head of the deploy branch, and only if CI succeeded on that commit
 - Deploy script: clone → composer install → npm ci + build → migrate → cache → reload fpm + horizon
+- Mail: production setup is a manual server step, see `docs/mail-setup.md`
 - Rollback (`-f action=rollback`): re-symlinks previous timestamped release; no CI check, and migrations are not reversed
 
 ---

@@ -194,7 +194,7 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 ## Known incomplete areas
 
 - Commissions are only partly built. The public contact form (`?type=commission`) collects budget and due date, and `ContactController::store` creates a `CommissionRequest` (`status=new`). There is no commissions info page. Admin Messages shows status, quote and invoice read-only, with no way to edit them.
-- The contact form sends no email notification (`ContactController` TODO). Messages are visible only in admin.
+- Owner email for submissions (`App\Services\SubmissionNotifier`) needs `MAIL_OWNER_ADDRESS` and a production mailer (setup steps in `docs/mail-setup.md`). With the address unset nothing is sent, and with `MAIL_MAILER=log` mail only reaches the log. Messages are always saved to admin.
 - The `.dark` token block in `resources/css/app.css` is dead: nothing ever adds the `dark` class, so dark mode doesn't exist.
 - Mature content: revealing a flagged artwork on its detail page still shifts the layout, because the public resource carries no image dimensions to reserve the aspect ratio. A book whose gallery cover is flagged shows no hero and has no reveal control.
 - The Books nav link is hard-coded on (`showBooks` in `PublicLayout.vue`, `TODO(#45)`) until the shared books feature flag lands.
