@@ -19,31 +19,33 @@ Capistrano-style timestamped releases via SSH, triggered by GitHub Actions.
 
 ### Triggers
 
-- `push` to `main` branch → auto-deploy
-- `workflow_dispatch` with `action: deploy` → manual deploy
+- `workflow_dispatch` with `action: deploy` → manual deploy of the deploy branch's head; refused unless CI succeeded on that commit
 - `workflow_dispatch` with `action: rollback` → rollback to previous release
+
+Pushing or merging to `main` does not deploy. Start a deploy from the Actions tab or with `gh workflow run deploy.yml -f action=deploy`.
 
 ---
 
 ## Deploy Steps (in order)
 
-1. **SSH into server** via `appleboy/ssh-action`
-2. Load NVM and select default Node version
-3. Create timestamped release directory under `$APP_ROOT/releases/$TS`
-4. Verify `shared/.env` exists (fail fast if missing)
-5. Clone repo at depth 1 from GitHub
-6. Symlink `storage/` → `shared/storage/`
-7. Symlink `public/uploads/` → `shared/uploads/`
-8. Symlink `.env` → `shared/.env`
-9. `composer install --no-dev --prefer-dist --optimize-autoloader`
-10. `npm ci && npm run build`
-11. `php artisan storage:link`
-12. `php artisan migrate --force`
-13. Clear and rebuild caches: `config`, `route`, `view`
-14. `supervisorctl restart horizon`
-15. Flip `current/` symlink to new release
-16. `systemctl reload php8.4-fpm`
-17. Prune old releases
+1. Check that CI succeeded on the head of the deploy branch
+2. **SSH into server** via `appleboy/ssh-action`
+3. Load NVM and select default Node version
+4. Create timestamped release directory under `$APP_ROOT/releases/$TS`
+5. Verify `shared/.env` exists (fail fast if missing)
+6. Clone repo at depth 1 from GitHub
+7. Symlink `storage/` → `shared/storage/`
+8. Symlink `public/uploads/` → `shared/uploads/`
+9. Symlink `.env` → `shared/.env`
+10. `composer install --no-dev --prefer-dist --optimize-autoloader`
+11. `npm ci && npm run build`
+12. `php artisan storage:link`
+13. `php artisan migrate --force`
+14. Clear and rebuild caches: `config`, `route`, `view`
+15. `supervisorctl restart horizon`
+16. Flip `current/` symlink to new release
+17. `systemctl reload php8.4-fpm`
+18. Prune old releases
 
 ---
 
@@ -85,7 +87,6 @@ Capistrano-style timestamped releases via SSH, triggered by GitHub Actions.
 
 ## Known Gaps
 
-- **No test CI gate** — tests are not run before deploying (TASK-004 in backlog). A failing test will still deploy.
 - Rollback is manual (`workflow_dispatch`)
 
 ---
