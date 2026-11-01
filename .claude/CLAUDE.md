@@ -193,7 +193,7 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 
 ## Known incomplete areas
 
-- Commissions are only partly built. The public contact form (`?type=commission`) collects budget and due date, and `ContactController::store` creates a `CommissionRequest` (`status=new`). There is no commissions info page and no admin UI for status, quote or invoice.
+- Commissions are only partly built. The public contact form (`?type=commission`) collects budget and due date, and `ContactController::store` creates a `CommissionRequest` (`status=new`). There is no commissions info page. Admin Messages shows status, quote and invoice read-only, with no way to edit them.
 - The contact form sends no email notification (`ContactController` TODO). Messages are visible only in admin.
 - The `.dark` token block in `resources/css/app.css` is dead: nothing ever adds the `dark` class, so dark mode doesn't exist.
 - Mature content: revealing a flagged artwork on its detail page still shifts the layout, because the public resource carries no image dimensions to reserve the aspect ratio. A book whose gallery cover is flagged shows no hero and has no reveal control.
