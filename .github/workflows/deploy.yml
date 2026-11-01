@@ -1,8 +1,6 @@
 name: Deploy
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
     inputs:
       action:
@@ -19,8 +17,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify:
+    if: ${{ inputs.action == 'deploy' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
+
+    steps:
+      - name: Require passing CI on the deploy commit
+        id: commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ secrets.DEPLOY_BRANCH || 'main' }}
+        run: |
+          SHA="$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)"
+          PASSED="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$SHA" --status success --limit 1 --json databaseId --jq length)"
+
+          if [ "$PASSED" -eq 0 ]; then
+            echo "::error::CI has not succeeded on $SHA, the head of $BRANCH. Wait for it to pass, then deploy again."
+            exit 1
+          fi
+
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
   deploy:
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.action == 'deploy') }}
+    needs: verify
     runs-on: ubuntu-latest
 
     steps:
@@ -62,6 +86,13 @@ jobs:
             git clone --depth 1 --branch "$BRANCH" "https://github.com/$REPO.git" "$RELEASE_DIR"
 
             cd "$RELEASE_DIR"
+
+            EXPECTED_SHA="${{ needs.verify.outputs.sha }}"
+            if [ "$(git rev-parse HEAD)" != "$EXPECTED_SHA" ]; then
+              echo "$BRANCH moved after CI was checked (expected $EXPECTED_SHA). Deploy again."
+              rm -rf "$RELEASE_DIR"
+              exit 1
+            fi
 
             echo "Linking shared paths"
             rm -rf "$RELEASE_DIR/storage"
