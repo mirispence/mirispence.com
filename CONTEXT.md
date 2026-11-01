@@ -93,7 +93,7 @@ config/
 | Tag            | `Tag`                 | —                                  | ✓                        |
 | Featured Items | `FeaturedItem`        | —                                  | ✓                        |
 | Contact        | `ContactMessage`      | `/contact`                         | read/update/delete only  |
-| Commission     | `CommissionRequest`   | **none**                           | **none**                 |
+| Commission     | `CommissionRequest`   | **none**                           | read-only in Messages    |
 | User           | `User`                | `/settings/*`                      | ✓                        |
 
 Public art routes (ADR-0005; no redirects from the old `/art/{artwork}` and `/galleries/*` URLs, which now 404):
@@ -118,7 +118,7 @@ Artwork --< ArtworkTag >-- Tag
 Book --< Chapter
 Book >-- Gallery                         (gallery_id, nullable, nullOnDelete: cover source)
 FeaturedItem (morph: artwork | book)
-ContactMessage --< CommissionRequest    (commission is a sub-record of contact; no admin UI yet)
+ContactMessage --< CommissionRequest    (commission is a sub-record of contact; read-only in admin Messages)
 User (has roles/permissions via Spatie)
 ```
 
