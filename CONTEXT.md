@@ -155,6 +155,7 @@ Book has no media of its own either (not `HasMedia`). It points at a Gallery (`B
 - `ci.yml`: on PRs to `main` and pushes to `main`, runs `composer test`, `composer analyse` (PHPStan), `npx eslint .`, `npm run type-check`, `npm run format:check` (Prettier; generated Wayfinder dirs are in `.prettierignore`)
 - `deploy.yml`: manual only (`gh workflow run deploy.yml -f action=deploy`, or Run workflow in GitHub Actions); merging to `main` does not deploy. It deploys the head of the deploy branch, and only if CI succeeded on that commit
 - Deploy script: clone → composer install → npm ci + build → migrate → cache → reload fpm + horizon
+- Mail: production setup is a manual server step, see `docs/mail-setup.md`
 - Rollback (`-f action=rollback`): re-symlinks previous timestamped release; no CI check, and migrations are not reversed
 
 ---
