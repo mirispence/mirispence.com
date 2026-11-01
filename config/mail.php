@@ -115,4 +115,16 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Owner Address
+    |--------------------------------------------------------------------------
+    |
+    | Where contact and commission submissions are emailed. When this is
+    | empty, nothing is sent and submissions are only visible in admin.
+    |
+    */
+
+    'owner_address' => env('MAIL_OWNER_ADDRESS'),
+
 ];

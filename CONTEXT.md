@@ -27,7 +27,8 @@ app/
                         #   ContactMessage, CommissionRequest, User
   Providers/            # AppServiceProvider (Gate defs), FortifyServiceProvider,
                         #   HorizonServiceProvider
-  Services/             # MarkdownRenderer
+  Mail/                 # SubmissionReceived (queued owner email, plain text)
+  Services/             # MarkdownRenderer, SubmissionNotifier
   Support/              # MatureConsent (session consent for nsfw_flag artwork, ADR-0004)
     Media/              # MediaUrlBuilder (single source of media URL sets)
     MediaLibrary/       # CustomPathGenerator
@@ -137,6 +138,7 @@ Book has no media of its own either (not `HasMedia`). It points at a Gallery (`B
 ## Queue / Jobs
 
 - `RegenerateArtworkImages` — tracks `image_status` on artwork (pending → processing → ready/failed)
+- `SubmissionReceived` — owner email for each contact or commission submission, sent to `MAIL_OWNER_ADDRESS` with Reply-To set to the requester. `SubmissionNotifier` queues it after the record is saved, skips it when the address is unset, and reports rather than throws if queueing fails
 - Dev: `QUEUE_CONNECTION=database` (run `php artisan queue:listen`)
 - Prod: Redis + Horizon (`supervisorctl restart horizon` on deploy)
 
