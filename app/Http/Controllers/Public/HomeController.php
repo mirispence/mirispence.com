@@ -9,6 +9,7 @@ use App\Models\Book;
 use App\Support\Seo\SeoBuilder;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Pennant\Feature;
 
 class HomeController extends Controller
 {
@@ -35,12 +36,14 @@ class HomeController extends Controller
         return Inertia::render('Public/Home', [
             'heroArtwork' => $heroArtwork ? (new PublicArtworkResource($heroArtwork))->resolve() : null,
             'featuredArtworks' => PublicArtworkResource::collection($artworks)->resolve(),
-            'featuredBooks' => Book::featured()
-                ->published()
-                ->withPublicCover()
-                ->latest('release_date')
-                ->take(3)
-                ->get(),
+            'featuredBooks' => Feature::active('books')
+                ? Book::featured()
+                    ->published()
+                    ->withPublicCover()
+                    ->latest('release_date')
+                    ->take(3)
+                    ->get()
+                : [],
         ]);
     }
 }

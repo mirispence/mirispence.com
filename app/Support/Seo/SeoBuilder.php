@@ -6,6 +6,7 @@ use App\Models\Artwork;
 use App\Models\Book;
 use App\Models\Gallery;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 
 class SeoBuilder
 {
@@ -16,6 +17,9 @@ class SeoBuilder
     public const DEFAULT_DESCRIPTION = 'The official website of Miri Spence, artist and author.';
 
     public const HOME_DESCRIPTION = 'Portfolio of Miri Spence - Concept Art, Illustration, and Fantasy Books.';
+
+    /** Home description while the books flag is off (#45). */
+    public const HOME_DESCRIPTION_WITHOUT_BOOKS = 'Portfolio of Miri Spence - Concept Art and Illustration.';
 
     public const ART_INDEX_DESCRIPTION = 'Browse the art gallery of Miri Spence. Digital paintings, character designs, and illustrations.';
 
@@ -86,7 +90,7 @@ class SeoBuilder
     {
         return self::make(
             title: config('app.name'),
-            description: self::HOME_DESCRIPTION,
+            description: Feature::active('books') ? self::HOME_DESCRIPTION : self::HOME_DESCRIPTION_WITHOUT_BOOKS,
             image: self::getFallbackOgImage()
         );
     }

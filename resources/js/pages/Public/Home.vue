@@ -12,6 +12,7 @@ import ArtCard from '@/components/ArtCard.vue';
 import CommissionCta from '@/components/CommissionCta.vue';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useFeatures } from '@/composables/useFeatures';
 import { copy } from '@/content/copy';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import type { PublicArtwork } from '@/types/publicArtwork';
@@ -24,6 +25,8 @@ const props = defineProps<{
     featuredArtworks: PublicArtwork[];
     featuredBooks: Array<any>;
 }>();
+
+const features = useFeatures();
 
 const heroImage = computed(
     () =>
@@ -51,7 +54,11 @@ const heroImage = computed(
                         <p
                             class="mt-8 max-w-xl text-xl leading-relaxed text-muted-foreground"
                         >
-                            {{ copy.home.heroIntro[0] }}<br />
+                            {{
+                                features.books
+                                    ? copy.home.heroIntro[0]
+                                    : copy.home.heroIntroLeadWithoutBooks
+                            }}<br />
                             {{ copy.home.heroIntro[1] }}
                         </p>
                         <div class="mt-10 flex flex-wrap gap-4">

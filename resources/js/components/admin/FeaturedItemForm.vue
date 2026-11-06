@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useFeatures } from '@/composables/useFeatures';
 import type { InertiaForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
@@ -16,6 +17,8 @@ const props = defineProps<{
     books: Array<any>;
 }>();
 defineEmits<{ submit: [] }>();
+
+const features = useFeatures();
 
 const items = computed(() => {
     if (props.form.item_type === 'artwork') {
@@ -40,7 +43,9 @@ const items = computed(() => {
                             class="control control-select"
                         >
                             <option value="artwork">Artwork</option>
-                            <option value="book">Book</option>
+                            <option v-if="features.books" value="book">
+                                Book
+                            </option>
                         </select>
                         <div v-if="form.errors.item_type" class="error">
                             {{ form.errors.item_type }}

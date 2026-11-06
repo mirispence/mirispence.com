@@ -1,16 +1,41 @@
 <script setup lang="ts">
+import { useFeatures } from '@/composables/useFeatures';
+import type { Features } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-const navigation = [
+const features = useFeatures();
+
+type AdminNavItem = {
+    name: string;
+    href: string;
+    icon: string;
+    /** Hidden while this feature flag is off. */
+    feature?: keyof Features;
+};
+
+const allNavigation: AdminNavItem[] = [
     { name: 'Dashboard', href: '/admin', icon: 'HomeIcon' },
     { name: 'Artworks', href: '/admin/artworks', icon: 'PhotoIcon' },
     { name: 'Galleries', href: '/admin/galleries', icon: 'RectangleStackIcon' },
-    { name: 'Books', href: '/admin/books', icon: 'BookOpenIcon' },
+    {
+        name: 'Books',
+        href: '/admin/books',
+        icon: 'BookOpenIcon',
+        feature: 'books',
+    },
     { name: 'Tags', href: '/admin/tags', icon: 'TagIcon' },
     { name: 'Featured', href: '/admin/featured-items', icon: 'StarIcon' },
     { name: 'Messages', href: '/admin/messages', icon: 'EnvelopeIcon' },
     { name: 'Users', href: '/admin/users', icon: 'UsersIcon' },
 ];
+
+// Items tied to a switched-off feature flag are hidden (ADR-0006).
+const navigation = computed(() =>
+    allNavigation.filter(
+        (item) => !item.feature || features.value[item.feature],
+    ),
+);
 </script>
 
 <template>

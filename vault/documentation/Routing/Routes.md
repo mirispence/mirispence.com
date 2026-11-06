@@ -17,6 +17,8 @@ Tags: #routing #routes
 | POST | `/contact` | `contact.store` | `ContactController@store` |
 | GET | `/dashboard` | `dashboard` | _(inline Inertia render)_ |
 
+The `books.*` routes are wrapped in `EnsureFeaturesAreActive::using('books')` and 404 when the `books` flag is off ([[Infrastructure/Feature Flags]]).
+
 The `dashboard` route requires `auth` + `verified` middleware.
 
 Route model bindings use the `slug` column (e.g. `{artwork:slug}`).
@@ -45,6 +47,8 @@ All require `auth` middleware.
 Middleware: `auth`, `verified`, `role:admin`. Prefix: `admin`. Name prefix: `admin.`.
 
 ### Standard Resources
+
+`admin.books.*` and `admin.chapters.*` are behind the `books` feature flag and 404 when it is off ([[Infrastructure/Feature Flags]]).
 
 | Resource | URI prefix | Routes | Name prefix |
 |---|---|---|---|

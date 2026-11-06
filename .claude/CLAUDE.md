@@ -174,6 +174,10 @@ User (roles/permissions via Spatie)
 
 Artwork appends computed attributes on every load: `media_urls`, `thumb_url`, `image_status_label`, `publish_status_label`, `description_html`.
 
+## Feature flags
+
+Laravel Pennant on a config-backed `array` store (ADR-0006). Flags are global, and each one resolves from `config/features.php` (env `FEATURE_<NAME>`). The first flag is `books`, which defaults to off. Gate routes with `EnsureFeaturesAreActive::using('<flag>')`, which returns 404 when the flag is off. Gate PHP with `Feature::active()` and Vue with `useFeatures()`. Tests run with books on (`phpunit.xml`). The steps for adding a flag are in `CONTEXT.md` § Feature flags.
+
 ## Validation
 
 All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do not put validation rules directly in controllers.
@@ -197,7 +201,6 @@ All HTTP validation uses Form Request classes in `app/Http/Requests/Admin/`. Do 
 - Owner email for submissions (`App\Services\SubmissionNotifier`) needs `MAIL_OWNER_ADDRESS` and a production mailer (setup steps in `docs/mail-setup.md`). With the address unset nothing is sent, and with `MAIL_MAILER=log` mail only reaches the log. Messages are always saved to admin.
 - The `.dark` token block in `resources/css/app.css` is dead: nothing ever adds the `dark` class, so dark mode doesn't exist.
 - Mature content: revealing a flagged artwork on its detail page still shifts the layout, because the public resource carries no image dimensions to reserve the aspect ratio. A book whose gallery cover is flagged shows no hero and has no reveal control.
-- The Books nav link is hard-coded on (`showBooks` in `PublicLayout.vue`, `TODO(#45)`) until the shared books feature flag lands.
 - `.env.example` is missing all R2 environment variables
 - Admin form restyle is specced in `instructions/update-admin-styles.md` but not yet applied
 - CI (`.github/workflows/ci.yml`) runs tests/PHPStan/Pint/ESLint/type-check/Prettier check on PRs to `main` and pushes to `main`. Merging does not deploy: `.github/workflows/deploy.yml` runs only when started manually (`gh workflow run deploy.yml -f action=deploy`) and refuses a commit without passing CI

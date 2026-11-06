@@ -31,5 +31,8 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <!-- Feature flags default on in tests so existing suites run unchanged; flag-off tests set config(features.*) to false. -->
+        <env name="PENNANT_STORE" value="array"/>
+        <env name="FEATURE_BOOKS" value="true"/>
     </php>
 </phpunit>

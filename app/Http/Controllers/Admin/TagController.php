@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Pennant\Feature;
 
 class TagController extends Controller
 {
@@ -21,7 +22,8 @@ class TagController extends Controller
         $this->authorize('admin');
 
         return Inertia::render('Admin/Tags/Index', [
-            'tags' => Tag::withCount(['artworks', 'books'])
+            // The book count is only shown while the books flag is on (#45).
+            'tags' => Tag::withCount(Feature::active('books') ? ['artworks', 'books'] : ['artworks'])
                 ->orderBy('name')
                 ->paginate(10),
         ]);

@@ -49,7 +49,7 @@ Standard resource controller. Passes all galleries for the gallery list and all 
 
 File: `app/Http/Controllers/Admin/BookController.php`
 
-Standard resource controller for books.
+Standard resource controller for books. Routes 404 when the `books` flag is off ([[Infrastructure/Feature Flags]]).
 
 ---
 
@@ -65,7 +65,7 @@ Standard resource controller for chapters. Chapters are linked to a book via `bo
 
 File: `app/Http/Controllers/Admin/TagController.php`
 
-Standard resource controller. Manages `name`, `slug`, `type` fields.
+Standard resource controller. Manages `name`, `slug`, `type` fields. The index skips the book count when the `books` flag is off.
 
 ---
 
@@ -73,7 +73,7 @@ Standard resource controller. Manages `name`, `slug`, `type` fields.
 
 File: `app/Http/Controllers/Admin/FeaturedItemController.php`
 
-Standard resource controller. Manages polymorphic featured items (`item_type`, `item_id`, `display_context`, `display_order`).
+Standard resource controller. Manages polymorphic featured items (`item_type`, `item_id`, `display_context`, `display_order`). With the `books` flag off, forms get no `books` list or Book type and validation rejects `item_type=book`.
 
 ---
 

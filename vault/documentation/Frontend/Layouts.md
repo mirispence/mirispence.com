@@ -14,7 +14,7 @@ The shell for the authenticated user area (dashboard, settings). Includes the si
 
 ## `AdminLayout.vue`
 
-Used by all admin panel pages. Wraps admin pages with the admin navigation chrome.
+Used by all admin panel pages. Wraps admin pages with the admin navigation chrome. The Books nav item is hidden when the `books` flag is off.
 
 ---
 
@@ -26,7 +26,7 @@ Minimal centered layout for auth pages (login, register, password reset, email v
 
 ## `PublicLayout.vue`
 
-Public site wrapper. Includes `AppHeader` for site navigation. Used by all public-facing pages.
+Public site wrapper. Includes `AppHeader` for site navigation. Used by all public-facing pages. The Books nav link (desktop and mobile Sheet) shows only when `useFeatures().books` is true.
 
 ---
 

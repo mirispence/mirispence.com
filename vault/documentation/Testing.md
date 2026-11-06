@@ -92,6 +92,10 @@ Unit tests for `SeoBuilder`:
 - Description normalisation (markdown stripped, HTML stripped, length limited)
 - Canonical URL query-string stripping
 
+### `BooksFeatureFlagTest.php` and `FeatureFlagsTest.php` (Unit)
+
+Cover the `books` feature flag ([[Infrastructure/Feature Flags]]): routes 404 when off, nav/home/sitemap/featured-item/tag effects, and flag resolution from config. `phpunit.xml` sets `FEATURE_BOOKS=true`, so other tests run with Books on; tests for the off state call `config(['features.books' => false])` then `Feature::flushCache()`.
+
 ---
 
 ## Running Specific Tests

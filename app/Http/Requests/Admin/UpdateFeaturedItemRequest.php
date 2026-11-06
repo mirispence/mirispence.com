@@ -4,6 +4,8 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Laravel\Pennant\Feature;
 
 class UpdateFeaturedItemRequest extends FormRequest
 {
@@ -23,7 +25,8 @@ class UpdateFeaturedItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'item_type' => ['required', 'string', 'in:artwork,book'],
+            // Book items can only be added while the books flag is on (#45).
+            'item_type' => ['required', 'string', Rule::in(Feature::active('books') ? ['artwork', 'book'] : ['artwork'])],
             'item_id' => ['required', 'integer'],
             'display_context' => ['required', 'string', 'in:home,sidebar,footer'],
             'display_order' => ['required', 'integer'],

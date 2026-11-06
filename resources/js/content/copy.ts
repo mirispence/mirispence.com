@@ -21,6 +21,8 @@ export interface PublicCopy {
         heroTitleAccent: string;
         /** Rendered as two lines. */
         heroIntro: readonly [string, string];
+        /** Replaces the first heroIntro line while the books flag is off. */
+        heroIntroLeadWithoutBooks: string;
         featuredArtHeading: string;
         commissionHeading: string;
         commissionBlurb: string;
@@ -49,8 +51,9 @@ export interface PublicCopy {
     books: {
         heading: string;
         intro: string;
-        comingSoonHeading: string;
-        comingSoonBody: string;
+        /** Shown instead of the grid when no books are published. */
+        emptyHeading: string;
+        emptyBody: string;
     };
     book: {
         chaptersHeading: string;
@@ -104,6 +107,7 @@ export const copy: PublicCopy = {
             'The art and books of Miri Spence.',
             'Illustration, storytelling, and personal creative work.',
         ],
+        heroIntroLeadWithoutBooks: 'The art of Miri Spence.',
         featuredArtHeading: 'Featured Art',
         commissionHeading: 'Have a vision in mind?',
         commissionBlurb:
@@ -131,9 +135,8 @@ export const copy: PublicCopy = {
     books: {
         heading: 'Novels & Stories',
         intro: 'Exploring worlds through words.',
-        comingSoonHeading: 'More coming soon',
-        comingSoonBody:
-            'New stories and illustrations are always in development.',
+        emptyHeading: 'No books yet',
+        emptyBody: 'New stories are in development. Check back soon.',
     },
     book: {
         chaptersHeading: 'Chapters',

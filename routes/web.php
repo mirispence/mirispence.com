@@ -14,6 +14,7 @@ use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\MatureConsentController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // ADR-0005: /art is for Galleries, /artwork is for Artworks. No redirects from the old URLs.
@@ -21,8 +22,10 @@ Route::get('/art', [GalleryController::class, 'index'])->name('art.index');
 Route::get('/art/{gallery:slug}', [GalleryController::class, 'show'])->name('art.gallery');
 Route::get('/artwork', [ArtworkController::class, 'index'])->name('artwork.index');
 Route::get('/artwork/{artwork:slug}', [ArtworkController::class, 'show'])->name('artwork.show');
-Route::get('/books', [BookController::class, 'index'])->name('books.index');
-Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
+Route::middleware(EnsureFeaturesAreActive::using('books'))->group(function () {
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
+});
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::post('/mature-consent', [MatureConsentController::class, 'store'])
@@ -35,8 +38,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('artworks', App\Http\Controllers\Admin\ArtworkController::class);
     Route::resource('galleries', App\Http\Controllers\Admin\GalleryController::class);
-    Route::resource('books', App\Http\Controllers\Admin\BookController::class);
-    Route::resource('chapters', ChapterController::class);
+    Route::middleware(EnsureFeaturesAreActive::using('books'))->group(function () {
+        Route::resource('books', App\Http\Controllers\Admin\BookController::class);
+        Route::resource('chapters', ChapterController::class);
+    });
     Route::resource('tags', TagController::class);
     Route::resource('featured-items', FeaturedItemController::class);
     Route::resource('messages', MessageController::class)->only(['index', 'show', 'update', 'destroy']);
