@@ -25,7 +25,7 @@ app/
   Jobs/                 # RegenerateArtworkImages (queued)
   Models/               # Artwork, Gallery, Book, Chapter, Tag, FeaturedItem,
                         #   ContactMessage, CommissionRequest, User
-  Providers/            # AppServiceProvider (Gate defs), FortifyServiceProvider,
+  Providers/            # AppServiceProvider (Gate defs, feature flags), FortifyServiceProvider,
                         #   HorizonServiceProvider
   Mail/                 # SubmissionReceived (queued owner email, plain text)
   Services/             # MarkdownRenderer, SubmissionNotifier
@@ -90,7 +90,7 @@ config/
 | -------------- | -------------------- | ---------------------------------- | ------------------------ |
 | Artwork        | `Artwork`            | `/artwork` (`?tag=`), `/artwork/{slug}` | ✓                   |
 | Gallery        | `Gallery`             | `/art`, `/art/{slug}`              | ✓                        |
-| Book/Chapter   | `Book`, `Chapter`     | `/books`, `/books/{slug}`          | ✓                        |
+| Book/Chapter   | `Book`, `Chapter`     | `/books`, `/books/{slug}` (`books` flag) | ✓ (`books` flag)   |
 | Tag            | `Tag`                 | —                                  | ✓                        |
 | Featured Items | `FeaturedItem`        | —                                  | ✓                        |
 | Contact        | `ContactMessage`      | `/contact`                         | read/update/delete only  |
@@ -132,6 +132,27 @@ Mature content (ADR-0004): an Artwork with `nsfw_flag` gets **no media URLs** on
 Gallery has no media of its own (not `HasMedia`). Its cover is an explicit pick of one of its own member Artworks (`Gallery::coverArtwork()`, column `cover_artwork_id`), independent of the pivot `sort_order`. `cover_urls` (= cover Artwork's `MediaUrlBuilder::public()`, `[]` if no cover, the cover isn't published, or it is no longer a member) is not auto-appended: query with the `withPublicCover()` scope (eager-loads the cover chain + membership flag and appends it). The cover is chosen on gallery edit (validated as a member); create cannot set one because a new gallery has no members. `Artwork::syncGalleries()` clears the cover of any gallery the artwork leaves. See ADR-0003.
 
 Book has no media of its own either (not `HasMedia`). It points at a Gallery (`Book::gallery()`, column `gallery_id`, picked from all galleries on admin create/edit), and its cover is that Gallery's cover Artwork. The `gallery` relation is hidden. The `cover` accessor (not auto-appended) returns `{urls: <gallery cover_urls>, gallery: {name, slug}}`, or `null` when there's no gallery, the gallery isn't published, or the gallery has no visible cover. Use the `withPublicCover()` scope (or `$book->loadPublicCover()` for one model). The public Book show hero renders `cover.urls.display` and links to `art.gallery`. With no cover, no hero is rendered. Admin books index rows carry `cover_thumb_url`.
+
+---
+
+## Feature flags
+
+ADR-0006: Laravel Pennant with the `array` store. Every flag resolves from `config/features.php` and is global (the default scope is `null`).
+
+| Flag | Env | Default | Off means |
+| --- | --- | --- | --- |
+| `books` | `FEATURE_BOOKS` | `false` | Public `books.*` and admin `admin.books.*` / `admin.chapters.*` routes return 404. Books is hidden from the public nav (desktop and mobile Sheet) and the admin nav. Home `featuredBooks` is `[]`, and the hero's first line and the home meta description drop "books". The sitemap leaves out `/books` and book URLs. Featured-item create/edit get no `books` list and no "Book" type option, and validation rejects `item_type=book`. Admin Tags skip the book count. Models, tables, data and the morph map are untouched. |
+
+With `books` on and zero published books, `/books` shows an empty state instead of the grid.
+
+To add a flag:
+1. Add it to `config/features.php` and `.env.example`.
+2. Define it in `AppServiceProvider::defineFeatures()`.
+3. Add it to `features` in `HandleInertiaRequests::share()` and to the `Features` type in `resources/js/types/index.d.ts`.
+4. Gate routes with `EnsureFeaturesAreActive::using('<flag>')`, which returns 404 when the flag is off. Gate PHP with `Feature::active('<flag>')` and Vue with `useFeatures()`.
+5. Keep routes registered, because Wayfinder needs them.
+
+In tests, `phpunit.xml` turns `books` on. To test it off, call `config(['features.books' => false])` and then `Feature::flushCache()`.
 
 ---
 

@@ -11,6 +11,7 @@ use App\Models\FeaturedItem;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Pennant\Feature;
 
 class FeaturedItemController extends Controller
 {
@@ -35,7 +36,7 @@ class FeaturedItemController extends Controller
 
         return Inertia::render('Admin/FeaturedItems/Create', [
             'artworks' => Artwork::all(),
-            'books' => Book::all(),
+            'books' => Feature::active('books') ? Book::all() : [],
         ]);
     }
 
@@ -61,7 +62,7 @@ class FeaturedItemController extends Controller
         return Inertia::render('Admin/FeaturedItems/Edit', [
             'featuredItem' => $featuredItem,
             'artworks' => Artwork::all(),
-            'books' => Book::all(),
+            'books' => Feature::active('books') ? Book::all() : [],
         ]);
     }
 

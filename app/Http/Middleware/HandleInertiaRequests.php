@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Support\Seo\SeoBuilder;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Laravel\Pennant\Feature;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -45,6 +46,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'seo' => SeoBuilder::forHome(),
+            // Feature flags (ADR-0006), typed as AppPageProps['features'].
+            'features' => [
+                'books' => Feature::active('books'),
+            ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

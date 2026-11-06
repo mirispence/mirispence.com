@@ -75,7 +75,7 @@ Route: `GET /books`
 Props:
 - `books` — all published books
 
-Book listing page.
+Book listing page. Shows an empty state when there are no published books (the old "More coming soon" card was removed). Route 404s when the `books` flag is off.
 
 ---
 

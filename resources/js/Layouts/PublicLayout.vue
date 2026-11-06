@@ -13,6 +13,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
+import { useFeatures } from '@/composables/useFeatures';
 import { copy } from '@/content/copy';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { Menu } from 'lucide-vue-next';
@@ -21,8 +22,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 const page = usePage();
 const seoData = computed(() => (page.props as any).seo);
 
-// TODO(#45): replace with the shared `books` feature flag once #45 lands.
-const showBooks = true;
+const features = useFeatures();
 
 type NavItem = { label: string; href: string; prefixes: string[] };
 
@@ -33,7 +33,7 @@ const navItems = computed<NavItem[]>(() =>
             href: galleriesIndex.url(),
             prefixes: [galleriesIndex.url(), artworkIndex.url()],
         },
-        showBooks
+        features.value.books
             ? {
                   label: 'Books',
                   href: booksIndex.url(),

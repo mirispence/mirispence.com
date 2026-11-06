@@ -90,7 +90,9 @@ See [[../Backend/Services]].
 
 ## Public Behaviour
 
-- **Books Index** (`/books`) — all published books, latest by `release_date`
+The whole books feature sits behind the `books` feature flag (`FEATURE_BOOKS`, default off): when off, all public and admin book/chapter routes 404 and Books is hidden from navigation. See [[Infrastructure/Feature Flags]].
+
+- **Books Index** (`/books`) — all published books, latest by `release_date`; empty state when none are published
 - **Book Show** (`/books/{slug}`) — book detail page with chapters listed
 
 ## Admin Operations

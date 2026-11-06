@@ -17,6 +17,11 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+/** Feature flags (ADR-0006); keys match config/features.php. */
+export interface Features {
+    books: boolean;
+}
+
 export type AppPageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -25,6 +30,7 @@ export type AppPageProps<
     auth: Auth;
     sidebarOpen: boolean;
     flash: { success: string | null; error: string | null };
+    features: Features;
 };
 
 export interface User {

@@ -15,7 +15,7 @@ File: `app/Http/Controllers/Public/HomeController.php`
 ### `index()` → `GET /`
 
 - Queries up to 3 featured + published artworks (ordered by `created_on` desc)
-- Queries up to 3 featured + published books (ordered by `release_date` desc)
+- Queries up to 3 featured + published books (ordered by `release_date` desc); `featuredBooks` is `[]` when the `books` flag is off
 - Renders `Public/Home` with `featuredArtworks` and `featuredBooks` props
 - Artworks passed through `PublicArtworkResource` (strips original URLs)
 
@@ -67,6 +67,7 @@ File: `app/Http/Controllers/Public/BookController.php`
 ### `index()` → `GET /books`
 
 - Published books, ordered by `release_date` desc
+- Route is 404 when the `books` flag is off
 - Renders `Public/Books/Index`
 
 ### `show(Book $book)` → `GET /books/{slug}`

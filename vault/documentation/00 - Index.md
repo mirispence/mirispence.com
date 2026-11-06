@@ -45,6 +45,7 @@
 - [[Infrastructure/Permissions & Roles]] — Spatie Permission, Gate::before
 - [[Infrastructure/SEO]] — SeoBuilder, SeoPayload, JSON-LD
 - [[Infrastructure/Queue & Horizon]] — Laravel Horizon, queue jobs
+- [[Infrastructure/Feature Flags]] — Pennant config-backed flags, `books` flag
 - [[Infrastructure/Deployment]] — GitHub Actions, capistrano-style releases, rollback
 
 ### Routing

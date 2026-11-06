@@ -5,6 +5,7 @@ import {
     edit,
 } from '@/actions/App/Http/Controllers/Admin/TagController';
 import Pagination from '@/components/Pagination.vue';
+import { useFeatures } from '@/composables/useFeatures';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
@@ -14,6 +15,8 @@ defineProps<{
         links: Array<any>;
     };
 }>();
+
+const features = useFeatures();
 
 const deleteTag = (id: number) => {
     if (confirm('Are you sure you want to delete this tag?')) {
@@ -89,8 +92,10 @@ const deleteTag = (id: number) => {
                                 <td
                                     class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
                                 >
-                                    {{ tag.artworks_count }} Artworks,
-                                    {{ tag.books_count }} Books
+                                    {{ tag.artworks_count }} Artworks<template
+                                        v-if="features.books"
+                                        >, {{ tag.books_count }} Books</template
+                                    >
                                 </td>
                                 <td
                                     class="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-0"

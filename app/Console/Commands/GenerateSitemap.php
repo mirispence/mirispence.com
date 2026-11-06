@@ -6,6 +6,7 @@ use App\Models\Artwork;
 use App\Models\Book;
 use App\Models\Gallery;
 use Illuminate\Console\Command;
+use Laravel\Pennant\Feature;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -34,8 +35,13 @@ class GenerateSitemap extends Command
             ->add(Url::create('/')->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
             ->add(Url::create(route('art.index'))->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
             ->add(Url::create(route('artwork.index'))->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
-            ->add(Url::create('/books')->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY))
             ->add(Url::create('/contact')->setPriority(0.5)->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+
+        $booksActive = Feature::active('books');
+
+        if ($booksActive) {
+            $sitemap->add(Url::create('/books')->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+        }
 
         // Add all published artworks
         Artwork::published()->get()->each(function (Artwork $artwork) use ($sitemap) {
@@ -48,14 +54,16 @@ class GenerateSitemap extends Command
         });
 
         // Add all published books
-        Book::published()->get()->each(function (Book $book) use ($sitemap) {
-            $sitemap->add(
-                Url::create(route('books.show', $book))
-                    ->setPriority(0.8)
-                    ->setLastModificationDate($book->updated_at)
-                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-            );
-        });
+        if ($booksActive) {
+            Book::published()->get()->each(function (Book $book) use ($sitemap) {
+                $sitemap->add(
+                    Url::create(route('books.show', $book))
+                        ->setPriority(0.8)
+                        ->setLastModificationDate($book->updated_at)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                );
+            });
+        }
 
         // Add all published galleries
         Gallery::published()->get()->each(function (Gallery $gallery) use ($sitemap) {

@@ -25,7 +25,40 @@ defineProps<{
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+            <div
+                v-if="books.length === 0"
+                class="rounded-lg border border-border bg-card py-24 text-center"
+            >
+                <div
+                    class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted"
+                >
+                    <svg
+                        aria-hidden="true"
+                        class="h-8 w-8 text-muted-foreground"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                        />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-semibold text-foreground">
+                    {{ copy.books.emptyHeading }}
+                </h2>
+                <p class="mt-2 text-muted-foreground">
+                    {{ copy.books.emptyBody }}
+                </p>
+            </div>
+
+            <div
+                v-else
+                class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3"
+            >
                 <Card
                     v-for="book in books"
                     :key="book.id"
@@ -85,36 +118,6 @@ defineProps<{
                             }}...
                         </p>
                     </div>
-                </Card>
-
-                <!-- Coming Soon Card -->
-                <Card
-                    class="group flex cursor-default flex-col items-center justify-center overflow-hidden border-2 border-dashed border-border bg-transparent p-12 text-center shadow-none hover:translate-y-0 hover:shadow-none"
-                >
-                    <div
-                        class="mb-6 rounded-full bg-muted p-6 transition-transform duration-500 group-hover:scale-110"
-                    >
-                        <svg
-                            aria-hidden="true"
-                            class="h-10 w-10 text-muted-foreground"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                            />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-muted-foreground">
-                        {{ copy.books.comingSoonHeading }}
-                    </h3>
-                    <p class="mt-3 max-w-[200px] text-muted-foreground">
-                        {{ copy.books.comingSoonBody }}
-                    </p>
                 </Card>
             </div>
         </div>
