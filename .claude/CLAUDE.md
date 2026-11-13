@@ -14,12 +14,6 @@ Read:
 - `CONTEXT.md` (domain/architecture reference)
 - `docs/adr/` — ADRs relevant to the area you're about to work in
 
-## Branching rules
-
-- One branch per task.
-- Suggested Branch naming: `ai/<agent-name>/<task-id>-<slug>`
-- Never work directly on main/master.
-
 ## Collision avoidance
 
 - Do not modify files already touched by another CLAIMED task.
@@ -49,8 +43,6 @@ Each completed task must provide:
 
 ## Git rules
 
-- Never merge into main/master without explicit instruction.
-- Do not use `git push --force`, `git merge --squash`, `git rebase`, or `git commit --amend` unless explicitly instructed.
 - No secrets in code, state files, logs, commits, or tests.
 - Changes to logic, validation, orchestration, or security boundaries require tests.
 
