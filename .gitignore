@@ -35,3 +35,6 @@ yarn-error.log
 /.zed
 test_output.txt
 .vscode
+
+# Claude Code per-machine settings
+.claude/settings.local.json
